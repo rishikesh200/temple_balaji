@@ -15,14 +15,14 @@ export default function Footer() {
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#D4A853]" />
                 <span className="text-white/80">
-                  Paruthipattu Village, Sriperumbudur Taluk,
+                  Paruthipattu , Avadi,
                   <br />
-                  Kancheepuram District, Tamil Nadu – 602105
+                  Chennai, Tamil Nadu – 602105
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-[#D4A853]" />
-                <span className="text-white/80">+91 98765 43210</span>
+                <span className="text-white/80">+91 123456789</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#D4A853]" />
