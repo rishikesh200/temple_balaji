@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  /* Font families (overrides Tailwind defaults) */
+  --font-serif: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Brand colors as tokens */
+  --color-brand-maroon: #660000;
+  --color-brand-maroon-2: #3A0A0A;
+  --color-brand-gold: #D4AF37;
+  --color-brand-gold-soft: #E8C86A;
+  --color-brand-gold-deep: #B8922A;
+
+  /* Semantic typography scale */
+  --text-section-title: 1.5rem;
+  --text-section-title--line-height: 1.2;
+  --text-section-title--letter-spacing: 0.01em;
+
+  --text-amount: 1.75rem;
+  --text-amount--line-height: 1;
+  --text-amount--letter-spacing: -0.01em;
+
+  --text-amount-sm: 1.375rem;
+  --text-amount-sm--line-height: 1;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.35;
+
+  --text-fund-title: 1.125rem;
+  --text-fund-title--line-height: 1.25;
+
+  --text-progress: 0.75rem;
+  --text-btn: 0.875rem;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+}
