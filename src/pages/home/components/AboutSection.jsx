@@ -1,4 +1,4 @@
-import { Heart, Landmark, Play, Sparkles, Utensils } from "lucide-react"
+import { Heart, Landmark, Sparkles, Utensils } from "lucide-react"
 import abtImg from "../../../assets/images/hero-balaji.jpg"
 
 export default function AboutSection() {
@@ -36,29 +36,17 @@ export default function AboutSection() {
               </div>
             </div>
 
-            <button className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-[#6B1414] transition-colors">
+            <button className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors">
               Know More About Temple
             </button>
           </div>
 
           <div className="relative rounded-xl overflow-hidden shadow-xl">
-            <img src={abtImg} alt="Temple" className="w-full h-[300px] object-cover" />
-            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-              <button
-                type="button"
-                className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors"
-              >
-                <Play className="w-8 h-8 text-[#8B1A1A] ml-1" />
-              </button>
-            </div>
-            <div className="absolute top-4 right-4 bg-red-600 text-white text-xs px-2 py-1 rounded font-medium">
-              LIVE
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-              <p className="text-white text-center font-medium">
-                Live Darshan – Experience the Divine
-              </p>
-            </div>
+            <img
+              src={abtImg}
+              alt="Paruthipattu Balaji Temple"
+              className="w-full h-[500px] object-cover"
+            />
           </div>
         </div>
       </div>

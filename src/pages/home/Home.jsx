@@ -8,6 +8,7 @@ import Header from "./components/Header"
 import Hero from "./components/Hero"
 import PoojaGrid from "./components/PoojaGrid"
 import QuickActions from "./components/QuickActions"
+import Stream from "./components/Stream"
 import TrustBadges from "./components/TrustBadges"
 
 const Home = () => {
@@ -16,12 +17,18 @@ const Home = () => {
       <Header />
       <Hero/>
       <QuickActions />
-      <AboutSection/>
-      <DarshanSection />
-      <PoojaGrid />
-      <DonationSection />
+     
+      <AboutSection />
+   
       <Events />
+      <DonationSection />
+      <DarshanSection />
+     
+      <PoojaGrid />
+    
+      
       <Gallery />
+      <Stream />
       <TrustBadges />
       <Footer />
     </div>

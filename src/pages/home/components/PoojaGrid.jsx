@@ -1,12 +1,20 @@
+import poojaThumb from "../../../assets/images/pooja.png"
+
 const poojas = [
-  { name: "Ganapathy Pooja", price: "From ₹151", icon: "🕉️" },
-  { name: "Abhishekam", price: "From ₹251", icon: "🕉️" },
-  { name: "Archana", price: "From ₹101", icon: "🕉️" },
-  { name: "Alankaram", price: "From ₹501", icon: "🕉️" },
-  { name: "Navagraha Pooja", price: "From ₹351", icon: "🕉️" },
-  { name: "Annadhanam", price: "From ₹251", icon: "🕉️" },
-  { name: "Sankatahara", price: "From ₹101", icon: "🕉️" },
+  { name: "Ganapathy Pooja", price: "From ₹151" },
+  { name: "Abhishekam", price: "From ₹251" },
+  { name: "Archana", price: "From ₹101" },
+  { name: "Alankaram", price: "From ₹501" },
+  { name: "Navagraha Pooja", price: "From ₹351" },
+  { name: "Annadhanam", price: "From ₹251" },
+  { name: "Sankatahara", price: "From ₹101" },
 ]
+
+const cardClass =
+  "flex w-full max-w-[200px] mx-auto flex-col items-center rounded-3xl bg-white px-5 pt-6 pb-6 " +
+  "border border-[#E8E4DF] shadow-[0_2px_12px_rgba(45,24,16,0.06)] " +
+  "transition-all duration-200 hover:shadow-[0_6px_20px_rgba(45,24,16,0.1)] hover:-translate-y-0.5 hover:border-[#D4C9BC] " +
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8B1A1A]"
 
 export default function PoojaGrid() {
   return (
@@ -19,27 +27,32 @@ export default function PoojaGrid() {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6 max-w-6xl mx-auto justify-items-center">
           {poojas.map((pooja) => (
-            <button key={pooja.name} className="flex flex-col items-center group">
-              <div className="w-20 h-20 rounded-full bg-[#FDF8F3] border-2 border-[#D4A853] flex items-center justify-center mb-2 group-hover:bg-[#D4A853] transition-colors overflow-hidden">
-                <svg viewBox="0 0 60 60" className="w-12 h-12" fill="none">
-                  <circle cx="30" cy="30" r="25" fill="#8B1A1A" opacity="0.1" />
-                  <path
-                    d="M30 15c-8.284 0-15 6.716-15 15 0 8.284 6.716 15 15 15 8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15zm0 27c-6.627 0-12-5.373-12-12s5.373-12 12-12 12 5.373 12 12-5.373 12-12 12z"
-                    fill="#8B1A1A"
-                  />
-                  <circle cx="30" cy="30" r="6" fill="#D4A853" />
-                </svg>
+            <button key={pooja.name} type="button" className={cardClass} aria-label={`Book ${pooja.name}, ${pooja.price}`}>
+              <div
+                className="mb-4 flex aspect-square w-[45%] min-w-[5.5rem] max-w-[6.75rem] shrink-0 items-center justify-center rounded-full bg-[#8B1A1A] shadow-inner ring-1 ring-black/10"
+                aria-hidden
+              >
+                <img
+                  src={poojaThumb}
+                  alt=""
+                  className="h-[72%] w-[72%] object-contain drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
+                />
               </div>
-              <span className="text-sm font-medium text-[#2D1810]">{pooja.name}</span>
-              <span className="text-xs text-[#8B1A1A] font-medium">{pooja.price}</span>
+              <h3 className="w-full text-center font-sans text-[0.9375rem] font-bold leading-snug tracking-tight text-[#2D1810]">
+                {pooja.name}
+              </h3>
+              <p className="mt-2 w-full text-center font-sans text-sm font-bold text-[#8B1A1A]">{pooja.price}</p>
             </button>
           ))}
         </div>
 
         <div className="text-center mt-8">
-          <button className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-[#6B1414] transition-colors">
+          <button
+            type="button"
+            className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors"
+          >
             View All Poojas & Sevas
           </button>
         </div>
@@ -47,4 +60,3 @@ export default function PoojaGrid() {
     </section>
   )
 }
-

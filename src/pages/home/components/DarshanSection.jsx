@@ -66,7 +66,7 @@ export default function DarshanSection() {
         </div>
 
         <div className="text-center mt-8">
-          <button className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-[#6B1414] transition-colors">
+          <button className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors">
             View All Darshan Options
           </button>
         </div>

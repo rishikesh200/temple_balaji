@@ -1,28 +1,40 @@
 import { Calendar, Heart, Phone, Sparkles, Video } from "lucide-react"
+import Concave from "../../../components/Concave"
+import templeicon from "../../../assets/images/temple.png"
+import poojaicon from "../../../assets/images/pooja.png"
+import darshanicon from "../../../assets/images/calendar.png"
+import liveicon from "../../../assets/images/live.png"
+import contacticon from "../../../assets/images/konark-sun-temple.png"
+
+
+
+
+
+
 
 const actions = [
   {
-    icon: Heart,
+    icon: templeicon,
     title: "Donate",
     subtitle: "Support the Temple",
   },
   {
-    icon: Calendar,
+    icon: darshanicon,
     title: "Book Darshan",
     subtitle: "Reserve Your Slot",
   },
   {
-    icon: Sparkles,
+    icon: poojaicon,
     title: "Book Pooja",
     subtitle: "Perform Sevas",
   },
   {
-    icon: Video,
+    icon: liveicon,
     title: "Live Darshan",
     subtitle: "Watch Live",
   },
   {
-    icon: Phone,
+    icon: contacticon,
     title: "Contact Temple",
     subtitle: "Get in Touch",
   },
@@ -30,24 +42,41 @@ const actions = [
 
 export default function QuickActions() {
   return (
-    <div className="relative z-10 -mt-12 mb-8">
-      <div className="max-w-5xl mx-auto px-4">
-        <div className="bg-white rounded-xl shadow-lg border border-[#E5D5C5] overflow-hidden">
-          <div className="grid grid-cols-2 md:grid-cols-5 divide-x divide-[#E5D5C5]">
-            {actions.map((action) => (
+    <div className="relative z-10 -mt-7 ">
+      <div className="max-w-6xl mx-auto px-4 [filter:drop-shadow(4px_6px_14px_rgba(0,0,0,0.18))_drop-shadow(1px_2px_4px_rgba(0,0,0,0.08))]">
+        <Concave
+          borderRadius="18px"
+          concave="15px"
+          className="bg-[#FFF9F0] border border-[#E8D9C8] overflow-hidden px-4"
+        >
+          <div className="grid grid-cols-2 md:grid-cols-5  px-4">
+            {actions.map((action, index) => {
+              const insetRule =
+                index > 0
+                  ? [
+                      "before:pointer-events-none before:absolute before:left-0 before:top-[22%] before:bottom-[22%] before:w-px before:bg-[#C8C4BC] before:content-['']",
+                      index % 2 === 0 ? "max-md:before:hidden" : "",
+                    ].join(" ")
+                  : ""
+              return (
               <button
                 key={action.title}
-                className="flex flex-col items-center justify-center py-5 px-4 hover:bg-[#FDF8F3] transition-colors group"
+                type="button"
+                className={`relative flex flex-row items-center justify-center gap-3 py-5 px-4 md:px-3 text-left hover:bg-[#FFF3E6]/80 transition-colors group ${insetRule}`}
               >
-                <div className="w-10 h-10 rounded-full bg-[#F5E6D3] flex items-center justify-center mb-2 group-hover:bg-[#D4A853] transition-colors">
-                  <action.icon className="w-5 h-5 text-[#8B1A1A]" />
+                <img src={action.icon} alt={action.title} className="h-10 w-10 shrink-0 text-[#6B1414] md:h-7 md:w-7" />
+                 
+                <div className="min-w-0 flex flex-col gap-0.5">
+                  <span className="font-serif text-sm font-bold leading-tight text-[#2D1810] md:text-[0.95rem]">
+                    {action.title}
+                  </span>
+                  <span className="text-xs leading-tight text-[#7A756D]">{action.subtitle}</span>
                 </div>
-                <span className="text-[#2D1810] font-medium text-sm">{action.title}</span>
-                <span className="text-[#6B4423] text-xs">{action.subtitle}</span>
               </button>
-            ))}
+              )
+            })}
           </div>
-        </div>
+        </Concave>
       </div>
     </div>
   )
