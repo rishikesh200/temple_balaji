@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react"
 import Img1 from "../../../assets/images/hero-balaji.jpg"
 import Img2 from "../../../assets/images/darshan.jpg"
 import Img3 from "../../../assets/images/temple-gopuram.jpg"
+import icon from "../../../assets/images/konark-sun-temple.png"
 
 const darshanOptions = [
   {
@@ -43,14 +44,10 @@ export default function DarshanSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               </div>
 
-              <div className="absolute top-4 right-4 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5l5.5 3.5v7l-5.5 3.5-5.5-3.5v-7L12 4.5z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </div>
+              
 
               <div className="relative p-6 pt-32">
+                <img src={icon} alt={option.title} className="w-10 h-8 object-cover mb-2" />
                 <h3 className="text-[#D4A853] font-serif text-xl font-bold mb-2">{option.title}</h3>
                 <p className="text-white/80 text-sm mb-4">{option.description}</p>
 

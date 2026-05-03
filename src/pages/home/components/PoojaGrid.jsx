@@ -1,17 +1,20 @@
 import poojaThumb from "../../../assets/images/pooja.png"
-
+import poojaIcon from "../../../assets/images/ganesh_pooja.jpeg"
+import abhishekamIcon from "../../../assets/images/abishekam_pooja.jpeg"
+import alankaramIcon from "../../../assets/images/alankaram_pooja.jpeg"
+import navagrahaIcon from "../../../assets/images/navagraha_pooja.jpeg"
 const poojas = [
-  { name: "Ganapathy Pooja", price: "From ₹151" },
-  { name: "Abhishekam", price: "From ₹251" },
-  { name: "Archana", price: "From ₹101" },
-  { name: "Alankaram", price: "From ₹501" },
-  { name: "Navagraha Pooja", price: "From ₹351" },
-  { name: "Annadhanam", price: "From ₹251" },
-  { name: "Sankatahara", price: "From ₹101" },
+  { name: "Ganapathy Pooja", price: "From ₹151",img:poojaIcon },
+  { name: "Abhishekam", price: "From ₹251",img:abhishekamIcon },
+  // { name: "Archana", price: "From ₹101" },
+  { name: "Alankaram", price: "From ₹501",img:alankaramIcon },
+  { name: "Navagraha Pooja", price: "From ₹351",img:navagrahaIcon },
+  // { name: "Annadhanam", price: "From ₹251" },
+  // { name: "Sankatahara", price: "From ₹101" },
 ]
 
 const cardClass =
-  "flex w-full max-w-[200px] mx-auto flex-col items-center rounded-3xl bg-white px-5 pt-6 pb-6 " +
+  "flex w-full max-w-[280px] mx-auto flex-col items-center rounded-2xl bg-white px-6 pt-7 pb-8 " +
   "border border-[#E8E4DF] shadow-[0_2px_12px_rgba(45,24,16,0.06)] " +
   "transition-all duration-200 hover:shadow-[0_6px_20px_rgba(45,24,16,0.1)] hover:-translate-y-0.5 hover:border-[#D4C9BC] " +
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8B1A1A]"
@@ -27,20 +30,25 @@ export default function PoojaGrid() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6 max-w-6xl mx-auto justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-7 max-w-7xl mx-auto justify-items-center">
           {poojas.map((pooja) => (
             <button key={pooja.name} type="button" className={cardClass} aria-label={`Book ${pooja.name}, ${pooja.price}`}>
-              <div
+              {/* <div
                 className="mb-4 flex aspect-square w-[45%] min-w-[5.5rem] max-w-[6.75rem] shrink-0 items-center justify-center rounded-full bg-[#8B1A1A] shadow-inner ring-1 ring-black/10"
                 aria-hidden
               >
                 <img
-                  src={poojaThumb}
+                  src={pooja.img}
                   alt=""
                   className="h-[72%] w-[72%] object-contain drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
                 />
-              </div>
-              <h3 className="w-full text-center font-sans text-[0.9375rem] font-bold leading-snug tracking-tight text-[#2D1810]">
+              </div> */}
+              <img
+                src={pooja.img}
+                alt={pooja.name}
+                className="mb-3 w-full aspect-[4/3] object-cover rounded-xl"
+              />
+              <h3 className="w-full text-center font-sans text-base font-bold leading-snug tracking-tight text-[#2D1810]">
                 {pooja.name}
               </h3>
               <p className="mt-2 w-full text-center font-sans text-sm font-bold text-[#8B1A1A]">{pooja.price}</p>
