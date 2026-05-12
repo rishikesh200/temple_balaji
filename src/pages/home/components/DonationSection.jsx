@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import vilakuImg from "../../../assets/images/vilaku.jpeg"
 
 const gold = "#D4AF37"
@@ -132,12 +133,12 @@ export default function DonationSection() {
             <div className="h-full w-[65%] rounded-full bg-gradient-to-r from-[#D4AF37] via-[#E8B84D] to-[#E8943A] shadow-[0_0_12px_rgba(212,175,55,0.35)]" />
           </div>
 
-          <button
-            type="button"
-            className="w-full rounded-md bg-gradient-to-b from-[#E8C86A] via-[#D4AF37] to-[#B8922A] py-3 text-center font-sans text-btn font-semibold tracking-wide text-[#3a0a0a] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:brightness-105 active:brightness-95"
+          <Link
+            to="/donate"
+            className="block w-full rounded-md bg-gradient-to-b from-[#E8C86A] via-[#D4AF37] to-[#B8922A] py-3 text-center font-sans text-btn font-semibold tracking-wide text-[#3a0a0a] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:brightness-105 active:brightness-95"
           >
             Contribute Now
-          </button>
+          </Link>
         </div>
       </div>
     </section>
