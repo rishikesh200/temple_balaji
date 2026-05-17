@@ -1,12 +1,16 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react"
+import { Link as RouterLink } from "react-router-dom"
 
-function Link(props) {
-  return <a {...props} />
+function Link({ href, ...props }) {
+  if (href && href.startsWith("/") && !href.startsWith("//")) {
+    return <RouterLink to={href} {...props} />
+  }
+  return <a href={href} {...props} />
 }
 
 export default function Footer() {
   return (
-    <footer className="bg-[#2D1810] text-white">
+    <footer className="bg-[#4A0000] text-white">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>

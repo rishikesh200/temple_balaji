@@ -101,7 +101,7 @@ function DonationCauseCard({ cause }) {
 export default function DonatePage() {
   return (
     <div className="min-h-screen bg-[#FDF8F3]">
-      <Header />
+     
       <main>
         <header className="relative min-h-[420px] md:min-h-[520px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">

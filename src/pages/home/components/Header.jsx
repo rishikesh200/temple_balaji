@@ -1,13 +1,33 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronDown, Menu, X } from "lucide-react"
 import { Link, NavLink } from "react-router-dom"
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      const viewportHeight = window.innerHeight
+
+      if (currentScrollY > viewportHeight && currentScrollY > lastScrollY) {
+        setIsVisible(false)
+      } else {
+        setIsVisible(true)
+      }
+      
+      setLastScrollY(currentScrollY)
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [lastScrollY])
 
   return (
-    <header className="w-full">
-      <div className="bg-[#8B1A1A] text-white text-xs py-1.5">
+    <header className={`w-full sticky top-0 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+      <div className="bg-[#8B1A1A] text-white text-xs py-1.5 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
@@ -21,7 +41,7 @@ export default function Header() {
               <span className="w-4 h-4 bg-white/20 rounded-full flex items-center justify-center text-[10px]">
                 80G
               </span>
-              80G Certified
+              Certified
             </span>
             <span>GSTIN: 3AAAPPB1234K1Z5</span>
             <div className="flex items-center gap-2 ml-4">
@@ -77,46 +97,52 @@ export default function Header() {
               >
                 Home
               </NavLink>
-              <div className="relative group">
+              {/* <div className="relative group">
                 <button type="button" className="flex items-center gap-1 text-[#2D1810] font-medium text-sm hover:text-[#8B1A1A]">
                   About Us <ChevronDown className="w-3 h-3" />
                 </button>
-              </div>
+              </div> */}
               <NavLink
                 to="/darshan"
                 className={({ isActive }) =>
                   `font-medium text-sm ${isActive ? "text-[#8B1A1A] border-b-2 border-[#8B1A1A] pb-0.5" : "text-[#2D1810] hover:text-[#8B1A1A]"}`
                 }
               >
-                Darshan & Booking
+                Darshans
               </NavLink>
-              <div className="relative group">
-                <button type="button" className="flex items-center gap-1 text-[#2D1810] font-medium text-sm hover:text-[#8B1A1A]">
-                  Poojas <ChevronDown className="w-3 h-3" />
-                </button>
-              </div>
-              <div className="relative group">
-                <button type="button" className="flex items-center gap-1 text-[#2D1810] font-medium text-sm hover:text-[#8B1A1A]">
-                  Events <ChevronDown className="w-3 h-3" />
-                </button>
-              </div>
               <NavLink
+                to="/pooja"
+                className={({ isActive }) =>
+                  `font-medium text-sm ${isActive ? "text-[#8B1A1A] border-b-2 border-[#8B1A1A] pb-0.5" : "text-[#2D1810] hover:text-[#8B1A1A]"}`
+                }
+              >
+                Poojas 
+              </NavLink>
+              <NavLink
+                to="/events"
+                className={({ isActive }) =>
+                  `font-medium text-sm ${isActive ? "text-[#8B1A1A] border-b-2 border-[#8B1A1A] pb-0.5" : "text-[#2D1810] hover:text-[#8B1A1A]"}`
+                }
+              >
+                Events
+              </NavLink>
+              {/* <NavLink
                 to="/donate"
                 className={({ isActive }) =>
                   `font-medium text-sm ${isActive ? "text-[#8B1A1A] border-b-2 border-[#8B1A1A] pb-0.5" : "text-[#2D1810] hover:text-[#8B1A1A]"}`
                 }
               >
                 Donate
-              </NavLink>
+              </NavLink> */}
               <Link
                 to="/gallery"
                 className="text-[#2D1810] font-medium text-sm hover:text-[#8B1A1A]"
               >
                 Gallery
               </Link>
-              <Link to="/store" className="text-[#2D1810] font-medium text-sm hover:text-[#8B1A1A]">
+              {/* <Link to="/store" className="text-[#2D1810] font-medium text-sm hover:text-[#8B1A1A]">
                 Store
-              </Link>
+              </Link> */}
               <Link
                 to="/contact"
                 className="text-[#2D1810] font-medium text-sm hover:text-[#8B1A1A]"
@@ -158,8 +184,8 @@ export default function Header() {
                 <Link to="/darshan" className="text-[#2D1810] font-medium py-2">
                   Darshan & Booking
                 </Link>
-                <Link to="/poojas" className="text-[#2D1810] font-medium py-2">
-                  Poojas
+                <Link to="/pooja" className="text-[#2D1810] font-medium py-2">
+                  Poojas & Sevas
                 </Link>
                 <Link to="/events" className="text-[#2D1810] font-medium py-2">
                   Events

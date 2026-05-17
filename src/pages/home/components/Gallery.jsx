@@ -2,6 +2,7 @@ import img1 from "../../../assets/images/hero-balaji.jpg"
 import img2 from "../../../assets/images/temple-gopuram.jpg"
 import img3 from "../../../assets/images/darshan.jpg"
 import img4 from "../../../assets/images/festival.jpg"
+import { Link } from "react-router-dom"
 
 /** Order: top-wide, top-narrow, bottom-narrow, bottom-wide */
 const collageImages = [img1, img2, img3, img4]
@@ -21,9 +22,9 @@ export default function Gallery() {
               </h2>
         </div>
         <div className="">
-          <button className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors">
+          <Link to="/gallery" className="inline-block bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors">
             View Full Gallery
-          </button>
+          </Link>
         </div>
         </div>
 

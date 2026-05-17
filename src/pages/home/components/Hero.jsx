@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react"
 import { Shield, Lock, Heart } from "lucide-react"
 import Concave from "../../../components/Concave"
 import heroImg from "../../../assets/images/hero-balaji.jpg"
+import darshanImg from "../../../assets/images/darshan.jpg"
+import festivalImg from "../../../assets/images/festival.jpg"
+import templeGopuramImg from "../../../assets/images/temple-gopuram.jpg"
 import googlePayIcon from "../../../assets/icons/Google_Pay.svg"
 import phonepeIcon from "../../../assets/icons/PhonePe.svg"
 import paytmIcon from "../../../assets/icons/Paytm.svg"
@@ -9,16 +13,31 @@ import mastercardIcon from "../../../assets/icons/Mastercard.svg"
 import upiIcon from "../../../assets/icons/upi.svg"
 
 const Hero = () => {
+  const bgImages = [heroImg, darshanImg, festivalImg, templeGopuramImg]
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % bgImages.length)
+    }, 6000)
+    return () => clearInterval(interval)
+  }, [bgImages.length])
+
   return (
     <section className="relative min-h-[500px] lg:min-h-[550px]">
       {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src={heroImg}
-          alt=""
-          className="h-full w-full object-cover"
-          style={{ objectPosition: "center" }}
-        />
+      <div className="absolute inset-0 overflow-hidden">
+        {bgImages.map((image, index) => (
+          <img
+            key={image}
+            src={image}
+            alt={`Temple background ${index + 1}`}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${
+              index === activeIndex ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ objectPosition: "center" }}
+          />
+        ))}
         <div className="absolute inset-0 pointer-events-none">
           <div className="h-full w-full max-w-[62%] bg-gradient-to-r from-[rgba(0,0,0,0.90)] via-[rgba(45,24,16,0.82)] to-transparent" />
         </div>
