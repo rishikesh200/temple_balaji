@@ -1,6 +1,6 @@
 import { darshanTypes } from "../../../data/darshanTypes"
 
-function DarshanTypeCard({ option }) {
+function DarshanTypeCard({ option, onSelectType }) {
   return (
     <div className={option.featured ? "pt-5 sm:pt-6" : undefined}>
       <article
@@ -42,7 +42,11 @@ function DarshanTypeCard({ option }) {
             <span className="text-[#8B4513] font-bold text-sm">{option.tagline}</span>
             <button
               type="button"
-              className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
+              onClick={() => {
+                if (onSelectType) onSelectType(option.id)
+                document.getElementById("darshan-booking-section")?.scrollIntoView({ behavior: "smooth", block: "start" })
+              }}
+              className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
                 option.primaryCta
                   ? "bg-[#8B1A1A] text-white hover:bg-[#6B1414]"
                   : "bg-[#6B4423] text-white hover:bg-[#2D1810]"
@@ -57,7 +61,7 @@ function DarshanTypeCard({ option }) {
   )
 }
 
-export default function TypesSection() {
+export default function TypesSection({ onSelectType }) {
   return (
     <section className="py-16 md:py-24 px-4 max-w-7xl mx-auto" id="types">
       <div className="text-center mb-16">
@@ -74,7 +78,7 @@ export default function TypesSection() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
         {darshanTypes.map((option) => (
-          <DarshanTypeCard key={option.id} option={option} />
+          <DarshanTypeCard key={option.id} option={option} onSelectType={onSelectType} />
         ))}
       </div>
     </section>

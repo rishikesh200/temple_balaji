@@ -1,4 +1,5 @@
-import { nerthikadans } from "../../../data/poojaData"
+import { Link } from "react-router-dom"
+import { nerthikadans, slugify } from "../../../data/poojaData"
 import { Scale, Scissors, Smile, Flame } from "lucide-react"
 
 // Map icon strings to actual Lucide components
@@ -39,13 +40,15 @@ export default function NerthikadanSection() {
                 key={item.id}
                 className="flex flex-col items-center text-center bg-[#FDF8F3] p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all border border-[#E5D5C5] group"
               >
-                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-6 shadow-sm border border-[#E5D5C5] group-hover:bg-[#8B1A1A] transition-colors duration-300">
+                <Link to={`/pooja/${slugify(item.name)}`} className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-6 shadow-sm border border-[#E5D5C5] group-hover:bg-[#8B1A1A] transition-colors duration-300">
                   <Icon className="w-8 h-8 text-[#D4A853] group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
-                </div>
+                </Link>
                 
-                <h3 className="font-serif text-xl font-bold text-[#2D1810] mb-3">
-                  {item.name}
-                </h3>
+                <Link to={`/pooja/${slugify(item.name)}`} className="block group-hover:text-[#8B1A1A] transition-colors">
+                  <h3 className="font-serif text-xl font-bold text-[#2D1810] mb-3 group-hover:text-[#8B1A1A] transition-colors">
+                    {item.name}
+                  </h3>
+                </Link>
                 
                 <p className="text-[#6B4423] text-sm mb-6 flex-grow">
                   {item.description}
@@ -55,12 +58,12 @@ export default function NerthikadanSection() {
                   <span className="font-serif text-lg font-bold text-[#8B1A1A]">
                     ₹ {item.price.toLocaleString()}
                   </span>
-                  <button
-                    type="button"
-                    className="w-full bg-[#8B1A1A] text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-[#6B1414] transition-colors"
+                  <Link
+                    to={`/pooja/${slugify(item.name)}`}
+                    className="w-full bg-[#8B1A1A] text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-[#6B1414] transition-colors inline-block text-center shadow-xs"
                   >
                     Book Now
-                  </button>
+                  </Link>
                 </div>
               </div>
             )

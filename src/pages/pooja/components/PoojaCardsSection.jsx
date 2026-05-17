@@ -1,4 +1,5 @@
-import { dailyPoojas } from "../../../data/poojaData"
+import { Link } from "react-router-dom"
+import { dailyPoojas, slugify } from "../../../data/poojaData"
 
 export default function PoojaCardsSection() {
   return (
@@ -22,42 +23,46 @@ export default function PoojaCardsSection() {
           {dailyPoojas.map((pooja) => (
             <div
               key={pooja.id}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-[#E5D5C5] group"
+              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-[#E5D5C5] group flex flex-col justify-between"
             >
-              {/* Image */}
-              <div className="relative h-56 overflow-hidden">
-                <img
-                  src={pooja.image}
-                  alt={pooja.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                {/* Price Badge */}
-                <div className="absolute top-4 right-4 bg-[#D4A853] text-[#2D1810] font-bold px-3 py-1 rounded-lg text-xs md:text-sm">
-                  ₹ {pooja.price}
+              <div>
+                {/* Image */}
+                <Link to={`/pooja/${slugify(pooja.name)}`} className="block relative h-56 overflow-hidden">
+                  <img
+                    src={pooja.image}
+                    alt={pooja.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  {/* Price Badge */}
+                  <div className="absolute top-4 right-4 bg-[#D4A853] text-[#2D1810] font-bold px-3 py-1 rounded-lg text-xs md:text-sm border border-white/20">
+                    ₹ {pooja.price}
+                  </div>
+                </Link>
+
+                {/* Content */}
+                <div className="p-6">
+                  <Link to={`/pooja/${slugify(pooja.name)}`} className="block group-hover:text-[#8B1A1A] transition-colors">
+                    <h3 className="font-serif text-xl md:text-2xl font-bold text-[#2D1810] mb-2 group-hover:text-[#8B1A1A] transition-colors">
+                      {pooja.name}
+                    </h3>
+                  </Link>
+                  <p className="text-[#6B4423] text-sm md:text-base mb-6 line-clamp-2">
+                    {pooja.description}
+                  </p>
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="font-serif text-xl md:text-2xl font-bold text-[#2D1810] mb-2">
-                  {pooja.name}
-                </h3>
-                <p className="text-[#6B4423] text-sm md:text-base mb-6 line-clamp-2">
-                  {pooja.description}
-                </p>
-
-                {/* Footer */}
-                <div className="flex items-center justify-between">
-                  <span className="text-xs md:text-sm font-medium text-[#8B1A1A]">
-                    {pooja.time}
-                  </span>
-                  <button
-                    type="button"
-                    className="bg-[#8B1A1A] text-white px-4 md:px-5 py-2 rounded-lg font-bold text-xs md:text-sm hover:bg-[#6B1414] transition-colors"
-                  >
-                    Book Now
-                  </button>
-                </div>
+              {/* Footer */}
+              <div className="p-6 pt-0 flex items-center justify-between border-t border-[#FDF8F3] mt-auto">
+                <span className="text-xs md:text-sm font-medium text-[#8B1A1A]">
+                  {pooja.time}
+                </span>
+                <Link
+                  to={`/pooja/${slugify(pooja.name)}`}
+                  className="bg-[#8B1A1A] text-white px-4 md:px-5 py-2 rounded-lg font-bold text-xs md:text-sm hover:bg-[#6B1414] transition-colors inline-block text-center shadow-xs"
+                >
+                  Book Now
+                </Link>
               </div>
             </div>
           ))}

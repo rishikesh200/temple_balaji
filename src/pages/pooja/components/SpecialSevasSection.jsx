@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom"
 import { Clock, Music } from "lucide-react"
-import { specialSevas } from "../../../data/poojaData"
+import { specialSevas, slugify } from "../../../data/poojaData"
 
 export default function SpecialSevasSection() {
   return (
@@ -32,20 +33,22 @@ export default function SpecialSevasSection() {
               className="flex flex-col sm:flex-row bg-[#FDF8F3] rounded-2xl overflow-hidden border border-[#E5D5C5] hover:shadow-lg transition-all group"
             >
               {/* Image */}
-              <div className="w-full sm:w-2/5 h-56 sm:h-auto overflow-hidden">
+              <Link to={`/pooja/${slugify(seva.name)}`} className="w-full sm:w-2/5 h-56 sm:h-auto overflow-hidden block">
                 <img
                   src={seva.image}
                   alt={seva.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-              </div>
+              </Link>
 
               {/* Content */}
               <div className="w-full sm:w-3/5 p-6 md:p-8 flex flex-col justify-between">
                 <div>
-                  <h3 className="font-serif text-xl md:text-2xl font-bold text-[#2D1810] mb-3">
-                    {seva.name}
-                  </h3>
+                  <Link to={`/pooja/${slugify(seva.name)}`} className="block group-hover:text-[#8B1A1A] transition-colors">
+                    <h3 className="font-serif text-xl md:text-2xl font-bold text-[#2D1810] mb-3 group-hover:text-[#8B1A1A] transition-colors">
+                      {seva.name}
+                    </h3>
+                  </Link>
                   <p className="text-[#6B4423] text-sm md:text-base mb-6 line-clamp-3">
                     {seva.description}
                   </p>
@@ -68,12 +71,12 @@ export default function SpecialSevasSection() {
                   <span className="font-serif text-lg md:text-2xl font-bold text-[#8B1A1A]">
                     ₹ {seva.price.toLocaleString()}
                   </span>
-                  <button
-                    type="button"
-                    className="bg-[#8B1A1A] text-white px-4 md:px-6 py-2 rounded-lg font-bold text-xs md:text-sm hover:bg-[#6B1414] transition-colors"
+                  <Link
+                    to={`/pooja/${slugify(seva.name)}`}
+                    className="bg-[#8B1A1A] text-white px-4 md:px-6 py-2 rounded-lg font-bold text-xs md:text-sm hover:bg-[#6B1414] transition-colors inline-block text-center shadow-xs"
                   >
                     Book Slot
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
