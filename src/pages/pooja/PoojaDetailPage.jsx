@@ -27,6 +27,7 @@ import {
   ArrowRight
 } from "lucide-react"
 import { getPoojaBySlug, bookingGuidelines } from "../../data/poojaData"
+import { paymentAPI, loadRazorpayScript } from "../../services/api"
 
 // Map icon names to Lucide icons for guidelines
 const iconMap = {
@@ -154,19 +155,80 @@ export default function PoojaDetailPage() {
   }
 
   // Handle Form Submit
-  const handleBooking = (e) => {
+  const handleBooking = async (e) => {
     e.preventDefault()
     if (!validateStep2()) return
 
     setIsSubmitting(true)
-    
-    // Simulate API request
-    setTimeout(() => {
+
+    try {
+      await loadRazorpayScript()
+
+      const order = await paymentAPI.createPoojaOrder({
+        customerName: name,
+        customerEmail: email,
+        customerPhone: phone,
+        poojaType: pooja.name,
+        date,
+        time: slot,
+        amount: pooja.price,
+        numberOfPriests: 1,
+        location: 'temple',
+      })
+
+      if (!order.success) {
+        window.alert(order.message || order.error || 'Unable to create booking order.')
+        setIsSubmitting(false)
+        return
+      }
+
+      const options = {
+        key: order.data.razorpayKeyId,
+        amount: order.data.amount,
+        currency: order.data.currency,
+        name: pooja.name,
+        description: `Booking for ${pooja.name}`,
+        order_id: order.data.orderId,
+        prefill: {
+          name,
+          email,
+          contact: phone,
+        },
+        notes: {
+          paymentType: 'pooja',
+          poojaType: pooja.name,
+          date,
+          time: slot,
+        },
+        theme: {
+          color: '#8B1A1A',
+        },
+        handler: async (response) => {
+          const verify = await paymentAPI.verifyPayment({
+            orderId: response.razorpay_order_id,
+            paymentId: response.razorpay_payment_id,
+            signature: response.razorpay_signature,
+            paymentType: 'pooja',
+          })
+
+          if (verify.success) {
+            setBookingRef(response.razorpay_payment_id)
+            setBookingSuccess(true)
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          } else {
+            window.alert(verify.message || 'Payment verification failed.')
+          }
+        },
+      }
+
+      const razorpay = new window.Razorpay(options)
+      razorpay.open()
+    } catch (error) {
+      console.error(error)
+      window.alert('Unable to complete booking at this time.')
+    } finally {
       setIsSubmitting(false)
-      const randomRef = `PB-${Date.now().toString().slice(-6)}-${Math.floor(1000 + Math.random() * 9000)}`
-      setBookingRef(randomRef)
-      setBookingSuccess(true)
-    }, 1500)
+    }
   }
 
   // Steps timeline definitions

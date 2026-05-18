@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
 import { Link, NavLink, useLocation } from "react-router-dom"
+import logo from './../../../assets/images/konark-sun-temple.png';
+
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -86,20 +88,17 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-[#D4A853] rounded-full flex items-center justify-center">
-                <svg viewBox="0 0 40 40" className="w-8 h-8 text-[#8B1A1A]" fill="currentColor">
-                  <path d="M20 4L4 16v4h4v12h24V20h4v-4L20 4zm0 4l10 8v12H10V16l10-8z" />
-                  <circle cx="20" cy="22" r="4" />
-                </svg>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center">
+                <img src={logo} alt="Konark Sun Temple" />
               </div>
               <div>
                 <h1 className="text-[#8B1A1A] font-serif text-xl font-bold leading-tight">
-                  Paruthipattu
+                  Paruthipattu Balaji Temple
                 </h1>
-                <h2 className="text-[#8B1A1A] font-serif text-xl font-bold leading-tight">
+                {/* <h2 className="text-[#8B1A1A] font-serif text-xl font-bold leading-tight">
                   Balaji Temple
-                </h2>
-                <p className="text-[#6B4423] text-[10px] italic">Divine Grace. Timeless Tradition.</p>
+                </h2> */}
+                {/* <p className="text-[#6B4423] text-[10px] italic">Divine Grace. Timeless Tradition.</p> */}
               </div>
             </Link>
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { Shield, Lock, Heart } from "lucide-react"
 import Concave from "../../../components/Concave"
 import heroImg from "../../../assets/images/hero-balaji.jpg"
@@ -12,14 +13,23 @@ import visaIcon from "../../../assets/icons/Visa.svg"
 import mastercardIcon from "../../../assets/icons/Mastercard.svg"
 import upiIcon from "../../../assets/icons/upi.svg"
 
+import balaji1 from './../../../assets/images/hero/balaji1.png';
+import balaji2 from './../../../assets/images/hero/balaji2.png';
+import balaji3 from './../../../assets/images/hero/balaji3.png';
+import balaji4 from './../../../assets/images/hero/balaji4.jpeg';
+import balaji5 from './../../../assets/images/hero/balaji5.jpeg';
 const Hero = () => {
-  const bgImages = [heroImg, darshanImg, festivalImg, templeGopuramImg]
+  const bgImages = [balaji1, balaji2, balaji3, balaji4, balaji5]
   const [activeIndex, setActiveIndex] = useState(0)
+  const [prevIndex, setPrevIndex] = useState(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % bgImages.length)
-    }, 6000)
+      setActiveIndex((currentIndex) => {
+        setPrevIndex(currentIndex)
+        return (currentIndex + 1) % bgImages.length
+      })
+    }, 3000)
     return () => clearInterval(interval)
   }, [bgImages.length])
 
@@ -27,17 +37,30 @@ const Hero = () => {
     <section className="relative min-h-[500px] lg:min-h-[550px]">
       {/* Background Image */}
       <div className="absolute inset-0 overflow-hidden">
-        {bgImages.map((image, index) => (
-          <img
-            key={image}
-            src={image}
-            alt={`Temple background ${index + 1}`}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${
-              index === activeIndex ? "opacity-100" : "opacity-0"
-            }`}
-            style={{ objectPosition: "center" }}
-          />
-        ))}
+        {bgImages.map((image, index) => {
+          const isActive = index === activeIndex
+          const isPrev = index === prevIndex
+          const transformStyle = isActive
+            ? "translateX(0)"
+            : isPrev
+            ? "translateX(-100%)"
+            : "translateX(100%)"
+
+          return (
+            <img
+              key={image}
+              src={image}
+              alt={`Temple background ${index + 1}`}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{
+                objectPosition: "center",
+                transform: transformStyle,
+                opacity: isActive ? 1 : 0,
+                transition: "transform 700ms ease-in-out, opacity 700ms ease-in-out",
+              }}
+            />
+          )
+        })}
         <div className="absolute inset-0 pointer-events-none">
           <div className="h-full w-full max-w-[62%] bg-gradient-to-r from-[rgba(0,0,0,0.90)] via-[rgba(45,24,16,0.82)] to-transparent" />
         </div>
@@ -98,7 +121,7 @@ const Hero = () => {
           </div>
 
           {/* Donation Card */}
-          <div className="lg:justify-self-end">
+          <div className="lg:justify-self-end w-full md:max-w-sm">
             <Concave
               borderRadius="18px"
               concave="15px"
@@ -113,7 +136,7 @@ const Hero = () => {
               </div>
 
               {/* Donation Amount Buttons */}
-              <div className="grid grid-cols-3 gap-2 mb-3 px-3">
+              <div className="grid grid-cols-3 gap-2 mb-3 ">
                 {["₹100", "₹500", "₹1000"].map((amount) => (
                   <button
                     key={amount}
@@ -123,11 +146,11 @@ const Hero = () => {
                   </button>
                 ))}
               </div>
-              <div className="grid grid-cols-3 gap-4 mb-4 px-3">
+              <div className="grid grid-cols-3 gap-4 mb-4 ">
                 {["₹2500", "₹5000", "Other"].map((amount) => (
                   <button
                     key={amount}
-                    className="border-1 border-[#8B1A1A] text-[#8B1A1A] rounded-md py-2 text-sm font-medium hover:bg-[#8B1A1A] hover:text-white transition-colors"
+                    className="border-1 border-[#8B1A1A] text-[#8B1A1A] rounded-md py-1 text-sm font-medium hover:bg-[#8B1A1A] hover:text-white transition-colors"
                   >
                     {amount}
                   </button>
@@ -135,17 +158,20 @@ const Hero = () => {
               </div>
 
               {/* Donate Now Button */}
-              <button className="w-[90%] mx-auto bg-[#8B1A1A] text-white py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-[#6B1414] transition-colors ">
+              <Link
+                to="/donate"
+                className="w-[90%] mx-auto bg-[#8B1A1A] text-white py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-[#6B1414] transition-colors"
+              >
                 DONATE NOW
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
-              </button>
+              </Link>
 
               {/* Payment Methods */}
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <p className="text-[10px] text-gray-500 text-center mb-1">Accepted Payment Methods</p>
-                <div className="flex items-center justify-center gap-x-1 gap-y-1 flex-wrap px-1">
+                <div className="flex items-center flex-wrap justify-center gap-x-1 gap-y-1 flex-wrap px-1">
                   <img src={upiIcon} alt="UPI" className="h-8 w-auto  object-contain opacity-90" loading="lazy" />
                   <img src={googlePayIcon} alt="Google Pay" className="h-10 w-auto object-contain opacity-90" loading="lazy" />
                   <img src={phonepeIcon} alt="PhonePe" className="h-16 w-auto  object-contain opacity-90" loading="lazy" />

@@ -22,6 +22,7 @@ import {
   Sparkles
 } from "lucide-react"
 import { darshanTypes } from "../../../data/darshanTypes"
+import { paymentAPI, loadRazorpayScript } from "../../../services/api"
 
 export default function BookingSection({ selectedType, onSelectType }) {
   // Stepper state
@@ -108,18 +109,84 @@ export default function BookingSection({ selectedType, onSelectType }) {
   }
 
   // Handle submit
-  const handleBookingSubmit = (e) => {
+  const handleBookingSubmit = async (e) => {
     e.preventDefault()
     if (!validateStep2()) return
 
+    if (totalAmount <= 0) {
+      window.alert('Please select a paid Darshan category to proceed.')
+      return
+    }
+
     setIsSubmitting(true)
 
-    setTimeout(() => {
+    try {
+      await loadRazorpayScript()
+
+      const order = await paymentAPI.createDarshanOrder({
+        customerName: name,
+        customerEmail: email,
+        customerPhone: phone,
+        darshanType: selectedType,
+        date,
+        timeSlot: slot,
+        numberOfPeople: devoteesCount,
+        amount: totalAmount,
+      })
+
+      if (!order.success) {
+        window.alert(order.message || order.error || 'Unable to create darshan order.')
+        setIsSubmitting(false)
+        return
+      }
+
+      const options = {
+        key: order.data.razorpayKeyId,
+        amount: order.data.amount,
+        currency: order.data.currency,
+        name: currentDarshan.title,
+        description: `Darshan booking for ${currentDarshan.title}`,
+        order_id: order.data.orderId,
+        prefill: {
+          name,
+          email,
+          contact: phone,
+        },
+        notes: {
+          paymentType: 'darshan',
+          darshanType: selectedType,
+          date,
+          timeSlot: slot,
+        },
+        theme: {
+          color: '#8B1A1A',
+        },
+        handler: async (response) => {
+          const verify = await paymentAPI.verifyPayment({
+            orderId: response.razorpay_order_id,
+            paymentId: response.razorpay_payment_id,
+            signature: response.razorpay_signature,
+            paymentType: 'darshan',
+          })
+
+          if (verify.success) {
+            setBookingRef(response.razorpay_payment_id)
+            setBookingSuccess(true)
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          } else {
+            window.alert(verify.message || 'Payment verification failed.')
+          }
+        },
+      }
+
+      const razorpay = new window.Razorpay(options)
+      razorpay.open()
+    } catch (error) {
+      console.error(error)
+      window.alert('Unable to complete darshan booking at this time.')
+    } finally {
       setIsSubmitting(false)
-      const randomRef = `DP-${Date.now().toString().slice(-6)}-${Math.floor(1000 + Math.random() * 9000)}`
-      setBookingRef(randomRef)
-      setBookingSuccess(true)
-    }, 1500)
+    }
   }
 
   return (

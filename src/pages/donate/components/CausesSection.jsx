@@ -23,7 +23,7 @@ const ctaIcons = {
   users: Users,
 }
 
-function DonationCauseCard({ cause }) {
+function DonationCauseCard({ cause, onDonateSelect }) {
   const [selectedPreset, setSelectedPreset] = useState(0)
   const [customAmount, setCustomAmount] = useState("")
   const CtaIcon = ctaIcons[cause.ctaIcon] ?? Heart
@@ -32,6 +32,7 @@ function DonationCauseCard({ cause }) {
     cause.inputMode === "presets"
       ? cause.presetAmounts[selectedPreset]
       : Number(customAmount) || ""
+
 
   return (
     <article className="bg-white border border-[#E5D5C5]/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group ring-1 ring-black/5">
@@ -77,8 +78,10 @@ function DonationCauseCard({ cause }) {
               />
             </div>
           )}
+
           <button
             type="button"
+            onClick={() => onDonateSelect(cause.id, displayAmount ? Number(displayAmount) : '')}
             className="w-full bg-[#8B1A1A] text-white py-3 rounded-xl text-xs font-bold hover:bg-[#6B1414] border border-[#D4A853] shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <CtaIcon className="w-4 h-4 text-[#D4A853]" aria-hidden />
@@ -93,7 +96,7 @@ function DonationCauseCard({ cause }) {
   )
 }
 
-export default function CausesSection() {
+export default function CausesSection({ onDonateSelect }) {
   return (
     <section className="py-16 md:py-20 bg-[#FDF8F3]" id="causes">
       <div className="max-w-7xl mx-auto px-4">
@@ -112,7 +115,7 @@ export default function CausesSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {donationCauses.map((cause) => (
-            <DonationCauseCard key={cause.id} cause={cause} />
+            <DonationCauseCard key={cause.id} cause={cause} onDonateSelect={onDonateSelect} />
           ))}
         </div>
       </div>
