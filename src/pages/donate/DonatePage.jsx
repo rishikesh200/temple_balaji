@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+import { useSearchParams } from "react-router-dom"
 import HeroSection from "./components/HeroSection"
 import DonateFormSection from "./components/DonateFormSection"
 import CausesSection from "./components/CausesSection"
@@ -9,8 +10,22 @@ import Footer from "../home/components/Footer"
 import { donationCauses } from "../../data/donationCauses"
 
 export default function DonatePage() {
+  const [searchParams] = useSearchParams()
   const [selectedCauseId, setSelectedCauseId] = useState(donationCauses[0]?.id || 'general')
   const [selectedAmount, setSelectedAmount] = useState('')
+
+  useEffect(() => {
+    const amountParam = searchParams.get("amount")
+    if (amountParam !== null) {
+      // Remove any currency symbol or non-numeric characters except decimals
+      const cleanAmount = amountParam.replace(/[^0-9.]/g, "")
+      setSelectedAmount(cleanAmount)
+    }
+    const causeParam = searchParams.get("cause")
+    if (causeParam) {
+      setSelectedCauseId(causeParam)
+    }
+  }, [searchParams])
 
   const handleDonateSelect = (causeId, amount) => {
     setSelectedCauseId(causeId)

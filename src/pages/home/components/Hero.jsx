@@ -19,9 +19,10 @@ import balaji3 from './../../../assets/images/hero/balaji3.png';
 import balaji4 from './../../../assets/images/hero/balaji4.jpeg';
 import balaji5 from './../../../assets/images/hero/balaji5.jpeg';
 const Hero = () => {
-  const bgImages = [balaji1, balaji2, balaji3, balaji4, balaji5]
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [prevIndex, setPrevIndex] = useState(null)
+  const bgImages = [balaji1, balaji2, balaji3, balaji4, balaji5];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(null);
+  const [selectedAmount, setSelectedAmount] = useState('');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -34,7 +35,7 @@ const Hero = () => {
   }, [bgImages.length])
 
   return (
-    <section className="relative min-h-[500px] lg:min-h-[550px]">
+    <section className="relative min-h-screen">
       {/* Background Image */}
       <div className="absolute inset-0 overflow-hidden">
         {bgImages.map((image, index) => {
@@ -137,20 +138,22 @@ const Hero = () => {
 
               {/* Donation Amount Buttons */}
               <div className="grid grid-cols-3 gap-2 mb-3 ">
-                {["₹100", "₹500", "₹1000"].map((amount) => (
+                                {["₹100", "₹500", "₹1000"].map((amount) => (
                   <button
                     key={amount}
-                    className="border-1 border-[#8B1A1A] text-[#8B1A1A] rounded-md py-2 text-sm font-medium hover:bg-[#8B1A1A] hover:text-white transition-colors"
+                    onClick={() => setSelectedAmount(amount)}
+                    className={`border-1 border-[#8B1A1A] text-[#8B1A1A] rounded-md py-2 text-sm font-medium transition-colors ${selectedAmount === amount ? 'bg-[#8B1A1A] text-white' : 'hover:bg-[#8B1A1A] hover:text-white'}`}
                   >
                     {amount}
                   </button>
                 ))}
               </div>
               <div className="grid grid-cols-3 gap-4 mb-4 ">
-                {["₹2500", "₹5000", "Other"].map((amount) => (
+                                {["₹2500", "₹5000", "Other"].map((amount) => (
                   <button
                     key={amount}
-                    className="border-1 border-[#8B1A1A] text-[#8B1A1A] rounded-md py-1 text-sm font-medium hover:bg-[#8B1A1A] hover:text-white transition-colors"
+                    onClick={() => setSelectedAmount(amount)}
+                    className={`border-1 border-[#8B1A1A] text-[#8B1A1A] rounded-md py-1 text-sm font-medium transition-colors ${selectedAmount === amount ? 'bg-[#8B1A1A] text-white' : 'hover:bg-[#8B1A1A] hover:text-white'}`}
                   >
                     {amount}
                   </button>
@@ -159,9 +162,9 @@ const Hero = () => {
 
               {/* Donate Now Button */}
               <Link
-                to="/donate"
-                className="w-[90%] mx-auto bg-[#8B1A1A] text-white py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-[#6B1414] transition-colors"
-              >
+                  to={selectedAmount ? `/donate?amount=${selectedAmount}` : "/donate"}
+                  className="w-[90%] mx-auto bg-[#8B1A1A] text-white py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-[#6B1414] transition-colors"
+                >
                 DONATE NOW
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
