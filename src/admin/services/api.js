@@ -1,4 +1,17 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+// Image Upload — Vercel Blob via backend
+export const uploadImage = async (token, file, folder = 'temple') => {
+  const form = new FormData();
+  form.append('file', file);
+  form.append('folder', folder);
+  const res = await fetch(`${API_URL}/api/upload/image`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: form,
+  });
+  return res.json();
+};
 
 const getHeaders = (token) => ({
   'Content-Type': 'application/json',

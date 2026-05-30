@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom"
-import { 
-  Clock, 
-  MapPin, 
-  Users, 
-  Calendar, 
-  Sparkles, 
-  Flame, 
-  Heart,
-  ChevronRight,
-  ArrowRight
-} from "lucide-react"
+import { Clock, MapPin, Users, Calendar, Sparkles, Flame, Heart, ChevronRight, ArrowRight } from "lucide-react"
+import { useLanguage } from "../../../contexts/LanguageContext"
+import { getT, t } from "../../../utils/i18n"
+
+const TR = {
+  festival:  { en: "Festival",       ta: "திருவிழா" },
+  community: { en: "Community Drive", ta: "சமூக சேவை" },
+}
 
 // Helper to resolve custom category icons
 const getCategoryIcon = (category) => {
@@ -23,7 +20,7 @@ const getCategoryIcon = (category) => {
   }
 }
 
-function EventCard({ event, index }) {
+function EventCard({ event, index, lang }) {
   const isEven = index % 2 === 0
 
   return (
@@ -49,7 +46,7 @@ function EventCard({ event, index }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
           <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-[#8B1A1A] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border border-[#D4A853]/30">
-            {event.category === "upcoming" ? "Festival" : "Community Drive"}
+            {event.category === "upcoming" ? t(TR.festival, lang) : t(TR.community, lang)}
           </span>
         </div>
       </div>
@@ -71,15 +68,13 @@ function EventCard({ event, index }) {
 
           {/* Event Title */}
           <h3 className="text-xl md:text-2xl font-serif text-[#2D1810] font-bold group-hover:text-[#8B1A1A] transition-colors leading-snug mb-3">
-            {event.title}
+            {getT(event, 'title', lang)}
           </h3>
-          
-          {/* Details Paragraph */}
+
           <p className="text-[#6B4423] text-xs md:text-sm leading-relaxed mb-5 font-medium">
-            {event.details}
+            {getT(event, 'details', lang)}
           </p>
 
-          {/* Event Metadata row (Location, Time, etc.) */}
           <div className="space-y-2 border-t border-[#F5E6D3] pt-4 mb-5 text-[11px] md:text-xs text-[#6B4423] font-semibold">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-[#D4A853] shrink-0" />
@@ -87,7 +82,7 @@ function EventCard({ event, index }) {
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-[#D4A853] shrink-0" />
-              <span>{event.location}</span>
+              <span>{getT(event, 'location', lang)}</span>
             </div>
             <div className="flex items-center gap-2">
               <Users className="w-4 h-4 text-[#D4A853] shrink-0" />
@@ -110,7 +105,7 @@ function EventCard({ event, index }) {
   )
 }
 
-export default function EventTimeline({ events = [] }) {
+export default function EventTimeline({ events = [], lang = 'en' }) {
   if (events.length === 0) {
     return (
       <div className="text-center py-16 bg-white rounded-3xl border border-[#E5D5C5] p-8">
@@ -132,7 +127,7 @@ export default function EventTimeline({ events = [] }) {
 
       <div className="relative space-y-2 md:space-y-0">
         {events.map((ev, idx) => (
-          <EventCard key={ev.id} event={ev} index={idx} />
+          <EventCard key={ev.id} event={ev} index={idx} lang={lang} />
         ))}
       </div>
     </section>

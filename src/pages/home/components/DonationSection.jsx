@@ -1,7 +1,43 @@
 import { Link } from "react-router-dom"
 import vilakuImg from "../../../assets/images/vilaku.jpeg"
+import { useLanguage } from "../../../contexts/LanguageContext"
 
 const gold = "#D4AF37"
+
+const DONATION_TRANSLATIONS = {
+  yourContribution: {
+    en: "Your Contribution, Their Blessing",
+    ta: "உங்கள் பங்களிப்பு, அவர்களின் ஆசி"
+  },
+  feeds5People: {
+    en: "Feeds 5 People through Annadhanam",
+    ta: "அன்னதானத்தின் மூலம் 5 பேரை உண்ணச் செய்கிறது"
+  },
+  supportsPoojas: {
+    en: "Supports Daily Poojas & Rituals",
+    ta: "தினசரி பூஜைகள் & சடங்குகளுக்கு ஆதரவளிக்கிறது"
+  },
+  helpsMaintenance: {
+    en: "Helps in Temple Maintenance",
+    ta: "கோவில் பராமரிப்பில் உதவுகிறது"
+  },
+  supportsFestivals: {
+    en: "Supports Festivals & Annadhanam",
+    ta: "விழாக்கள் & அன்னதானத்திற்கு ஆதரவளிக்கிறது"
+  },
+  templeRenovation: {
+    en: "Temple Renovation Fund",
+    ta: "கோவில் புனரமைப்பு நிதி"
+  },
+  percentCompleted: {
+    en: "65% Completed",
+    ta: "65% முடிந்துவிட்டது"
+  },
+  contributeNow: {
+    en: "Contribute Now",
+    ta: "இப்போது பங்களிக்கவும்"
+  }
+}
 
 function Flourish({ className = "" }) {
   return (
@@ -60,14 +96,16 @@ function IconFestivals() {
   )
 }
 
-const tiers = [
-  { amount: "₹250", description: "Feeds 5 People through Annadhanam", Icon: IconAnnadhanam },
-  { amount: "₹1000", description: "Supports Daily Poojas & Rituals", Icon: IconRituals },
-  { amount: "₹5000", description: "Helps in Temple Maintenance", Icon: IconMaintenance },
-  { amount: "₹21000", description: "Supports Festivals & Annadhanam", Icon: IconFestivals },
+const tiers = (lang) => [
+  { amount: "₹250", description: DONATION_TRANSLATIONS.feeds5People[lang], Icon: IconAnnadhanam },
+  { amount: "₹1000", description: DONATION_TRANSLATIONS.supportsPoojas[lang], Icon: IconRituals },
+  { amount: "₹5000", description: DONATION_TRANSLATIONS.helpsMaintenance[lang], Icon: IconMaintenance },
+  { amount: "₹21000", description: DONATION_TRANSLATIONS.supportsFestivals[lang], Icon: IconFestivals },
 ]
 
 export default function DonationSection() {
+  const { lang } = useLanguage()
+  
   return (
     <section className="bg-[#4A0000] py-0 text-white">
       <div className="mx-auto flex max-w-[1400px] flex-col lg:flex-row lg:items-stretch lg:min-h-[320px]">
@@ -96,17 +134,17 @@ export default function DonationSection() {
         <div className="flex flex-1 flex-col justify-center border-t border-white/[0.06] px-5 py-8 lg:border-l lg:border-t-0 lg:border-white/[0.08] lg:px-8 lg:py-10">
           <h2 className="mb-8 flex items-center justify-center gap-3 text-center font-serif text-section-title font-bold text-[#D4AF37]">
             <Flourish className="h-8 w-5 shrink-0 rotate-180 opacity-90" />
-            <span className="leading-tight">Your Contribution, Their Blessing</span>
+            <span className="leading-tight">{DONATION_TRANSLATIONS.yourContribution[lang]}</span>
             <Flourish className="h-8 w-5 shrink-0 opacity-90" />
           </h2>
 
           <div className="grid grid-cols-2 gap-0 lg:grid-cols-4">
-            {tiers.map(({ amount, description, Icon }, i) => (
+            {tiers(lang).map(({ amount, description, Icon }, i) => (
               <div
                 key={amount}
                 className={`flex flex-col items-center px-2 py-2 text-center sm:px-4 ${
                   i % 2 === 0 ? "border-r border-white/[0.1]" : ""
-                } ${i < tiers.length - 1 ? "lg:border-r lg:border-white/[0.12]" : ""}`}
+                } ${i < tiers(lang).length - 1 ? "lg:border-r lg:border-white/[0.12]" : ""}`}
               >
                 <Icon />
                 <p className="mt-4 font-serif text-amount-sm font-bold text-[#D4AF37] sm:text-amount">
@@ -124,9 +162,9 @@ export default function DonationSection() {
         <div className="flex w-full shrink-0 flex-col justify-center gap-5 border-t border-[#D4AF37]/25 px-6 py-8 sm:px-10 lg:w-[min(28%,300px)] lg:border-l lg:border-t-0 lg:px-8 lg:py-10">
           <div>
             <h3 className="font-serif text-fund-title font-semibold text-[#D4AF37]">
-              Temple Renovation Fund
+              {DONATION_TRANSLATIONS.templeRenovation[lang]}
             </h3>
-            <p className="mt-2 font-sans text-progress text-white/85">65% Completed</p>
+            <p className="mt-2 font-sans text-progress text-white/85">{DONATION_TRANSLATIONS.percentCompleted[lang]}</p>
           </div>
 
           <div className="h-2.5 w-full overflow-hidden rounded-full bg-black/35 ring-1 ring-white/[0.06]">
@@ -137,7 +175,7 @@ export default function DonationSection() {
             to="/donate"
             className="block w-full rounded-md bg-gradient-to-b from-[#E8C86A] via-[#D4AF37] to-[#B8922A] py-3 text-center font-sans text-btn font-semibold tracking-wide text-[#3a0a0a] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:brightness-105 active:brightness-95"
           >
-            Contribute Now
+            {DONATION_TRANSLATIONS.contributeNow[lang]}
           </Link>
         </div>
       </div>

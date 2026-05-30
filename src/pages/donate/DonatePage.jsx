@@ -7,11 +7,18 @@ import ImpactSection from "./components/ImpactSection"
 import SecurePaymentsSection from "./components/SecurePaymentsSection"
 import TaxExemptSection from "./components/TaxExemptSection"
 import Footer from "../home/components/Footer"
-import { donationCauses } from "../../data/donationCauses"
+import { useAdminData } from "../../admin/contexts/AdminDataContext"
 
 export default function DonatePage() {
+  const { activeDonations } = useAdminData()
   const [searchParams] = useSearchParams()
-  const [selectedCauseId, setSelectedCauseId] = useState(donationCauses[0]?.id || 'general')
+  const [selectedCauseId, setSelectedCauseId] = useState('')
+
+  useEffect(() => {
+    if (!selectedCauseId && activeDonations.length > 0) {
+      setSelectedCauseId(activeDonations[0].id)
+    }
+  }, [activeDonations, selectedCauseId])
   const [selectedAmount, setSelectedAmount] = useState('')
 
   useEffect(() => {

@@ -6,64 +6,31 @@ import eventImg2 from "../../assets/images/temple-gopuram.jpg"
 import eventImg3 from "../../assets/images/gallery-1.jpg"
 import eventImg4 from "../../assets/images/darshan.jpg"
 import { Sparkles, Flame, Heart } from "lucide-react"
+import { useAdminData } from "../../admin/contexts/AdminDataContext"
+import { useLanguage } from "../../contexts/LanguageContext"
+import { t } from "../../utils/i18n"
 
-const eventsData = [
-  {
-    id: 1,
-    title: "Sahasra Kalashabhishekam (Temple Anniversary)",
-    category: "upcoming",
-    date: "May 22, 2026",
-    time: "05:00 AM - 09:00 PM",
-    location: "Main Sanctum Sanctorum & Temple Hall",
-    participants: "Open for all devotees (Abhishekam Sankalpam available)",
-    image: eventImg1,
-    details: "Celebrate the grand annual anniversary of Paruthipattu Srivari Temple. The day begins with specialized Sahasra Kalashabhishekam performed by chief Vedic priests, followed by cultural Carnatic recitals, community bhajans, and full-day grand Prasadam distribution for thousands of visiting pilgrims.",
-    ctaText: "Sponsor Annadanam",
-    ctaLink: "/donate"
-  },
-  {
-    id: 2,
-    title: "Heritage Walk & Scholar Discourse",
-    category: "community",
-    date: "June 10, 2026",
-    time: "07:30 AM - 10:00 AM",
-    location: "Temple Outer Praharam & Corridors",
-    participants: "Free Participation (Prior Check-In Recommended)",
-    image: eventImg2,
-    details: "Discover the architectural, cultural, and spiritual history of the Avadi Tirupathi Srivari Temple. Led by renowned historians and senior temple elders, this guided walk explores the stone inscriptions, the Gopuram carvings, and the historical records of the deity's presence in the region.",
-    ctaText: "Register Interest",
-    ctaLink: "/contact"
-  },
-  {
-    id: 3,
-    title: "Srivari Chariot Procession (Rath Yatra)",
-    category: "upcoming",
-    date: "June 27, 2026",
-    time: "04:00 PM - 08:00 PM",
-    location: "Avadi Chariot Road Path & Environs",
-    participants: "Volunteer registrations active (Age 18+)",
-    image: eventImg3,
-    details: "Witness the spectacular procession of Lord Balaji riding His colossal golden chariot through the streets. Thousands of devotees gather to pull the holy ropes, chanting Vedic mantras and receiving direct blessings. Volunteers are requested to register early to assist in crowd coordination and water drives.",
-    ctaText: "Register as Volunteer",
-    ctaLink: "/contact"
-  },
-  {
-    id: 4,
-    title: "Pure Satvik Annadanam Food Drive",
-    category: "community",
-    date: "July 12, 2026",
-    time: "11:30 AM - 03:00 PM",
-    location: "Temple Annadanam Seva Hall",
-    participants: "Sponsors & Seva volunteers needed",
-    image: eventImg4,
-    details: "Fulfill the sacred act of feeding others through our monthly community food drive. Healthy, fresh, hot traditional meals are served to local residents, pilgrims, and the needy. Devotees are invited to sponsor groceries, cook with pure devotion, or assist in serving.",
-    ctaText: "Sponsor Pure Groceries",
-    ctaLink: "/donate"
-  }
-]
+const TR = {
+  label:      { en: "Temple Calendar & Happenings",                                                                                   ta: "கோயில் நிகழ்வு அட்டவணை" },
+  heading:    { en: "Sacred Celebrations & Milestones",                                                                               ta: "புனித கொண்டாட்டங்கள் & நிகழ்வுகள்" },
+  sub:        { en: "Explore the vibrant spiritual calendar, grand chariot festivals, and food drives that bring our community together.", ta: "தெய்வீக அட்டவணை, தேர் விழாக்கள் மற்றும் அன்னதான நிகழ்வுகளை ஆராயுங்கள்." },
+  all:        { en: "All Happenings",   ta: "அனைத்து நிகழ்வுகள்" },
+  festivals:  { en: "Festivals & Celebrations", ta: "திருவிழாக்கள்" },
+  community:  { en: "Community Seva",   ta: "சமூக சேவை" },
+}
+
+const IMAGE_MAP = { festival: eventImg1, gopuram: eventImg2, gallery1: eventImg3, darshan: eventImg4 }
 
 export default function EventsPage() {
+  const { activeEvents } = useAdminData()
+  const { lang } = useLanguage()
   const [activeFilter, setActiveFilter] = useState("all")
+
+  // Map admin events → format expected by EventTimeline
+  const eventsData = activeEvents.map(e => ({
+    ...e,
+    image: e.imageUrl || IMAGE_MAP[e.imageKey] || eventImg1,
+  }))
 
   const filteredEvents = eventsData.filter(event => {
     if (activeFilter === "all") return true
@@ -83,10 +50,10 @@ export default function EventsPage() {
             <Sparkles className="w-4 h-4 text-[#D4A853]" /> Temple Calendar & Happenings
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-            Sacred Celebrations & Milestones
+            {t(TR.heading, lang)}
           </h1>
           <p className="text-white/80 text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-medium">
-            Explore the vibrant spiritual calendar, historic anniversaries, grand chariot festivals, and food drives that bring our community together in pure devotion.
+            {t(TR.sub, lang)}
           </p>
         </div>
       </header>
@@ -105,38 +72,31 @@ export default function EventsPage() {
                 : "bg-white text-[#6B4423] border-[#E5D5C5] hover:border-[#8B1A1A]"
             }`}
           >
-            All Happenings ({eventsData.length})
+            {t(TR.all, lang)} ({eventsData.length})
           </button>
-          
-          <button
-            type="button"
-            onClick={() => setActiveFilter("upcoming")}
+
+          <button type="button" onClick={() => setActiveFilter("upcoming")}
             className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all border cursor-pointer flex items-center gap-1.5 ${
               activeFilter === "upcoming"
                 ? "bg-[#8B1A1A] text-white border-[#8B1A1A] ring-2 ring-[#D4A853] shadow-md"
                 : "bg-white text-[#6B4423] border-[#E5D5C5] hover:border-[#8B1A1A]"
-            }`}
-          >
+            }`}>
             <Flame className="w-3.5 h-3.5" />
-            Festivals & Celebrations ({eventsData.filter(e => e.category === "upcoming").length})
+            {t(TR.festivals, lang)} ({eventsData.filter(e => e.category === "upcoming").length})
           </button>
 
-          <button
-            type="button"
-            onClick={() => setActiveFilter("community")}
+          <button type="button" onClick={() => setActiveFilter("community")}
             className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all border cursor-pointer flex items-center gap-1.5 ${
               activeFilter === "community"
                 ? "bg-[#8B1A1A] text-white border-[#8B1A1A] ring-2 ring-[#D4A853] shadow-md"
                 : "bg-white text-[#6B4423] border-[#E5D5C5] hover:border-[#8B1A1A]"
-            }`}
-          >
+            }`}>
             <Heart className="w-3.5 h-3.5" />
-            Community Seva ({eventsData.filter(e => e.category === "community").length})
+            {t(TR.community, lang)} ({eventsData.filter(e => e.category === "community").length})
           </button>
         </div>
 
-        {/* Dynamic Timeline Component */}
-        <EventTimeline events={filteredEvents} />
+        <EventTimeline events={filteredEvents} lang={lang} />
 
         {/* Divine Donate CTA Spacer */}
         <div className="mt-16">

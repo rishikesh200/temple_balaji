@@ -1,5 +1,33 @@
 import { Check, Landmark, Shield } from "lucide-react"
 import testimonialAvatar from "../../../assets/images/gallery-2.jpg"
+import { useLanguage } from "../../../contexts/LanguageContext"
+
+const TRUST_TRANSLATIONS = {
+  trustedTransparent: {
+    en: "Trusted & Transparent",
+    ta: "நம்பகமான & வெளிப்படையான"
+  },
+  trustDesc: {
+    en: "We follow HR&CE guidelines and maintain complete transparency in all our services and donations.",
+    ta: "நாங்கள் HR&CE வழிகாட்டுதல்களைப் பின்பற்றுகிறோம் மற்றும் அனைத்து சேவைகள் மற்றும் நன்கொடைகளில் முழு வெளிப்படைத்தை பராமரிக்கிறோம்."
+  },
+  devoteeTestimonials: {
+    en: "Devotee Testimonials",
+    ta: "பக்தர் சாட்சிப்பற்றுகள்"
+  },
+  testimonialQuote: {
+    en: "A divine place that brings peace and positivity. The darshan experience is truly blessed.",
+    ta: "சாந்தி மற்றும் ஸ்திரத்தை கொண்டு வரும் ஒரு தெய்வீக இடம். தரிசன அனுபவம் உண்மையிலும் ஆசிர்வாதமாக இருக்கிறது."
+  },
+  testimonialAuthor: {
+    en: "Ramesh S.",
+    ta: "ராமேஷ் எஸ்."
+  },
+  testimonialLocation: {
+    en: "Chennai",
+    ta: "சென்னை"
+  }
+}
 
 const maroon = "#800000"
 const goldRing = "#c5a059"
@@ -32,6 +60,8 @@ function SocialLink({ href, label, children }) {
 }
 
 export default function TrustBadges() {
+  const { lang } = useLanguage()
+  
   return (
     <section className="py-12 md:py-14" style={{ backgroundColor: cream }}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -59,11 +89,10 @@ export default function TrustBadges() {
                 className="mb-1.5 font-serif text-lg font-bold leading-snug md:text-[1.05rem] lg:text-lg"
                 style={{ color: heading }}
               >
-                Trusted & Transparent
+                {TRUST_TRANSLATIONS.trustedTransparent[lang]}
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: bodyGrey }}>
-                We follow HR&CE guidelines and maintain complete transparency in all our services and
-                donations.
+                {TRUST_TRANSLATIONS.trustDesc[lang]}
               </p>
             </div>
           </div>
@@ -87,14 +116,13 @@ export default function TrustBadges() {
                 className="mb-1.5 font-serif text-lg font-bold leading-snug md:text-[1.05rem] lg:text-lg"
                 style={{ color: heading }}
               >
-                Devotee Testimonials
+                {TRUST_TRANSLATIONS.devoteeTestimonials[lang]}
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: bodyGrey }}>
-                &ldquo;A divine place that brings peace and positivity. The darshan experience is truly
-                blessed.&rdquo;
+                &ldquo;{TRUST_TRANSLATIONS.testimonialQuote[lang]}&rdquo;
               </p>
               <p className="mt-2 text-sm" style={{ color: bodyGrey }}>
-                – <span className="font-bold text-[#2d1810]">Ramesh S.</span>, Chennai
+                – <span className="font-bold text-[#2d1810]">{TRUST_TRANSLATIONS.testimonialAuthor[lang]}</span>, {TRUST_TRANSLATIONS.testimonialLocation[lang]}
               </p>
             </div>
           </div>

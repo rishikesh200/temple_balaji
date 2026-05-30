@@ -26,8 +26,53 @@ import {
   Flame,
   ArrowRight
 } from "lucide-react"
-import { getPoojaBySlug, bookingGuidelines } from "../../data/poojaData"
+import { slugify, bookingGuidelines } from "../../data/poojaData"
 import { paymentAPI, loadRazorpayScript } from "../../services/api"
+import { useAdminData } from "../../admin/contexts/AdminDataContext"
+import { useLanguage } from "../../contexts/LanguageContext"
+import { getT, t } from "../../utils/i18n"
+
+const TR = {
+  home:           { en: "Home",                              ta: "முகப்பு" },
+  poojas:         { en: "Poojas",                            ta: "பூஜைகள்" },
+  sacredService:  { en: "🪷 Sacred Service",                 ta: "🪷 புனித சேவை" },
+  offeringPrice:  { en: "Offering Price",                    ta: "காணிக்கை தொகை" },
+  perDevotee:     { en: "/ Devotee",                         ta: "/ பக்தர்" },
+  noFees:         { en: "* Zero extra booking taxes or platform fees", ta: "* கூடுதல் கட்டணம் இல்லை" },
+  bookNow:        { en: "Book This Seva Now",                ta: "இப்போது பதிவு செய்யுங்கள்" },
+  saved:          { en: "Saved",                             ta: "சேமிக்கப்பட்டது" },
+  save:           { en: "Save Offering",                     ta: "சேமிக்கவும்" },
+  copied:         { en: "Copied!",                           ta: "நகலெடுக்கப்பட்டது!" },
+  share:          { en: "Share Seva",                        ta: "பகிரவும்" },
+  sanctum:        { en: "Sanctum Sanctorum",                 ta: "கர்ப்பகிரஹம்" },
+  prasadam:       { en: "Prasadam & Threads Included",       ta: "பிரசாதம் உள்ளடங்கும்" },
+  significance:   { en: "Sacred Ritual Significance",        ta: "புனித சடங்கின் முக்கியத்துவம்" },
+  blessings:      { en: "Divine Blessings & Benefits",       ta: "தெய்வீக ஆசிர்வாதங்கள் & பலன்கள்" },
+  benefitsSub:    { en: "Spiritual benefits accrued by devotees performing this auspicious offering.", ta: "இந்த மங்களகரமான சேவையை செய்யும் பக்தர்களுக்கு கிடைக்கும் ஆன்மீக பலன்கள்." },
+  timeline:       { en: "Seva Timeline Checklist",           ta: "சேவை கட்ட அட்டவணை" },
+  timelineSub:    { en: "Detailed procedural stages of the offering conducted inside the sanctum.", ta: "கர்ப்பகிரஹத்தில் நடத்தப்படும் சடங்கின் விரிவான நிலைகள்." },
+  notes:          { en: "Logistical Notes & Guidelines",     ta: "வழிகாட்டுதல்கள் & குறிப்புகள்" },
+  schedule:       { en: "Schedule",                          ta: "நேர அட்டவணை" },
+  devoteeInfo:    { en: "Devotee Info",                      ta: "பக்தர் விவரங்கள்" },
+  free:           { en: "Free",                              ta: "இலவசம்" },
+  payOnline:      { en: "💳 Pay Online",                     ta: "💳 ஆன்லைன் பணம்" },
+  paySpot:        { en: "🏛️ Pay at Temple",                  ta: "🏛️ கோயிலில் பணம்" },
+  confirmFree:    { en: "🆓 Confirm Free Booking",           ta: "🆓 இலவச பதிவை உறுதி செய்யுங்கள்" },
+  confirmSpot:    { en: "🏛️ Confirm — Pay at Temple",        ta: "🏛️ உறுதி செய்யுங்கள் — கோயிலில் பணம்" },
+  confirmPay:     { en: "💳 Confirm & Pay",                  ta: "💳 உறுதி & பணம் செலுத்தவும்" },
+  processing:     { en: "Processing...",                     ta: "செயலில் உள்ளது..." },
+  back:           { en: "Back",                              ta: "திரும்பு" },
+  visRepresent:   { en: "Visual representation of performing priests", ta: "அர்ச்சகர்கள் நிறைவேற்றும் காட்சி" },
+  payAtTemple:    { en: "(at temple)",                       ta: "(கோயிலில்)" },
+  sevaTicket:     { en: "Seva Ticket Amount:",               ta: "சேவை தொகை:" },
+  netPayable:     { en: "Net Payable:",                      ta: "செலுத்த வேண்டிய தொகை:" },
+  chooseBooking:  { en: "Choose Booking Option",             ta: "பதிவு விருப்பத்தை தேர்ந்தெடுங்கள்" },
+  payOnlineAmt:   { en: "Pay Online",                        ta: "ஆன்லைன் பணம்" },
+  freeBooking:    { en: "Free Booking",                      ta: "இலவச பதிவு" },
+  amountLabel:    { en: "Amount:",                           ta: "தொகை:" },
+  pricePaid:      { en: "Price Paid:",                       ta: "செலுத்திய தொகை:" },
+  payAtTempleL:   { en: "Pay at Temple:",                    ta: "கோயிலில் செலுத்தவும்:" },
+}
 
 // Map icon names to Lucide icons for guidelines
 const iconMap = {
@@ -40,8 +85,18 @@ const iconMap = {
 
 export default function PoojaDetailPage() {
   const { poojaName } = useParams()
-  const pooja = getPoojaBySlug(poojaName)
+  const { activePoojas } = useAdminData()
+  const { lang } = useLanguage()
+  const pooja = activePoojas.find(p =>
+    p.id?.toLowerCase() === poojaName?.toLowerCase() ||
+    slugify(p.name) === poojaName?.toLowerCase()
+  ) || null
   const formRef = useRef(null)
+
+  // bookingType from admin: 'payment' | 'free' | 'both'
+  const bookingType = pooja?.bookingType || 'payment'
+  // When 'both', user picks their preferred mode: 'payment' or 'free'
+  const [chosenMode, setChosenMode] = useState(bookingType === 'both' ? null : bookingType)
 
   // Form Stepper States
   const [step, setStep] = useState(1) // 1: Schedule & Slots, 2: Devotee Info
@@ -68,6 +123,14 @@ export default function PoojaDetailPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }, [poojaName])
+
+  // Preload Razorpay script on mount for instant payment trigger
+  useEffect(() => {
+    loadRazorpayScript().catch((err) => {
+      console.error("Failed to preload Razorpay script:", err)
+    })
+  }, [])
+
 
   // Handle slot categories
   const morningSlots = ["07:00 AM", "08:00 AM", "09:00 AM"]
@@ -161,6 +224,18 @@ export default function PoojaDetailPage() {
 
     setIsSubmitting(true)
 
+    // Spot / Free booking — no Razorpay needed
+    const effectiveMode = chosenMode || bookingType
+    if (effectiveMode === 'spot' || effectiveMode === 'free') {
+      setTimeout(() => {
+        setBookingRef(`PJ-${Date.now().toString().slice(-8)}`)
+        setBookingSuccess(true)
+        setIsSubmitting(false)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 600)
+      return
+    }
+
     try {
       await loadRazorpayScript()
 
@@ -252,11 +327,11 @@ export default function PoojaDetailPage() {
         <div className="max-w-7xl mx-auto px-4 relative">
           {/* Breadcrumb row */}
           <nav className="flex items-center gap-2 text-xs md:text-sm text-[#E5D5C5] mb-8 font-medium">
-            <Link to="/" className="hover:text-[#D4A853] transition-colors">Home</Link>
+            <Link to="/" className="hover:text-[#D4A853] transition-colors">{t(TR.home, lang)}</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <Link to="/pooja" className="hover:text-[#D4A853] transition-colors">Poojas</Link>
+            <Link to="/pooja" className="hover:text-[#D4A853] transition-colors">{t(TR.poojas, lang)}</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-[#D4A853] font-semibold">{pooja.name}</span>
+            <span className="text-[#D4A853] font-semibold">{getT(pooja, 'name', lang)}</span>
           </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -266,7 +341,7 @@ export default function PoojaDetailPage() {
               {/* Double pill badges */}
               <div className="flex flex-wrap items-center gap-2.5 mb-5">
                 <span className="bg-white/10 backdrop-blur-md border border-white/20 text-[#E8C86A] text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1 shadow-xs">
-                  🪷 Sacred Service
+                  {t(TR.sacredService, lang)}
                 </span>
                 <span className="bg-[#D4A853]/25 backdrop-blur-md border border-[#D4A853]/40 text-white text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-xs">
                   {getPoojaCategory()}
@@ -275,29 +350,27 @@ export default function PoojaDetailPage() {
 
               {/* Title */}
               <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 drop-shadow-sm leading-tight">
-                {pooja.name}
+                {getT(pooja, 'name', lang)}
               </h1>
 
-              {/* Original Card Description (clean and readable) */}
               <p className="text-[#E5CFC0] text-sm md:text-base lg:text-lg leading-relaxed font-normal mb-8 max-w-3xl">
-                {pooja.description}
+                {getT(pooja, 'description', lang)}
               </p>
 
-              {/* Metadata bullet line with icons */}
               <div className="flex flex-wrap items-center gap-y-3 gap-x-6 text-xs md:text-sm text-white/95 font-medium border-t border-white/10 pt-5">
                 <span className="flex items-center gap-1.5">
                   <Clock className="w-4.5 h-4.5 text-[#D4A853]" />
-                  {pooja.time}
+                  {getT(pooja, 'time', lang)}
                 </span>
                 <span className="w-1.5 h-1.5 bg-[#D4A853] rounded-full hidden sm:inline" />
                 <span className="flex items-center gap-1.5">
                   <MapPin className="w-4.5 h-4.5 text-[#D4A853]" />
-                  Sanctum Sanctorum
+                  {t(TR.sanctum, lang)}
                 </span>
                 <span className="w-1.5 h-1.5 bg-[#D4A853] rounded-full hidden sm:inline" />
                 <span className="flex items-center gap-1.5">
                   <Package className="w-4.5 h-4.5 text-[#D4A853]" />
-                  Prasadam & Threads Included
+                  {t(TR.prasadam, lang)}
                 </span>
               </div>
             </div>
@@ -308,16 +381,16 @@ export default function PoojaDetailPage() {
                 
                 <div>
                   <span className="text-[10px] md:text-xs text-[#E5D5C5] font-bold uppercase tracking-widest block mb-1">
-                    Offering Price
+                    {t(TR.offeringPrice, lang)}
                   </span>
                   <div className="flex items-baseline gap-2">
                     <span className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-                      ₹ {pooja.price.toLocaleString()}
+                      {bookingType === 'free' ? t(TR.free, lang) : `₹ ${pooja.price.toLocaleString()}`}
                     </span>
-                    <span className="text-white/60 text-xs md:text-sm font-medium">/ Devotee</span>
+                    {bookingType !== 'free' && <span className="text-white/60 text-xs md:text-sm font-medium">{t(TR.perDevotee, lang)}</span>}
                   </div>
                   <span className="text-[11px] text-[#D4A853] block mt-1.5 font-semibold">
-                    * Zero extra booking taxes or platform fees
+                    {t(TR.noFees, lang)}
                   </span>
                 </div>
 
@@ -328,7 +401,7 @@ export default function PoojaDetailPage() {
                   className="w-full bg-white text-[#3A0A0A] py-3.5 rounded-2xl font-bold text-sm md:text-base border border-[#D4A853] shadow-lg hover:bg-[#FDF8F3] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Flame className="w-4 h-4 text-[#8B1A1A] animate-pulse" />
-                  Book This Seva Now
+                  {t(TR.bookNow, lang)}
                 </button>
 
                 {/* Save and share rows */}
@@ -342,7 +415,7 @@ export default function PoojaDetailPage() {
                     className={`flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer ${isSaved ? "text-[#D4A853]" : ""}`}
                   >
                     <Heart className={`w-4 h-4 ${isSaved ? "fill-[#D4A853]" : ""}`} />
-                    <span>{isSaved ? "Saved" : "Save Offering"}</span>
+                    <span>{isSaved ? t(TR.saved, lang) : t(TR.save, lang)}</span>
                   </button>
                   <span className="w-px h-4 bg-white/10" />
                   <button
@@ -354,7 +427,7 @@ export default function PoojaDetailPage() {
                     className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"
                   >
                     <Share2 className="w-4 h-4" />
-                    <span>{isShared ? "Link Copied!" : "Share Seva"}</span>
+                    <span>{isShared ? t(TR.copied, lang) : t(TR.share, lang)}</span>
                   </button>
                 </div>
 
@@ -382,7 +455,7 @@ export default function PoojaDetailPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-4 left-6 text-white font-serif text-lg font-bold flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#D4A853]" />
-                Visual representation of performing priests
+                {t(TR.visRepresent, lang)}
               </div>
             </div>
 
@@ -390,10 +463,10 @@ export default function PoojaDetailPage() {
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-[#E5D5C5] shadow-xs relative overflow-hidden">
               <div className="absolute top-0 left-0 w-2 h-full bg-[#8B1A1A]" />
               <h3 className="font-serif text-2xl font-bold text-[#2D1810] mb-4 flex items-center gap-2">
-                <span className="text-[#D4A853]">🪷</span> Sacred Ritual Significance
+                <span className="text-[#D4A853]">🪷</span> {t(TR.significance, lang)}
               </h3>
               <p className="text-[#6B4423] text-sm md:text-base leading-relaxed whitespace-pre-line font-medium">
-                {pooja.about}
+                {getT(pooja, 'about', lang)}
               </p>
             </div>
 
@@ -401,9 +474,9 @@ export default function PoojaDetailPage() {
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-[#E5D5C5] shadow-xs">
               <div className="mb-6 pb-2 border-b border-[#F5E6D3]">
                 <h3 className="font-serif text-2xl font-bold text-[#2D1810] flex items-center gap-2">
-                  <span className="text-[#D4A853]">✨</span> Divine Blessings & Benefits
+                  <span className="text-[#D4A853]">✨</span> {t(TR.blessings, lang)}
                 </h3>
-                <p className="text-xs text-[#6B4423] mt-1">Spiritual benefits accrued by devotees performing this auspicious offering.</p>
+                <p className="text-xs text-[#6B4423] mt-1">{t(TR.benefitsSub, lang)}</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -432,9 +505,9 @@ export default function PoojaDetailPage() {
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-[#E5D5C5] shadow-xs">
               <div className="mb-6 pb-2 border-b border-[#F5E6D3]">
                 <h3 className="font-serif text-2xl font-bold text-[#2D1810] flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-[#D4A853]" /> Seva Timeline Checklist
+                  <Sparkles className="w-5 h-5 text-[#D4A853]" /> {t(TR.timeline, lang)}
                 </h3>
-                <p className="text-xs text-[#6B4423] mt-1">Detailed procedural stages of the offering conducted inside the sanctum.</p>
+                <p className="text-xs text-[#6B4423] mt-1">{t(TR.timelineSub, lang)}</p>
               </div>
 
               <div className="relative pl-6 border-l-2 border-[#D4A853]/40 space-y-6 ml-2">
@@ -462,10 +535,10 @@ export default function PoojaDetailPage() {
               <div className="bg-[#FFFDFB] p-6 md:p-8 rounded-3xl border border-[#D4A853]/30 shadow-xs relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-2.5 h-full bg-[#D4A853]" />
                 <h3 className="font-serif text-lg font-bold text-[#2D1810] mb-2 flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 text-[#8B1A1A]" /> Logistical Notes & Guidelines
+                  <AlertCircle className="w-5 h-5 text-[#8B1A1A]" /> {t(TR.notes, lang)}
                 </h3>
                 <p className="text-[#6B4423] text-xs leading-relaxed whitespace-pre-line font-medium">
-                  {pooja.other}
+                  {getT(pooja, 'other', lang)}
                 </p>
               </div>
             )}
@@ -490,7 +563,7 @@ export default function PoojaDetailPage() {
                   }`}>
                     {step === 1 ? "1" : <Check className="w-4 h-4" />}
                   </span>
-                  <span className={`text-xs font-bold ${step === 1 ? "text-[#8B1A1A]" : "text-green-600"}`}>Schedule</span>
+                  <span className={`text-xs font-bold ${step === 1 ? "text-[#8B1A1A]" : "text-green-600"}`}>{t(TR.schedule, lang)}</span>
                 </div>
                 <div className="flex-1 h-0.5 bg-[#E5D5C5] mx-4" />
                 <div className="flex items-center gap-2">
@@ -501,7 +574,7 @@ export default function PoojaDetailPage() {
                   }`}>
                     2
                   </span>
-                  <span className={`text-xs font-bold ${step === 2 ? "text-[#8B1A1A]" : "text-[#6B4423]"}`}>Devotee Info</span>
+                  <span className={`text-xs font-bold ${step === 2 ? "text-[#8B1A1A]" : "text-[#6B4423]"}`}>{t(TR.devoteeInfo, lang)}</span>
                 </div>
               </div>
 
@@ -741,8 +814,8 @@ export default function PoojaDetailPage() {
                   <div className="p-4 bg-[#FDF8F3] rounded-2xl border border-[#E5D5C5] space-y-2 mt-6">
                     <span className="text-[10px] font-bold text-[#8B1A1A] uppercase tracking-wider block border-b border-[#E5D5C5] pb-1">Billing Summary</span>
                     <div className="flex justify-between text-xs text-[#6B4423] font-medium">
-                      <span>Seva Ticket Amount:</span>
-                      <span className="font-bold text-[#2D1810]">₹ {pooja.price}</span>
+                      <span>{t(TR.sevaTicket, lang)}</span>
+                      <span className="font-bold text-[#2D1810]">{bookingType === 'free' ? t(TR.free, lang) : `₹ ${pooja.price}`}</span>
                     </div>
                     <div className="flex justify-between text-xs text-[#6B4423] font-medium">
                       <span>Dakshina / Inclusions:</span>
@@ -753,10 +826,29 @@ export default function PoojaDetailPage() {
                       <span className="text-green-700 font-bold">FREE</span>
                     </div>
                     <div className="flex justify-between text-sm text-[#2D1810] font-bold border-t border-[#E5D5C5] pt-2 mt-1">
-                      <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4 text-[#8B1A1A]" /> Net Payable:</span>
-                      <span className="font-serif text-[#8B1A1A] text-lg">₹ {pooja.price}</span>
+                      <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4 text-[#8B1A1A]" /> {t(TR.netPayable, lang)}</span>
+                      <span className="font-serif text-[#8B1A1A] text-lg">
+                        {bookingType === 'free' ? t(TR.free, lang) : bookingType === 'spot' ? `₹ ${pooja.price} (${t(TR.payAtTemple, lang)})` : `₹ ${pooja.price}`}
+                      </span>
                     </div>
                   </div>
+
+                  {/* Booking mode picker — shown when admin set bookingType = 'both' */}
+                  {bookingType === 'both' && (
+                    <div className="rounded-xl border border-[#E5D5C5] bg-[#FDF8F3] p-4">
+                      <p className="text-sm font-semibold text-[#2D1810] mb-3">{t(TR.chooseBooking, lang)}</p>
+                      <div className="flex gap-3">
+                        <button type="button" onClick={() => setChosenMode('payment')}
+                          className={`flex-1 py-2.5 rounded-lg text-sm font-bold border transition ${chosenMode === 'payment' ? 'bg-[#8B1A1A] text-white border-[#8B1A1A]' : 'bg-white text-[#8B1A1A] border-[#8B1A1A] hover:bg-red-50'}`}>
+                          {t(TR.payOnline, lang)} — ₹{pooja?.price}
+                        </button>
+                        <button type="button" onClick={() => setChosenMode('spot')}
+                          className={`flex-1 py-2.5 rounded-lg text-sm font-bold border transition ${chosenMode === 'spot' ? 'bg-amber-700 text-white border-amber-700' : 'bg-white text-amber-700 border-amber-600 hover:bg-amber-50'}`}>
+                          {t(TR.paySpot, lang)}
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Multi-action submit controls */}
                   <div className="flex items-center gap-3">
@@ -766,20 +858,24 @@ export default function PoojaDetailPage() {
                       onClick={() => setStep(1)}
                       className="w-1/3 bg-[#FDF8F3] border border-[#E5D5C5] text-[#2D1810] py-3.5 rounded-xl font-bold text-xs md:text-sm hover:bg-gray-50 flex items-center justify-center gap-1 shadow-xs transition-colors cursor-pointer"
                     >
-                      Back
+                      {t(TR.back, lang)}
                     </button>
                     <button
                       type="submit"
-                      disabled={isSubmitting}
-                      className={`w-2/3 bg-[#8B1A1A] text-white py-3.5 rounded-xl font-bold text-xs md:text-sm border border-[#D4A853] shadow-md hover:bg-[#6B1414] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${isSubmitting ? "opacity-75 cursor-not-allowed" : ""}`}
+                      disabled={isSubmitting || (bookingType === 'both' && !chosenMode)}
+                      className={`w-2/3 bg-[#8B1A1A] text-white py-3.5 rounded-xl font-bold text-xs md:text-sm border border-[#D4A853] shadow-md hover:bg-[#6B1414] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${(isSubmitting || (bookingType === 'both' && !chosenMode)) ? "opacity-75 cursor-not-allowed" : ""}`}
                     >
                       {isSubmitting ? (
                         <>
                           <div className="w-4.5 h-4.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          <span>Generating...</span>
+                          <span>{t(TR.processing, lang)}</span>
                         </>
                       ) : (
-                        <span>Confirm Seva Slot</span>
+                        <span>
+                          {(chosenMode || bookingType) === 'free' ? t(TR.confirmFree, lang)
+                          : (chosenMode || bookingType) === 'spot' ? t(TR.confirmSpot, lang)
+                          : t(TR.confirmPay, lang)}
+                        </span>
                       )}
                     </button>
                   </div>
@@ -878,8 +974,12 @@ export default function PoojaDetailPage() {
                     <span className="font-bold text-[#8B1A1A]">{pooja.name}</span>
                   </div>
                   <div>
-                    <span className="block font-medium text-black">Price Paid:</span>
-                    <span className="font-bold text-black font-serif text-sm">₹ {pooja.price}</span>
+                    <span className="block font-medium text-black">
+                      {bookingType === 'free' ? t(TR.amountLabel, lang) : bookingType === 'spot' ? t(TR.payAtTempleL, lang) : t(TR.pricePaid, lang)}
+                    </span>
+                    <span className="font-bold text-black font-serif text-sm">
+                      {bookingType === 'free' ? t(TR.free, lang) : `₹ ${pooja.price}`}
+                    </span>
                   </div>
                   <div>
                     <span className="block font-medium text-black">Service Date:</span>

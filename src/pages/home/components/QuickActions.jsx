@@ -5,42 +5,83 @@ import poojaicon from "../../../assets/images/pooja.png"
 import darshanicon from "../../../assets/images/calendar.png"
 import liveicon from "../../../assets/images/live.png"
 import contacticon from "../../../assets/images/konark-sun-temple.png"
+import { useLanguage } from "../../../contexts/LanguageContext"
 
+const QUICK_ACTIONS_TRANSLATIONS = {
+  donate: {
+    en: "Donate",
+    ta: "நன்கொடை அளிக்கவும்"
+  },
+  supportTemple: {
+    en: "Support the Temple",
+    ta: "கோவிலுக்கு ஆதரவளிக்கவும்"
+  },
+  bookDarshan: {
+    en: "Book Darshan",
+    ta: "தரிசனம் முன்பதிவு செய்யுங்கள்"
+  },
+  reserveSlot: {
+    en: "Reserve Your Slot",
+    ta: "உங்கள் இடத்தை முன்பதிவு செய்யுங்கள்"
+  },
+  bookPooja: {
+    en: "Book Pooja",
+    ta: "பூஜை முன்பதிவு செய்யுங்கள்"
+  },
+  performSevas: {
+    en: "Perform Sevas",
+    ta: "சேவைகளை செய்யுங்கள்"
+  },
+  liveDarshan: {
+    en: "Live Darshan",
+    ta: "நேரலை தரிசனம்"
+  },
+  watchLive: {
+    en: "Watch Live",
+    ta: "நேரலையில் பார்க்கவும்"
+  },
+  contactTemple: {
+    en: "Contact Temple",
+    ta: "கோவிலை தொடர்பு கொள்ளுங்கள்"
+  },
+  getInTouch: {
+    en: "Get in Touch",
+    ta: "எங்களை தொடர்பு கொள்ளுங்கள்"
+  }
+}
 
-
-
-
-
-
-const actions = [
+const getActionsData = (lang) => [
   {
     icon: templeicon,
-    title: "Donate",
-    subtitle: "Support the Temple",
+    title: QUICK_ACTIONS_TRANSLATIONS.donate[lang],
+    subtitle: QUICK_ACTIONS_TRANSLATIONS.supportTemple[lang],
   },
   {
     icon: darshanicon,
-    title: "Book Darshan",
-    subtitle: "Reserve Your Slot",
+    title: QUICK_ACTIONS_TRANSLATIONS.bookDarshan[lang],
+    subtitle: QUICK_ACTIONS_TRANSLATIONS.reserveSlot[lang],
   },
   {
     icon: poojaicon,
-    title: "Book Pooja",
-    subtitle: "Perform Sevas",
+    title: QUICK_ACTIONS_TRANSLATIONS.bookPooja[lang],
+    subtitle: QUICK_ACTIONS_TRANSLATIONS.performSevas[lang],
   },
   {
     icon: liveicon,
-    title: "Live Darshan",
-    subtitle: "Watch Live",
+    title: QUICK_ACTIONS_TRANSLATIONS.liveDarshan[lang],
+    subtitle: QUICK_ACTIONS_TRANSLATIONS.watchLive[lang],
   },
   {
     icon: contacticon,
-    title: "Contact Temple",
-    subtitle: "Get in Touch",
+    title: QUICK_ACTIONS_TRANSLATIONS.contactTemple[lang],
+    subtitle: QUICK_ACTIONS_TRANSLATIONS.getInTouch[lang],
   },
 ]
 
 export default function QuickActions() {
+  const { lang } = useLanguage()
+  const actions = getActionsData(lang)
+  
   return (
     <div className="relative z-10 -mt-7 ">
       <div className="max-w-6xl mx-auto px-4 [filter:drop-shadow(4px_6px_14px_rgba(0,0,0,0.18))_drop-shadow(1px_2px_4px_rgba(0,0,0,0.08))]">

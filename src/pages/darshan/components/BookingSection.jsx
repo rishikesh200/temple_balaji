@@ -21,10 +21,11 @@ import {
   ArrowRight,
   Sparkles
 } from "lucide-react"
-import { darshanTypes } from "../../../data/darshanTypes"
+import { useAdminData } from "../../../admin/contexts/AdminDataContext"
 import { paymentAPI, loadRazorpayScript } from "../../../services/api"
 
 export default function BookingSection({ selectedType, onSelectType }) {
+  const { activeDarshan: darshanTypes } = useAdminData()
   // Stepper state
   const [step, setStep] = useState(1) // 1: Schedule, 2: Devotee & ID details
 
@@ -46,8 +47,10 @@ export default function BookingSection({ selectedType, onSelectType }) {
   const [bookingSuccess, setBookingSuccess] = useState(false)
   const [bookingRef, setBookingRef] = useState("")
 
-  // Resolve current active Darshan type from data list
-  const currentDarshan = darshanTypes.find(t => t.id === selectedType) || darshanTypes[1]
+  // Resolve current active Darshan type from admin data list
+  const currentDarshan = darshanTypes.find(t => t.id === selectedType) || darshanTypes[0]
+  const darshanBookingType = currentDarshan?.bookingType || 'payment'
+  const [chosenDarshanMode, setChosenDarshanMode] = useState(null) // for 'both' type
 
   // Synchronize slot categories
   const morningSlots = ["06:00 AM", "08:00 AM", "10:00 AM"]
@@ -65,6 +68,14 @@ export default function BookingSection({ selectedType, onSelectType }) {
   useEffect(() => {
     setSlot("")
   }, [activeTab])
+
+  // Preload Razorpay script on mount for instant payment trigger
+  useEffect(() => {
+    loadRazorpayScript().catch((err) => {
+      console.error("Failed to preload Razorpay script:", err)
+    })
+  }, [])
+
 
   // Validate step 1
   const validateStep1 = () => {
@@ -113,12 +124,23 @@ export default function BookingSection({ selectedType, onSelectType }) {
     e.preventDefault()
     if (!validateStep2()) return
 
-    if (totalAmount <= 0) {
-      window.alert('Please select a paid Darshan category to proceed.')
+    setIsSubmitting(true)
+
+    // Determine effective mode
+    const effectiveMode = darshanBookingType === 'both'
+      ? (chosenDarshanMode || 'spot')
+      : darshanBookingType
+
+    // spot = pay at temple; free = no payment — both skip Razorpay
+    if (effectiveMode === 'spot' || effectiveMode === 'free' || totalAmount <= 0) {
+      setTimeout(() => {
+        setBookingRef(`DS-${Date.now().toString().slice(-8)}`)
+        setBookingSuccess(true)
+        setIsSubmitting(false)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 600)
       return
     }
-
-    setIsSubmitting(true)
 
     try {
       await loadRazorpayScript()
@@ -569,6 +591,23 @@ export default function BookingSection({ selectedType, onSelectType }) {
                     </span>
                   </div>
                 </div>
+
+                {/* Booking mode picker for 'both' type */}
+                {darshanBookingType === 'both' && (
+                  <div className="rounded-xl border border-[#E5D5C5] bg-[#FDF8F3] p-4">
+                    <p className="text-sm font-semibold text-[#2D1810] mb-3">How would you like to pay?</p>
+                    <div className="flex gap-3">
+                      <button type="button" onClick={() => setChosenDarshanMode('payment')}
+                        className={`flex-1 py-2.5 rounded-lg text-sm font-bold border transition ${chosenDarshanMode === 'payment' ? 'bg-[#8B1A1A] text-white border-[#8B1A1A]' : 'bg-white text-[#8B1A1A] border-[#8B1A1A] hover:bg-red-50'}`}>
+                        💳 Pay Online — ₹{totalAmount}
+                      </button>
+                      <button type="button" onClick={() => setChosenDarshanMode('spot')}
+                        className={`flex-1 py-2.5 rounded-lg text-sm font-bold border transition ${chosenDarshanMode === 'spot' ? 'bg-amber-700 text-white border-amber-700' : 'bg-white text-amber-700 border-amber-600 hover:bg-amber-50'}`}>
+                        🏛️ Pay on Spot at Temple
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Actions row */}
                 <div className="flex items-center gap-3">

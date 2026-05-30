@@ -1,5 +1,53 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react"
 import { Link as RouterLink } from "react-router-dom"
+import { useLanguage } from "../../../contexts/LanguageContext"
+
+const FOOTER_TRANSLATIONS = {
+  en: {
+    templeName: "Paruthipattu Balaji Temple",
+    quickLinks: "Quick Links",
+    importantLinks: "Important Links",
+    findUs: "Find Us",
+    getDirections: "Get Directions",
+    aboutUs: "About Us",
+    history: "History",
+    timings: "Temple Timings",
+    darshan: "Darshan & Book",
+    rules: "Rules & Guidelines",
+    donate: "Donate",
+    contact: "Contact Us",
+    hrce: "HR&CE Department",
+    tnTemples: "TN Temples",
+    onlineServices: "Online Services",
+    feedback: "Feedback",
+    helpSupport: "Help & Support",
+    privacy: "Privacy Policy",
+    copyright: "© 2025 Paruthipattu Balaji Temple. All Rights Reserved.",
+    designedWith: "Designed with ♥ for Devotees",
+  },
+  ta: {
+    templeName: "பாருதிப்பட்டு பாலாஜி கோயில்",
+    quickLinks: "மேல்நோக்கி இணைப்புகள்",
+    importantLinks: "முக்கிய இணைப்புகள்",
+    findUs: "எங்களை கண்டறிய",
+    getDirections: "வழி காண்க",
+    aboutUs: "எங்களைப் பற்றி",
+    history: "வரலாறு",
+    timings: "கோயில் நேரம்",
+    darshan: "தர்ஷன் & பதிவு",
+    rules: "வேள்வி விதிகள்",
+    donate: "தர்ப்பணம்",
+    contact: "தொடர்பு",
+    hrce: "HR&CE துறை",
+    tnTemples: "TN கோயில்கள்",
+    onlineServices: "ஆன்லைன் சேவைகள்",
+    feedback: "பின்விளைவுகள்",
+    helpSupport: "உதவி & ஆதரவு",
+    privacy: "தனியுரிமைக் கொள்கை",
+    copyright: "© 2025 பாருதிப்பட்டு பாலாஜி கோவில். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.",
+    designedWith: "அர்ப்பணிப்புடன் வடிவமைக்கப்பட்டது ♥ பக்தர்களுக்காக",
+  },
+}
 
 function Link({ href, ...props }) {
   if (href && href.startsWith("/") && !href.startsWith("//")) {
@@ -9,12 +57,15 @@ function Link({ href, ...props }) {
 }
 
 export default function Footer() {
+  const { lang } = useLanguage()
+  const t = FOOTER_TRANSLATIONS[lang] || FOOTER_TRANSLATIONS.en
+
   return (
     <footer className="bg-[#4A0000] text-white">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-serif text-lg font-bold mb-4">Paruthipattu Balaji Temple</h3>
+            <h3 className="font-serif text-lg font-bold mb-4">{t.templeName}</h3>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#D4A853]" />
@@ -38,89 +89,89 @@ export default function Footer() {
               </div>
             </div>
             <button className="mt-4 border border-[#D4A853] text-[#D4A853] px-4 py-2 rounded-full text-sm hover:bg-[#D4A853] hover:text-[#2D1810] transition-colors">
-              Get Directions
+              {t.getDirections}
             </button>
           </div>
 
           <div>
-            <h3 className="font-serif text-lg font-bold mb-4">Quick Links</h3>
+            <h3 className="font-serif text-lg font-bold mb-4">{t.quickLinks}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/about" className="text-white/80 hover:text-[#D4A853]">
-                  About Us
+                  {t.aboutUs}
                 </Link>
               </li>
               <li>
                 <Link href="/history" className="text-white/80 hover:text-[#D4A853]">
-                  History
+                  {t.history}
                 </Link>
               </li>
               <li>
                 <Link href="/timings" className="text-white/80 hover:text-[#D4A853]">
-                  Temple Timings
+                  {t.timings}
                 </Link>
               </li>
               <li>
                 <Link href="/darshan" className="text-white/80 hover:text-[#D4A853]">
-                  Darshan & Book
+                  {t.darshan}
                 </Link>
               </li>
               <li>
                 <Link href="/rules" className="text-white/80 hover:text-[#D4A853]">
-                  Rules & Guidelines
+                  {t.rules}
                 </Link>
               </li>
               <li>
                 <Link href="/donate" className="text-white/80 hover:text-[#D4A853]">
-                  Donate/ಕೊಡುಗೆ
+                  {t.donate}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-white/80 hover:text-[#D4A853]">
-                  Contact Us
+                  {t.contact}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-serif text-lg font-bold mb-4">Important Links</h3>
+            <h3 className="font-serif text-lg font-bold mb-4">{t.importantLinks}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/hrce" className="text-white/80 hover:text-[#D4A853]">
-                  HR&CE Department
+                  {t.hrce}
                 </Link>
               </li>
               <li>
                 <Link href="/tn-temples" className="text-white/80 hover:text-[#D4A853]">
-                  TN Temples
+                  {t.tnTemples}
                 </Link>
               </li>
               <li>
                 <Link href="/online-services" className="text-white/80 hover:text-[#D4A853]">
-                  Online Services
+                  {t.onlineServices}
                 </Link>
               </li>
               <li>
                 <Link href="/feedback" className="text-white/80 hover:text-[#D4A853]">
-                  Feedback
+                  {t.feedback}
                 </Link>
               </li>
               <li>
                 <Link href="/help" className="text-white/80 hover:text-[#D4A853]">
-                  Help & Support
+                  {t.helpSupport}
                 </Link>
               </li>
               <li>
                 <Link href="/privacy" className="text-white/80 hover:text-[#D4A853]">
-                  Privacy Policy
+                  {t.privacy}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-serif text-lg font-bold mb-4">Find Us</h3>
+            <h3 className="font-serif text-lg font-bold mb-4">{t.findUs}</h3>
             <div className="rounded-lg overflow-hidden border border-[#D4A853]/30">
               <div className="h-36 bg-[#F5E6D3] relative">
                 <iframe
@@ -149,9 +200,9 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center text-xs text-white/60">
-            <p>© 2025 Paruthipattu Balaji Temple. All Rights Reserved.</p>
+            <p>{t.copyright}</p>
             <p className="mt-2 md:mt-0">
-              Designed with <span className="text-red-500">♥</span> for Devotees
+              {t.designedWith}
             </p>
           </div>
         </div>

@@ -1,16 +1,39 @@
 import { ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
-import { darshanTypes } from "../../../data/darshanTypes"
+import { useAdminData } from "../../../admin/contexts/AdminDataContext"
+import { getT } from "../../../utils/i18n"
 import icon from "../../../assets/images/konark-sun-temple.png"
+import { useLanguage } from "../../../contexts/LanguageContext"
+
+const DARSHAN_TRANSLATIONS = {
+  darshanBooking: {
+    en: "Darshan & Booking",
+    ta: "தரிசனம் & முன்பதிவு"
+  },
+  chooseExperience: {
+    en: "Choose your preferred darshan experience",
+    ta: "உங்கள் விரும்பிய தரிசன அभிज्ञতையை தேர்ந்தெடுக்கவும்"
+  },
+  bookNow: {
+    en: "Book Now",
+    ta: "இப்போது முன்பதிவு செய்யுங்கள்"
+  },
+  viewAll: {
+    en: "View All Darshan Options",
+    ta: "அனைத்து தரிசன விருப்பங்களைக் காணக்கள்"
+  }
+}
 
 export default function DarshanSection() {
+  const { lang } = useLanguage()
+  const { homeDarshan: darshanTypes } = useAdminData()
   return (
     <section className="py-10 bg-[#FDF8F3]">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="font-serif text-2xl font-bold text-[#2D1810]">Darshan & Booking</h2>
+          <h2 className="font-serif text-2xl font-bold text-[#2D1810]">{DARSHAN_TRANSLATIONS.darshanBooking[lang]}</h2>
           <p className="text-sm text-[#6B4423] mt-1">
-            — Choose your preferred darshan experience —
+            — {DARSHAN_TRANSLATIONS.chooseExperience[lang]} —
           </p>
         </div>
 
@@ -18,22 +41,24 @@ export default function DarshanSection() {
           {darshanTypes.map((option) => (
             <div key={option.id} className="relative rounded-xl overflow-hidden group">
               <div className="absolute inset-0">
-                <img src={option.image} alt={option.title} className="w-full h-full object-cover" />
+                <img src={option.imageUrl || option.image} alt={option.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               </div>
 
               <div className="relative p-6 pt-32">
                 <img src={icon} alt="" className="w-10 h-8 object-cover mb-2" />
-                <h3 className="text-[#D4A853] font-serif text-xl font-bold mb-2">{option.title}</h3>
-                <p className="text-white/80 text-sm mb-4">{option.summary}</p>
+                <h3 className="text-[#D4A853] font-serif text-xl font-bold mb-2">{getT(option, 'title', lang)}</h3>
+                <p className="text-white/80 text-sm mb-4">{getT(option, 'summary', lang)}</p>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-[#D4A853] font-bold text-lg">{option.priceLabel}</span>
+                  <span className="text-[#D4A853] font-bold text-lg">
+                    {option.bookingType === 'free' ? 'Free' : option.priceLabel}
+                  </span>
                   <button
                     type="button"
                     className="flex items-center gap-1 text-white text-sm font-medium hover:text-[#D4A853] transition-colors"
                   >
-                    Book Now <ArrowRight className="w-4 h-4" />
+                    {DARSHAN_TRANSLATIONS.bookNow[lang]} <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -46,7 +71,7 @@ export default function DarshanSection() {
             to="/darshan"
             className="inline-flex bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors"
           >
-            View All Darshan Options
+            {DARSHAN_TRANSLATIONS.viewAll[lang]}
           </Link>
         </div>
       </div>

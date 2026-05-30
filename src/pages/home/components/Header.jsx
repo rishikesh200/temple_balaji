@@ -2,9 +2,11 @@ import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
 import { Link, NavLink, useLocation } from "react-router-dom"
 import logo from './../../../assets/images/konark-sun-temple.png';
+import { useLanguage } from "../../../contexts/LanguageContext";
 
 
 export default function Header() {
+  const { lang, setLang } = useLanguage()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
@@ -79,7 +81,14 @@ export default function Header() {
                 </svg>
               </a>
             </div>
-            <span className="ml-2">English ▾</span>
+            <select
+              value={lang}
+              onChange={(e) => setLang(e.target.value)}
+              className="bg-transparent text-white border-0 cursor-pointer focus:ring-0 text-xs py-0.5 ml-2 font-medium hover:text-[#D4A853] transition-colors focus:outline-none"
+            >
+              <option value="en" className="text-black">English</option>
+              <option value="ta" className="text-black">தமிழ்</option>
+            </select>
           </div>
         </div>
       </div>
@@ -171,6 +180,18 @@ export default function Header() {
                 <NavLink to="/contact" className="text-[#2D1810] font-medium py-2">
                   Contact Us
                 </NavLink>
+
+                <div className="flex items-center justify-between py-2 border-t border-b border-[#E5D5C5] my-2">
+                  <span className="text-sm font-medium text-[#2D1810]">Language / மொழி</span>
+                  <select
+                    value={lang}
+                    onChange={(e) => setLang(e.target.value)}
+                    className="bg-transparent text-[#8B1A1A] border border-[#8B1A1A] rounded px-2 py-1 text-xs font-semibold focus:outline-none"
+                  >
+                    <option value="en">English</option>
+                    <option value="ta">தமிழ்</option>
+                  </select>
+                </div>
 
                 <Link
                   to="/donate"

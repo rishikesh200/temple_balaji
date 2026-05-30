@@ -1,6 +1,15 @@
-import { darshanTypes } from "../../../data/darshanTypes"
+import { useAdminData } from "../../../admin/contexts/AdminDataContext"
+import { useLanguage } from "../../../contexts/LanguageContext"
+import { getT, t } from "../../../utils/i18n"
 
-function DarshanTypeCard({ option, onSelectType }) {
+const TR = {
+  label:   { en: "Service Offerings",                                                                  ta: "சேவை வகைகள்" },
+  heading: { en: "Types of Darshan",                                                                   ta: "தரிசன வகைகள்" },
+  sub:     { en: "Choose the darshan experience that best suits your requirements and spiritual focus.", ta: "உங்கள் தேவைகளுக்கு மிகவும் பொருத்தமான தரிசன அனுபவத்தை தேர்ந்தெடுங்கள்." },
+  free:    { en: "FREE",                                                                                ta: "இலவசம்" },
+}
+
+function DarshanTypeCard({ option, onSelectType, lang }) {
   return (
     <div className={option.featured ? "pt-5 sm:pt-6" : undefined}>
       <article
@@ -17,29 +26,29 @@ function DarshanTypeCard({ option, onSelectType }) {
         )}
         <div className="h-64 overflow-hidden relative">
           <img
-            src={option.image}
+            src={option.imageUrl || option.image}
             alt={option.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div
             className={`absolute top-4 left-4 px-3 py-1 rounded text-sm font-bold ${
-              option.badge === "FREE"
+              option.bookingType === 'free' || option.badge === "FREE"
                 ? "bg-white/90 backdrop-blur-sm text-[#8B1A1A]"
                 : "bg-[#D4A853] text-[#2D1810]"
             }`}
           >
-            {option.badge}
+            {option.bookingType === 'free' ? t(TR.free, lang) : option.badge}
           </div>
         </div>
         <div className="p-6 md:p-8 flex flex-col flex-grow">
           <h3 className="font-serif text-xl md:text-2xl font-bold text-[#2D1810] mb-3">
-            {option.title}
+            {getT(option, 'title', lang)}
           </h3>
           <p className="text-sm text-[#6B4423] mb-6 flex-grow leading-relaxed">
-            {option.description}
+            {getT(option, 'description', lang)}
           </p>
           <div className="flex items-center justify-between mt-auto gap-3 flex-wrap">
-            <span className="text-[#8B4513] font-bold text-sm">{option.tagline}</span>
+            <span className="text-[#8B4513] font-bold text-sm">{getT(option, 'tagline', lang)}</span>
             <button
               type="button"
               onClick={() => {
@@ -62,23 +71,25 @@ function DarshanTypeCard({ option, onSelectType }) {
 }
 
 export default function TypesSection({ onSelectType }) {
+  const { activeDarshan: darshanTypes } = useAdminData()
+  const { lang } = useLanguage()
   return (
     <section className="py-16 md:py-24 px-4 max-w-7xl mx-auto" id="types">
       <div className="text-center mb-16">
         <div className="divine-divider text-xs sm:text-sm font-semibold uppercase tracking-widest text-[#6B4423] mb-4">
-          Service Offerings
+          {t(TR.label, lang)}
         </div>
         <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#2D1810] mb-4">
-          Types of Darshan
+          {t(TR.heading, lang)}
         </h2>
         <p className="text-[#6B4423] max-w-2xl mx-auto text-base">
-          Choose the darshan experience that best suits your requirements and spiritual focus.
+          {t(TR.sub, lang)}
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
         {darshanTypes.map((option) => (
-          <DarshanTypeCard key={option.id} option={option} onSelectType={onSelectType} />
+          <DarshanTypeCard key={option.id} option={option} onSelectType={onSelectType} lang={lang} />
         ))}
       </div>
     </section>

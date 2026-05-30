@@ -3,66 +3,84 @@ import poojaIcon from "../../../assets/images/ganesh_pooja.jpeg"
 import abhishekamIcon from "../../../assets/images/abishekam_pooja.jpeg"
 import alankaramIcon from "../../../assets/images/alankaram_pooja.jpeg"
 import navagrahaIcon from "../../../assets/images/navagraha_pooja.jpeg"
-const poojas = [
-  { name: "Ganapathy Pooja", price: "From ₹151",img:poojaIcon },
-  { name: "Abhishekam", price: "From ₹251",img:abhishekamIcon },
-  // { name: "Archana", price: "From ₹101" },
-  { name: "Alankaram", price: "From ₹501",img:alankaramIcon },
-  { name: "Navagraha Pooja", price: "From ₹351",img:navagrahaIcon },
-  // { name: "Annadhanam", price: "From ₹251" },
-  // { name: "Sankatahara", price: "From ₹101" },
+import { useLanguage } from "../../../contexts/LanguageContext"
+import { useAdminData } from "../../../admin/contexts/AdminDataContext"
+import { Link } from "react-router-dom"
+import { slugify } from "../../../data/poojaData"
+
+// Fallback static list if no admin poojas are configured
+const FALLBACK_POOJAS = [
+  { id: 'ganapathy', name: "Ganapathy Pooja", price: 151, image: poojaIcon, requiresPayment: true },
+  { id: 'abhishekam', name: "Abhishekam",     price: 251, image: abhishekamIcon, requiresPayment: true },
+  { id: 'alankaram', name: "Alankaram",       price: 501, image: alankaramIcon, requiresPayment: true },
+  { id: 'navagraha', name: "Navagraha Pooja", price: 351, image: navagrahaIcon, requiresPayment: true },
 ]
+
+const POOJA_TRANSLATIONS = {
+  bookPooja:    { en: "Book Pooja & Sevas",                          ta: "பூஜை & சேவைகளை முன்பதிவு செய்யுங்கள்" },
+  offerPrayers: { en: "Offer your prayers and receive divine blessings", ta: "உங்கள் பிரார்த்தனைகளை செலுத்தவும் மற்றும் தெய்வீக ஆசிர்வாதங்களைப் பெறவும்" },
+  viewAllPoojas:{ en: "View All Poojas & Sevas",                    ta: "அனைத்து பூஜைகள் & சேவைகளைக் காணக்கள்" },
+  free:         { en: "Free",                                        ta: "இலவசம்" },
+}
 
 const cardClass =
   "flex w-full max-w-[280px] mx-auto flex-col items-center rounded-2xl bg-white px-6 pt-7 pb-8 " +
   "border border-[#E8E4DF] shadow-[0_2px_12px_rgba(45,24,16,0.06)] " +
-  "transition-all duration-200 hover:shadow-[0_6px_20px_rgba(45,24,16,0.1)] hover:-translate-y-0.5 hover:border-[#D4C9BC] " +
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8B1A1A]"
+  "transition-all duration-200 hover:shadow-[0_6px_20px_rgba(45,24,16,0.1)] hover:-translate-y-0.5 hover:border-[#D4C9BC]"
 
 export default function PoojaGrid() {
+  const { lang } = useLanguage()
+  const { homePoojas } = useAdminData()
+
+  // Show poojas marked showInHome=true; fall back to static list if none configured
+  const displayPoojas = homePoojas.length > 0 ? homePoojas : FALLBACK_POOJAS
+
   return (
     <section className="py-10 bg-[#F5E6D3]">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="font-serif text-2xl font-bold text-[#2D1810]">Book Pooja & Sevas</h2>
+          <h2 className="font-serif text-2xl font-bold text-[#2D1810]">{POOJA_TRANSLATIONS.bookPooja[lang]}</h2>
           <p className="text-sm text-[#6B4423] mt-1">
-            — Offer your prayers and receive divine blessings —
+            — {POOJA_TRANSLATIONS.offerPrayers[lang]} —
           </p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-7 max-w-7xl mx-auto justify-items-center">
-          {poojas.map((pooja) => (
-            <button key={pooja.name} type="button" className={cardClass} aria-label={`Book ${pooja.name}, ${pooja.price}`}>
-              {/* <div
-                className="mb-4 flex aspect-square w-[45%] min-w-[5.5rem] max-w-[6.75rem] shrink-0 items-center justify-center rounded-full bg-[#8B1A1A] shadow-inner ring-1 ring-black/10"
-                aria-hidden
-              >
-                <img
-                  src={pooja.img}
-                  alt=""
-                  className="h-[72%] w-[72%] object-contain drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
-                />
-              </div> */}
+          {displayPoojas.map((pooja) => (
+            <Link
+              key={pooja.id}
+              to={`/pooja/${slugify(pooja.name)}`}
+              className={cardClass}
+              aria-label={`Book ${pooja.name}`}
+            >
               <img
-                src={pooja.img}
+                src={pooja.image}
                 alt={pooja.name}
                 className="mb-3 w-full aspect-[4/3] object-cover rounded-xl"
+                onError={e => { e.target.src = poojaThumb }}
               />
               <h3 className="w-full text-center font-sans text-base font-bold leading-snug tracking-tight text-[#2D1810]">
                 {pooja.name}
               </h3>
-              <p className="mt-2 w-full text-center font-sans text-sm font-bold text-[#8B1A1A]">{pooja.price}</p>
-            </button>
+              <p className="mt-2 w-full text-center font-sans text-sm font-bold text-[#8B1A1A]">
+                {pooja.bookingType === 'free' || pooja.price === 0
+                  ? POOJA_TRANSLATIONS.free[lang]
+                  : `₹ ${pooja.price}`}
+              </p>
+              {pooja.bookingType === 'spot' && (
+                <span className="mt-1 text-xs text-gray-400">Pay at temple</span>
+              )}
+            </Link>
           ))}
         </div>
 
         <div className="text-center mt-8">
-          <button
-            type="button"
-            className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors"
+          <Link
+            to="/pooja"
+            className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors inline-block"
           >
-            View All Poojas & Sevas
-          </button>
+            {POOJA_TRANSLATIONS.viewAllPoojas[lang]}
+          </Link>
         </div>
       </div>
     </section>

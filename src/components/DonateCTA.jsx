@@ -1,4 +1,24 @@
+import { useLanguage } from "../contexts/LanguageContext"
+
+const DONATE_CTA_TRANSLATIONS = {
+  en: {
+    label: "Support the Sacred Traditions",
+    title: "Support the Sacred Traditions",
+    description: "Your contributions help us maintain the temple's daily rituals, community services, and architectural heritage for future generations.",
+    button: "Donate Now",
+  },
+  ta: {
+    label: "புனித பாரம்பரியங்களை ஆதரிக்கவும்",
+    title: "புனித பாரம்பரியங்களை ஆதரிக்கவும்",
+    description: "உங்கள் பங்களிப்புகள் கோயில் தினசரி வழிபாடுகள், சமூகம் சேவைகள் மற்றும் கட்டிட பாரம்பரியத்தை எதிர்கால தலைமுறைகளுக்காக பராமரிக்க உதவுகின்றன.",
+    button: "இப்போது தர்ப்பண செய்யவும்",
+  },
+}
+
 export default function DonateCTA() {
+  const { lang } = useLanguage()
+  const t = DONATE_CTA_TRANSLATIONS[lang] || DONATE_CTA_TRANSLATIONS.en
+
   return (
     <section className=" bg-[#FDF8F3] px-6 py-12 text-center border-y border-[#E5D5C5] sm:px-12 lg:px-16">
       <div className="mx-auto max-w-3xl">

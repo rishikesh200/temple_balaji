@@ -11,19 +11,14 @@ import TrustBadges from "./components/TrustBadges"
 
 const Home = () => {
   return (
-    <div className="">
-      <Hero/>
+    <div>
+      <Hero />
       <QuickActions />
-     
       <AboutSection />
-   
       <Events />
       <DonationSection />
       <DarshanSection />
-     
       <PoojaGrid />
-    
-      
       <Gallery />
       <Stream />
       <TrustBadges />
