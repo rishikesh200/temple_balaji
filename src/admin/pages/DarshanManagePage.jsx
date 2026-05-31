@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import AdminLayout from '../components/AdminLayout';
 import { useAdminData } from '../contexts/AdminDataContext';
+import { inputCls, labelCls, thCls } from '../utils/formStyles';
 import ImageUploader, { FALLBACKS } from '../components/ImageUploader';
+import { useToast } from '../components/Toast';
+import { useConfirm } from '../components/ConfirmDialog';
 
 const BOOKING_TYPE_OPTIONS = [
-  { value: 'payment', label: '💳 Pay Online',   desc: 'Razorpay — pay before booking' },
-  { value: 'spot',    label: '🏛️ Pay on Spot',  desc: 'Book slot now, pay cash at temple' },
+  { value: 'payment', label: '💳 Pay Online',  desc: 'Razorpay — pay before booking' },
+  { value: 'spot',    label: '🛕 Pay on Spot',  desc: 'Book slot now, pay cash at temple' },
   { value: 'free',    label: '🆓 Free',          desc: 'No payment — just book the slot' },
   { value: 'both',    label: '🔀 Both',          desc: 'User picks: pay online or pay on spot' },
 ];
@@ -21,7 +24,7 @@ function Toggle({ checked, onChange }) {
 
 function BookingTypeBadge({ type }) {
   const map    = { payment: 'bg-blue-100 text-blue-700', spot: 'bg-amber-100 text-amber-800', free: 'bg-green-100 text-green-700', both: 'bg-purple-100 text-purple-700' };
-  const labels = { payment: '💳 Pay Online', spot: '🏛️ Pay on Spot', free: '🆓 Free', both: '🔀 Both' };
+  const labels = { payment: '💳 Pay Online', spot: '🛕 Pay on Spot', free: '🆓 Free', both: '🔀 Both' };
   return <span className={`px-2 py-0.5 rounded text-xs font-semibold ${map[type] || map.payment}`}>{labels[type] || type}</span>;
 }
 
@@ -45,31 +48,32 @@ function DarshanModal({ item, onClose, onSave, isNew }) {
         <div className="p-5 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="label">Title *</label>
-              <input value={form.title} onChange={e => set('title', e.target.value)} className="input" />
+              <label className={labelCls}>Title *</label>
+              <input value={form.title} onChange={e => set('title', e.target.value)} className={inputCls} />
             </div>
             <div>
-              <label className="label">Price (₹)</label>
+              <label className={labelCls}>Price (₹)</label>
               <input type="number" value={form.price} onChange={e => {
                 const p = Number(e.target.value);
                 set('price', p);
                 set('priceLabel', p === 0 ? 'FREE' : `₹${p}`);
                 set('badge', p === 0 ? 'FREE' : `₹${p}`);
-              }} className="input" />
+              }} className={inputCls} />
             </div>
             <div>
-              <label className="label">Badge Label</label>
-              <input value={form.badge} onChange={e => set('badge', e.target.value)} className="input" placeholder="FREE / ₹250" />
+              <label className={labelCls}>Badge Label</label>
+              <input value={form.badge} onChange={e => set('badge', e.target.value)} className={inputCls} placeholder="FREE / ₹250" />
             </div>
             <div>
-              <label className="label">Tagline</label>
-              <input value={form.tagline} onChange={e => set('tagline', e.target.value)} className="input" placeholder="Fast-Track" />
+              <label className={labelCls}>Tagline</label>
+              <input value={form.tagline} onChange={e => set('tagline', e.target.value)} className={inputCls} placeholder="Fast-Track" />
             </div>
             <div>
-              <label className="label">CTA Button</label>
-              <input value={form.ctaLabel} onChange={e => set('ctaLabel', e.target.value)} className="input" />
+              <label className={labelCls}>CTA Button</label>
+              <input value={form.ctaLabel} onChange={e => set('ctaLabel', e.target.value)} className={inputCls} />
             </div>
           </div>
+
           <ImageUploader
             value={form.imageUrl}
             onChange={url => set('imageUrl', url)}
@@ -77,9 +81,10 @@ function DarshanModal({ item, onClose, onSave, isNew }) {
             fallback={FALLBACKS.darshan}
             label="Darshan Image"
           />
+
           {/* Booking Type */}
           <div>
-            <label className="label">Booking Type</label>
+            <label className={labelCls}>Booking Type</label>
             <div className="flex gap-2 flex-wrap">
               {BOOKING_TYPE_OPTIONS.map(opt => (
                 <button key={opt.value} type="button" onClick={() => set('bookingType', opt.value)}
@@ -94,12 +99,12 @@ function DarshanModal({ item, onClose, onSave, isNew }) {
           </div>
 
           <div>
-            <label className="label">Short Summary</label>
-            <textarea rows={2} value={form.summary} onChange={e => set('summary', e.target.value)} className="input resize-none" />
+            <label className={labelCls}>Short Summary</label>
+            <textarea rows={2} value={form.summary} onChange={e => set('summary', e.target.value)} className={`${inputCls} resize-none`} />
           </div>
           <div>
-            <label className="label">Full Description</label>
-            <textarea rows={3} value={form.description} onChange={e => set('description', e.target.value)} className="input resize-none" />
+            <label className={labelCls}>Full Description</label>
+            <textarea rows={3} value={form.description} onChange={e => set('description', e.target.value)} className={`${inputCls} resize-none`} />
           </div>
 
           {/* Tamil Translations */}
@@ -109,29 +114,29 @@ function DarshanModal({ item, onClose, onSave, isNew }) {
             </summary>
             <div className="px-4 pb-4 pt-2 space-y-3">
               <div>
-                <label className="label">தலைப்பு (Title in Tamil)</label>
-                <input value={form.title_ta || ''} onChange={e => set('title_ta', e.target.value)} className="input" placeholder="e.g. சர்வ தரிசனம்" />
+                <label className={labelCls}>தலைப்பு (Title in Tamil)</label>
+                <input value={form.title_ta || ''} onChange={e => set('title_ta', e.target.value)} className={inputCls} placeholder="e.g. சர்வ தரிசனம்" />
               </div>
               <div>
-                <label className="label">குறிச்சொல் (Tagline in Tamil)</label>
-                <input value={form.tagline_ta || ''} onChange={e => set('tagline_ta', e.target.value)} className="input" placeholder="e.g. விரைவு பாதை" />
+                <label className={labelCls}>குறிச்சொல் (Tagline in Tamil)</label>
+                <input value={form.tagline_ta || ''} onChange={e => set('tagline_ta', e.target.value)} className={inputCls} placeholder="e.g. விரைவு பாதை" />
               </div>
               <div>
-                <label className="label">சுருக்கம் (Summary in Tamil)</label>
-                <textarea rows={2} value={form.summary_ta || ''} onChange={e => set('summary_ta', e.target.value)} className="input resize-none" />
+                <label className={labelCls}>சுருக்கம் (Summary in Tamil)</label>
+                <textarea rows={2} value={form.summary_ta || ''} onChange={e => set('summary_ta', e.target.value)} className={`${inputCls} resize-none`} />
               </div>
               <div>
-                <label className="label">விரிவான விளக்கம் (Description in Tamil)</label>
-                <textarea rows={3} value={form.description_ta || ''} onChange={e => set('description_ta', e.target.value)} className="input resize-none" />
+                <label className={labelCls}>விரிவான விளக்கம் (Description in Tamil)</label>
+                <textarea rows={3} value={form.description_ta || ''} onChange={e => set('description_ta', e.target.value)} className={`${inputCls} resize-none`} />
               </div>
             </div>
           </details>
 
           <div className="flex flex-wrap gap-6 pt-1">
             {[
-              ['active', 'Active (visible on site)'],
+              ['active',     'Active (visible on site)'],
               ['showInHome', 'Show in Home Page'],
-              ['featured', 'Featured (highlighted)'],
+              ['featured',   'Featured (highlighted)'],
             ].map(([k, lbl]) => (
               <label key={k} className="flex items-center gap-2 cursor-pointer">
                 <Toggle checked={form[k] || false} onChange={v => set(k, v)} />
@@ -153,14 +158,14 @@ function DarshanModal({ item, onClose, onSave, isNew }) {
 }
 
 export default function DarshanManagePage() {
+  const confirm = useConfirm();
+  const toast = useToast();
   const { darshanItems, updateDarshan, addDarshan, deleteDarshan } = useAdminData();
   const [editItem, setEditItem] = useState(null);
   const [showAdd, setShowAdd] = useState(false);
 
   return (
     <AdminLayout>
-      <style>{`.input{width:100%;border:1px solid #d1d5db;border-radius:0.5rem;padding:0.5rem 0.75rem;font-size:0.875rem;outline:none}.label{display:block;font-size:0.875rem;font-weight:500;color:#374151;margin-bottom:0.25rem}`}</style>
-
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Darshan Management</h2>
@@ -180,25 +185,25 @@ export default function DarshanManagePage() {
         <span className="text-gray-300">|</span>
         <span>
           <span className="font-semibold text-blue-600">💳 Pay Online</span> = Razorpay &nbsp;·&nbsp;
-          <span className="font-semibold text-amber-600">🏛️ Pay on Spot</span> = book slot, pay cash at temple &nbsp;·&nbsp;
+          <span className="font-semibold text-amber-600">🛕 Pay on Spot</span> = book slot, pay cash at temple &nbsp;·&nbsp;
           <span className="font-semibold text-green-600">🆓 Free</span> = no payment needed &nbsp;·&nbsp;
           <span className="font-semibold text-purple-600">🔀 Both</span> = user picks online or spot
         </span>
       </div>
 
       <div className="grid gap-4">
-        {darshanItems.filter(d => !d._deleted).map(item => (
+        {darshanItems.map(item => (
           <div key={item.id}
             className={`bg-white rounded-xl border shadow-sm p-4 flex flex-col sm:flex-row gap-4 items-start transition-opacity ${!item.active ? 'opacity-60' : ''}`}>
 
-            {/* Image */}
             <div className="w-32 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
-              <img src={item.imageUrl || item.image} alt={item.title}
-                className="w-full h-full object-cover"
-                onError={e => e.target.style.display='none'} />
+              {(item.imageUrl || item.image) ? (
+                <img src={item.imageUrl || item.image} alt={item.title}
+                  className="w-full h-full object-cover"
+                  onError={e => e.target.style.display = 'none'} />
+              ) : null}
             </div>
 
-            {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-1">
                 <h3 className="font-bold text-gray-900">{item.title}</h3>
@@ -209,7 +214,6 @@ export default function DarshanManagePage() {
               </div>
               <p className="text-sm text-gray-500">{item.summary}</p>
 
-              {/* Inline toggles */}
               <div className="flex flex-wrap gap-5 mt-3">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Toggle checked={item.active} onChange={v => updateDarshan(item.id, { active: v })} />
@@ -225,7 +229,6 @@ export default function DarshanManagePage() {
                 </label>
               </div>
 
-              {/* Booking type quick selector */}
               <div className="flex gap-1.5 mt-3 flex-wrap">
                 {BOOKING_TYPE_OPTIONS.map(opt => (
                   <button key={opt.value} type="button"
@@ -239,11 +242,10 @@ export default function DarshanManagePage() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex gap-2 shrink-0">
               <button onClick={() => setEditItem(item)}
                 className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded text-sm font-medium hover:bg-blue-200">Edit</button>
-              <button onClick={() => { if (window.confirm(`Remove "${item.title}"?`)) deleteDarshan(item.id); }}
+              <button onClick={async () => { if (await confirm(`Remove "${item.title}"?`)) deleteDarshan(item.id); }}
                 className="px-3 py-1.5 bg-red-100 text-red-700 rounded text-sm font-medium hover:bg-red-200">Remove</button>
             </div>
           </div>

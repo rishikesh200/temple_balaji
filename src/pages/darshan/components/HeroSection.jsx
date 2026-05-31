@@ -1,6 +1,18 @@
 import heroImg from "../../../assets/images/hero-balaji.jpg"
+import { useLanguage } from "../../../contexts/LanguageContext"
+import { t } from "../../../utils/i18n"
+
+const TR = {
+  eyebrow:      { en: "OM NAMO VENKATESAYA",                                                                                          ta: "ஓம் நமோ வேங்கடேசாய" },
+  heading:      { en: "Seek the Blessings of Balaji",                                                                                 ta: "பாலாஜியின் ஆசிர்வாதத்தை நாடுங்கள்" },
+  sub:          { en: "Experience the divine presence of Lord Venkateswara through our sacred Darshan services. Reserve your slot for a peaceful spiritual journey.", ta: "எங்கள் புனித தரிசன சேவைகள் மூலம் ஸ்ரீ வெங்கடேஸ்வரனின் தெய்வீக சன்னிதியை அனுபவியுங்கள். ஆன்மீக பயணத்திற்கு உங்கள் இடத்தை முன்பதிவு செய்யுங்கள்." },
+  viewTypes:    { en: "View Darshan Types",                                                                                           ta: "தரிசன வகைகளை காண்க" },
+  checkAvail:   { en: "Check Availability",                                                                                          ta: "கிடைப்பதை சரிபார்க்கவும்" },
+}
 
 export default function HeroSection() {
+  const { lang } = useLanguage()
+
   return (
     <section className="relative min-h-[500px] md:h-[614px] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-black/40 z-10" aria-hidden />
@@ -11,27 +23,26 @@ export default function HeroSection() {
       />
       <div className="relative z-20 text-center px-4">
         <span className="text-[#D4A853] tracking-[0.2em] text-xs sm:text-sm font-semibold uppercase mb-4 block">
-          OM NAMO VENKATESAYA
+          {t(TR.eyebrow, lang)}
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 max-w-3xl mx-auto leading-tight">
-          Seek the Blessings of Balaji
+          {t(TR.heading, lang)}
         </h1>
         <p className="text-white/90 text-base sm:text-lg max-w-2xl mx-auto mb-10">
-          Experience the divine presence of Lord Venkateswara through our sacred Darshan services.
-          Reserve your slot for a peaceful spiritual journey.
+          {t(TR.sub, lang)}
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <a
             href="#types"
             className="bg-[#8B1A1A] text-white px-8 py-3 rounded-lg text-sm font-semibold hover:bg-[#6B1414] transition-all shadow-lg"
           >
-            View Darshan Types
+            {t(TR.viewTypes, lang)}
           </a>
           <a
             href="#booking"
             className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3 rounded-lg text-sm font-semibold hover:bg-white/20 transition-all"
           >
-            Check Availability
+            {t(TR.checkAvail, lang)}
           </a>
         </div>
       </div>

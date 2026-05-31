@@ -1,270 +1,205 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { dailyPoojas, specialSevas, nerthikadans } from '../../data/poojaData';
-import { darshanTypes as defaultDarshanTypes } from '../../data/darshanTypes';
-import { donationCauses as defaultDonationCauses } from '../../data/donationCauses';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { configAPI, poojasAPI, darshanTypesAPI, donationCausesAPI, eventsAPI, galleryAPI, heroImagesAPI } from '../services/api';
 
 const AdminDataContext = createContext(null);
-const STORAGE_KEY = 'temple_admin_config_v2';
 
-function loadStorage() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-  catch { return {}; }
-}
-function saveStorage(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-// bookingType:
-//   'payment' → Razorpay only
-//   'free'    → walk-in / no payment
-//   'both'    → user chooses at booking time
-
-function augmentPoojas(items, category) {
-  return items.map((item, i) => ({
-    ...item,
-    category,
-    active: true,
-    showInHome: i < 4,                                    // first 4 per category shown on home
-    bookingType: (item.price || 0) > 0 ? 'payment' : 'free',
-  }));
-}
-
-function augmentDarshan(items) {
-  return items.map(item => ({
-    ...item,
-    active: true,
-    showInHome: true,
-    bookingType: item.badge === 'FREE' ? 'free' : 'payment',  // FREE darshan = no payment; paid = online by default
-    price: item.priceLabel === 'FREE'
-      ? 0
-      : parseInt((item.priceLabel || '0').replace(/[^0-9]/g, ''), 10) || 0,
-  }));
-}
-
-function augmentDonations(items) {
-  return items.map(item => ({ ...item, active: true }));
-}
-
-// ── Default Events ────────────────────────────────────────────
-export const DEFAULT_EVENTS = [
-  {
-    id: 'ev-1', title: 'Vaikunta Ekadashi', category: 'upcoming',
-    date: 'May 22, 2026', time: '05:00 AM - 09:00 PM',
-    location: 'Main Sanctum Sanctorum & Temple Hall',
-    participants: 'Open for all devotees',
-    details: 'Grand annual anniversary with Sahasra Kalashabhishekam performed by chief Vedic priests, followed by cultural recitals, bhajans, and full-day Prasadam distribution.',
-    imageKey: 'festival', imageUrl: '',
-    ctaText: 'Sponsor Annadanam', ctaLink: '/donate',
-    active: true, showInHome: true,
-  },
-  {
-    id: 'ev-2', title: 'Panguni Uthiram', category: 'upcoming',
-    date: 'Jun 10, 2026', time: '07:30 AM - 10:00 AM',
-    location: 'Temple Outer Praharam & Corridors',
-    participants: 'Free Participation',
-    details: 'Sacred festival celebrating the divine union. Guided walk explores stone inscriptions, Gopuram carvings, and the historical records of the deity.',
-    imageKey: 'gopuram', imageUrl: '',
-    ctaText: 'Register Interest', ctaLink: '/contact',
-    active: true, showInHome: true,
-  },
-  {
-    id: 'ev-3', title: 'Rath Yatra', category: 'upcoming',
-    date: 'Jun 27, 2026', time: '04:00 PM - 08:00 PM',
-    location: 'Avadi Chariot Road Path & Environs',
-    participants: 'Volunteer registrations active (Age 18+)',
-    details: 'Spectacular procession of Lord Balaji riding His golden chariot through the streets. Thousands of devotees gather to pull the holy ropes chanting Vedic mantras.',
-    imageKey: 'gallery1', imageUrl: '',
-    ctaText: 'Register as Volunteer', ctaLink: '/contact',
-    active: true, showInHome: true,
-  },
-  {
-    id: 'ev-4', title: 'Aadi Pooram', category: 'community',
-    date: 'Jul 12, 2026', time: '11:30 AM - 03:00 PM',
-    location: 'Temple Annadanam Seva Hall',
-    participants: 'Sponsors & Seva volunteers needed',
-    details: 'Sacred act of feeding others through our monthly community food drive. Fresh traditional meals served to local residents, pilgrims, and the needy.',
-    imageKey: 'darshan', imageUrl: '',
-    ctaText: 'Sponsor Groceries', ctaLink: '/donate',
-    active: true, showInHome: true,
-  },
-];
-
-export const DEFAULT_TEMPLE_SETTINGS = {
-  name:      'Sri Venkateswara Temple',
-  tagline:   'A place of divine peace and spiritual renewal',
-  address:   '123 Temple Road, Chennai, Tamil Nadu - 600001',
-  phone:     '+91 44 1234 5678',
-  email:     'info@temple.org',
-  timings:   'Mon–Sun: 6:00 AM – 12:00 PM, 4:00 PM – 9:00 PM',
-  aboutText: 'Sri Venkateswara Temple is a revered Hindu temple dedicated to Lord Vishnu, welcoming all devotees.',
-};
-
-const BASE_POOJAS = [
-  ...augmentPoojas(dailyPoojas,   'daily'),
-  ...augmentPoojas(specialSevas,  'special'),
-  ...augmentPoojas(nerthikadans,  'nerthikadan'),
-];
-const BASE_DARSHAN  = augmentDarshan(defaultDarshanTypes);
-const BASE_DONATIONS = augmentDonations(defaultDonationCauses);
-
-function applyPatches(base, patches) {
-  return base.map(item => ({ ...item, ...(patches[item.id] || {}) }));
+function getToken() {
+  return localStorage.getItem('adminToken');
 }
 
 export function AdminDataProvider({ children }) {
-  const stored = loadStorage();
+  const [loading, setLoading] = useState(true);
+  const [poojas, setPoojas] = useState([]);
+  const [darshanItems, setDarshanItems] = useState([]);
+  const [donationItems, setDonationItems] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [gallery, setGallery] = useState([]);
+  const [heroImages, setHeroImages] = useState([]);
+  const [templeSettings, setTempleSettings] = useState({});
+  const [liveStream, setLiveStream] = useState({ enabled: false, url: '', title: 'Live Darshan' });
 
-  const [poojaPatches,    setPoojaPatches]    = useState(stored.poojaPatches    || {});
-  const [customPoojas,    setCustomPoojas]    = useState(stored.customPoojas    || []);
-  const [darshanPatches,  setDarshanPatches]  = useState(stored.darshanPatches  || {});
-  const [customDarshan,   setCustomDarshan]   = useState(stored.customDarshan   || []);
-  const [donationPatches, setDonationPatches] = useState(stored.donationPatches || {});
-  const [customDonations, setCustomDonations] = useState(stored.customDonations || []);
-  const [events,          setEvents]          = useState(stored.events          || DEFAULT_EVENTS);
-  const [templeSettings,  setTempleSettings]  = useState(stored.templeSettings  || DEFAULT_TEMPLE_SETTINGS);
-
-  const persist = useCallback((updates) => {
-    saveStorage({ ...loadStorage(), ...updates });
+  // ── Load all collections on mount ──────────────────────────────
+  useEffect(() => {
+    const token = getToken();
+    Promise.all([
+      poojasAPI.getAll(token),
+      darshanTypesAPI.getAll(token),
+      donationCausesAPI.getAll(token),
+      eventsAPI.getAll(token),
+      galleryAPI.getAll(token),
+      heroImagesAPI.getAll(token),
+      configAPI.getConfig(),
+    ])
+      .then(([p, d, dc, ev, gal, hero, cfg]) => {
+        if (p.success)    setPoojas(p.data);
+        if (d.success)    setDarshanItems(d.data);
+        if (dc.success)   setDonationItems(dc.data);
+        if (ev.success)   setEvents(ev.data);
+        if (gal.success)  setGallery(gal.data);
+        if (hero.success) setHeroImages(hero.data);
+        if (cfg.success) {
+          setTempleSettings(cfg.templeSettings ?? {});
+          setLiveStream(cfg.liveStream ?? { enabled: false, url: '', title: 'Live Darshan' });
+        }
+      })
+      .catch(err => console.error('Data load failed:', err.message))
+      .finally(() => setLoading(false));
   }, []);
 
-  // ── POOJAS ───────────────────────────────────────────────────
-  const poojas = [...applyPatches(BASE_POOJAS, poojaPatches), ...customPoojas];
+  // ── POOJAS ──────────────────────────────────────────────────────
+  const updatePooja = useCallback(async (id, patch) => {
+    setPoojas(prev => prev.map(p => p.id === id ? { ...p, ...patch } : p));
+    await poojasAPI.update(getToken(), id, patch);
+  }, []);
 
-  const updatePooja = useCallback((id, patch) => {
-    if (customPoojas.some(p => p.id === id)) {
-      const u = customPoojas.map(p => p.id === id ? { ...p, ...patch } : p);
-      setCustomPoojas(u); persist({ customPoojas: u });
-    } else {
-      const u = { ...poojaPatches, [id]: { ...(poojaPatches[id] || {}), ...patch } };
-      setPoojaPatches(u); persist({ poojaPatches: u });
-    }
-  }, [poojaPatches, customPoojas, persist]);
-
-  const addPooja = useCallback((pooja) => {
+  const addPooja = useCallback(async (pooja) => {
     const item = { ...pooja, id: `cp-${Date.now()}`, active: true, showInHome: false };
-    const u = [...customPoojas, item];
-    setCustomPoojas(u); persist({ customPoojas: u });
-  }, [customPoojas, persist]);
+    const res = await poojasAPI.create(getToken(), item);
+    if (res.success) setPoojas(prev => [...prev, res.data]);
+  }, []);
 
-  const deletePooja = useCallback((id) => {
-    if (customPoojas.some(p => p.id === id)) {
-      const u = customPoojas.filter(p => p.id !== id);
-      setCustomPoojas(u); persist({ customPoojas: u });
-    } else {
-      updatePooja(id, { active: false, _deleted: true });
-    }
-  }, [customPoojas, updatePooja]);
+  const deletePooja = useCallback(async (id) => {
+    setPoojas(prev => prev.filter(p => p.id !== id));
+    await poojasAPI.remove(getToken(), id);
+  }, []);
 
-  // ── DARSHAN ──────────────────────────────────────────────────
-  const darshanItems = [...applyPatches(BASE_DARSHAN, darshanPatches), ...customDarshan];
+  // ── DARSHAN ──────────────────────────────────────────────────────
+  const updateDarshan = useCallback(async (id, patch) => {
+    setDarshanItems(prev => prev.map(d => d.id === id ? { ...d, ...patch } : d));
+    await darshanTypesAPI.update(getToken(), id, patch);
+  }, []);
 
-  const updateDarshan = useCallback((id, patch) => {
-    if (customDarshan.some(d => d.id === id)) {
-      const u = customDarshan.map(d => d.id === id ? { ...d, ...patch } : d);
-      setCustomDarshan(u); persist({ customDarshan: u });
-    } else {
-      const u = { ...darshanPatches, [id]: { ...(darshanPatches[id] || {}), ...patch } };
-      setDarshanPatches(u); persist({ darshanPatches: u });
-    }
-  }, [darshanPatches, customDarshan, persist]);
-
-  const addDarshan = useCallback((darshan) => {
+  const addDarshan = useCallback(async (darshan) => {
     const item = { ...darshan, id: `cd-${Date.now()}`, active: true, showInHome: false };
-    const u = [...customDarshan, item];
-    setCustomDarshan(u); persist({ customDarshan: u });
-  }, [customDarshan, persist]);
+    const res = await darshanTypesAPI.create(getToken(), item);
+    if (res.success) setDarshanItems(prev => [...prev, res.data]);
+  }, []);
 
-  const deleteDarshan = useCallback((id) => {
-    if (customDarshan.some(d => d.id === id)) {
-      const u = customDarshan.filter(d => d.id !== id);
-      setCustomDarshan(u); persist({ customDarshan: u });
-    } else {
-      updateDarshan(id, { active: false, _deleted: true });
-    }
-  }, [customDarshan, updateDarshan]);
+  const deleteDarshan = useCallback(async (id) => {
+    setDarshanItems(prev => prev.filter(d => d.id !== id));
+    await darshanTypesAPI.remove(getToken(), id);
+  }, []);
 
-  // ── DONATIONS ─────────────────────────────────────────────────
-  const donationItems = [...applyPatches(BASE_DONATIONS, donationPatches), ...customDonations];
+  // ── DONATIONS ────────────────────────────────────────────────────
+  const updateDonation = useCallback(async (id, patch) => {
+    setDonationItems(prev => prev.map(d => d.id === id ? { ...d, ...patch } : d));
+    await donationCausesAPI.update(getToken(), id, patch);
+  }, []);
 
-  const updateDonation = useCallback((id, patch) => {
-    if (customDonations.some(d => d.id === id)) {
-      const u = customDonations.map(d => d.id === id ? { ...d, ...patch } : d);
-      setCustomDonations(u); persist({ customDonations: u });
-    } else {
-      const u = { ...donationPatches, [id]: { ...(donationPatches[id] || {}), ...patch } };
-      setDonationPatches(u); persist({ donationPatches: u });
-    }
-  }, [donationPatches, customDonations, persist]);
-
-  const addDonation = useCallback((don) => {
+  const addDonation = useCallback(async (don) => {
     const item = { ...don, id: `cdn-${Date.now()}`, active: true };
-    const u = [...customDonations, item];
-    setCustomDonations(u); persist({ customDonations: u });
-  }, [customDonations, persist]);
+    const res = await donationCausesAPI.create(getToken(), item);
+    if (res.success) setDonationItems(prev => [...prev, res.data]);
+  }, []);
 
-  const deleteDonation = useCallback((id) => {
-    if (customDonations.some(d => d.id === id)) {
-      const u = customDonations.filter(d => d.id !== id);
-      setCustomDonations(u); persist({ customDonations: u });
-    } else {
-      updateDonation(id, { active: false, _deleted: true });
-    }
-  }, [customDonations, updateDonation]);
+  const deleteDonation = useCallback(async (id) => {
+    setDonationItems(prev => prev.filter(d => d.id !== id));
+    await donationCausesAPI.remove(getToken(), id);
+  }, []);
 
-  // ── EVENTS ────────────────────────────────────────────────────
-  const updateEvent = useCallback((id, patch) => {
-    const u = events.map(e => e.id === id ? { ...e, ...patch } : e);
-    setEvents(u); persist({ events: u });
-  }, [events, persist]);
+  // ── EVENTS ───────────────────────────────────────────────────────
+  const updateEvent = useCallback(async (id, patch) => {
+    setEvents(prev => prev.map(e => e.id === id ? { ...e, ...patch } : e));
+    await eventsAPI.update(getToken(), id, patch);
+  }, []);
 
-  const addEvent = useCallback((ev) => {
+  const addEvent = useCallback(async (ev) => {
     const item = { ...ev, id: `ev-${Date.now()}`, active: true, showInHome: false };
-    const u = [...events, item];
-    setEvents(u); persist({ events: u });
-  }, [events, persist]);
+    const res = await eventsAPI.create(getToken(), item);
+    if (res.success) setEvents(prev => [...prev, res.data]);
+  }, []);
 
-  const deleteEvent = useCallback((id) => {
-    const u = events.filter(e => e.id !== id);
-    setEvents(u); persist({ events: u });
-  }, [events, persist]);
+  const deleteEvent = useCallback(async (id) => {
+    setEvents(prev => prev.filter(e => e.id !== id));
+    await eventsAPI.remove(getToken(), id);
+  }, []);
 
-  // ── TEMPLE SETTINGS ──────────────────────────────────────────
-  const updateTempleSettings = useCallback((patch) => {
-    const u = { ...templeSettings, ...patch };
-    setTempleSettings(u); persist({ templeSettings: u });
-  }, [templeSettings, persist]);
+  // ── HERO IMAGES ──────────────────────────────────────────────────
+  const updateHeroImage = useCallback(async (id, patch) => {
+    setHeroImages(prev => prev.map(h => h.id === id ? { ...h, ...patch } : h));
+    await heroImagesAPI.update(getToken(), id, patch);
+  }, []);
 
-  // ── DERIVED LISTS ─────────────────────────────────────────────
-  const activePoojas        = poojas.filter(p => p.active && !p._deleted);
-  const homePoojas          = activePoojas.filter(p => p.showInHome);
-  const activeDailyPoojas   = activePoojas.filter(p => p.category === 'daily');
-  const activeSpecialSevas  = activePoojas.filter(p => p.category === 'special');
-  const activeNerthikadans  = activePoojas.filter(p => p.category === 'nerthikadan');
+  const addHeroImage = useCallback(async (image) => {
+    const item = { ...image, id: `hero-${Date.now()}`, isActive: true };
+    const res = await heroImagesAPI.create(getToken(), item);
+    if (res.success) setHeroImages(prev => [...prev, res.data]);
+  }, []);
 
-  const activeDarshan       = darshanItems.filter(d => d.active && !d._deleted);
-  const homeDarshan         = activeDarshan.filter(d => d.showInHome);
+  const deleteHeroImage = useCallback(async (id) => {
+    setHeroImages(prev => prev.filter(h => h.id !== id));
+    await heroImagesAPI.remove(getToken(), id);
+  }, []);
 
-  const activeDonations     = donationItems.filter(d => d.active && !d._deleted);
+  // ── GALLERY ──────────────────────────────────────────────────────
+  const updateGalleryImage = useCallback(async (id, patch) => {
+    setGallery(prev => prev.map(g => g.id === id ? { ...g, ...patch } : g));
+    await galleryAPI.update(getToken(), id, patch);
+  }, []);
 
-  const activeEvents        = events.filter(e => e.active);
-  const homeEvents          = activeEvents.filter(e => e.showInHome);
+  const addGalleryImage = useCallback(async (image) => {
+    const item = { ...image, id: `gal-${Date.now()}`, isActive: true };
+    const res = await galleryAPI.create(getToken(), item);
+    if (res.success) setGallery(prev => [...prev, res.data]);
+  }, []);
+
+  const deleteGalleryImage = useCallback(async (id) => {
+    setGallery(prev => prev.filter(g => g.id !== id));
+    await galleryAPI.remove(getToken(), id);
+  }, []);
+
+  // ── LIVE STREAM ──────────────────────────────────────────────────
+  const updateLiveStream = useCallback(async (patch) => {
+    const updated = { ...liveStream, ...patch };
+    setLiveStream(updated);
+    await configAPI.updateConfig(getToken(), { liveStream: updated });
+  }, [liveStream]);
+
+  // ── TEMPLE SETTINGS ──────────────────────────────────────────────
+  const updateTempleSettings = useCallback(async (patch) => {
+    const updated = { ...templeSettings, ...patch };
+    setTempleSettings(updated);
+    await configAPI.updateConfig(getToken(), { templeSettings: updated });
+  }, [templeSettings]);
+
+  // ── Derived lists ─────────────────────────────────────────────────
+  const activePoojas       = poojas.filter(p => p.active);
+  const homePoojas         = activePoojas.filter(p => p.showInHome);
+  const activeDailyPoojas  = activePoojas.filter(p => p.category === 'daily');
+  const activeSpecialSevas = activePoojas.filter(p => p.category === 'special');
+  const activeNerthikadans = activePoojas.filter(p => p.category === 'nerthikadan');
+
+  const activeDarshan = darshanItems.filter(d => d.active);
+  const homeDarshan   = activeDarshan.filter(d => d.showInHome);
+
+  const activeDonations = donationItems.filter(d => d.active);
+
+  const activeEvents = events.filter(e => e.active);
+  const homeEvents   = activeEvents.filter(e => e.showInHome);
 
   return (
     <AdminDataContext.Provider value={{
-      // Poojas
+      loading,
+
       poojas, activePoojas, homePoojas,
       activeDailyPoojas, activeSpecialSevas, activeNerthikadans,
       updatePooja, addPooja, deletePooja,
-      // Darshan
+
       darshanItems, activeDarshan, homeDarshan,
       updateDarshan, addDarshan, deleteDarshan,
-      // Donations
+
       donationItems, activeDonations,
       updateDonation, addDonation, deleteDonation,
-      // Events
+
       events, activeEvents, homeEvents,
       updateEvent, addEvent, deleteEvent,
-      // Temple
+
+      heroImages, updateHeroImage, addHeroImage, deleteHeroImage,
+
+      gallery, updateGalleryImage, addGalleryImage, deleteGalleryImage,
+
+      liveStream, updateLiveStream,
+
       templeSettings, updateTempleSettings,
     }}>
       {children}

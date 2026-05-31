@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import AdminLayout from '../components/AdminLayout';
 import { useAdminData } from '../contexts/AdminDataContext';
+import { inputCls, labelCls, thCls } from '../utils/formStyles';
 import ImageUploader, { FALLBACKS } from '../components/ImageUploader';
+import { useToast } from '../components/Toast';
+import { useConfirm } from '../components/ConfirmDialog';
 
 const CATEGORIES = [
   { key: 'daily',       label: 'Normal Poojas' },
@@ -10,8 +13,8 @@ const CATEGORIES = [
 ];
 
 const BOOKING_TYPE_OPTIONS = [
-  { value: 'payment', label: '💳 Pay Online',    desc: 'Razorpay — pay before booking' },
-  { value: 'spot',    label: '🏛️ Pay on Spot',   desc: 'Book slot now, pay cash at temple' },
+  { value: 'payment', label: '💳 Pay Online',   desc: 'Razorpay — pay before booking' },
+  { value: 'spot',    label: '🛕 Pay on Spot',   desc: 'Book slot now, pay cash at temple' },
   { value: 'free',    label: '🆓 Free',           desc: 'No payment — just book the slot' },
   { value: 'both',    label: '🔀 Both',           desc: 'User picks: pay online or pay on spot' },
 ];
@@ -33,7 +36,7 @@ function Toggle({ checked, onChange }) {
 
 function BookingTypeBadge({ type }) {
   const map    = { payment: 'bg-blue-100 text-blue-700', spot: 'bg-amber-100 text-amber-800', free: 'bg-green-100 text-green-700', both: 'bg-purple-100 text-purple-700' };
-  const labels = { payment: '💳 Pay Online', spot: '🏛️ Pay on Spot', free: '🆓 Free', both: '🔀 Both' };
+  const labels = { payment: '💳 Pay Online', spot: '🛕 Pay on Spot', free: '🆓 Free', both: '🔀 Both' };
   return <span className={`px-2 py-0.5 rounded text-xs font-semibold ${map[type] || map.payment}`}>{labels[type] || type}</span>;
 }
 
@@ -54,31 +57,30 @@ function PoojaModal({ item, onClose, onSave, isNew }) {
         </div>
 
         <div className="p-5 space-y-4">
-          {/* Row 1 */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="label">Category</label>
-              <select value={form.category} onChange={e => set('category', e.target.value)} className="input">
+              <label className={labelCls}>Category</label>
+              <select value={form.category} onChange={e => set('category', e.target.value)} className={inputCls}>
                 {CATEGORIES.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
               </select>
             </div>
             <div>
-              <label className="label">Name *</label>
-              <input value={form.name} onChange={e => set('name', e.target.value)} className="input" placeholder="Pooja name" />
+              <label className={labelCls}>Name *</label>
+              <input value={form.name} onChange={e => set('name', e.target.value)} className={inputCls} placeholder="Pooja name" />
             </div>
             <div>
-              <label className="label">Price (₹)</label>
-              <input type="number" value={form.price} onChange={e => set('price', Number(e.target.value))} className="input" placeholder="0" />
+              <label className={labelCls}>Price (₹)</label>
+              <input type="number" value={form.price} onChange={e => set('price', Number(e.target.value))} className={inputCls} placeholder="0" />
             </div>
             <div>
-              <label className="label">Time / Schedule</label>
-              <input value={form.time} onChange={e => set('time', e.target.value)} className="input" placeholder="06:00 AM Daily" />
+              <label className={labelCls}>Time / Schedule</label>
+              <input value={form.time} onChange={e => set('time', e.target.value)} className={inputCls} placeholder="06:00 AM Daily" />
             </div>
           </div>
 
           {/* Booking Type */}
           <div>
-            <label className="label">Booking Type</label>
+            <label className={labelCls}>Booking Type</label>
             <div className="flex gap-2 flex-wrap">
               {BOOKING_TYPE_OPTIONS.map(opt => (
                 <button key={opt.value} type="button"
@@ -103,23 +105,23 @@ function PoojaModal({ item, onClose, onSave, isNew }) {
             label="Pooja Image"
           />
           <div>
-            <label className="label">Short Description</label>
-            <textarea rows={2} value={form.description} onChange={e => set('description', e.target.value)} className="input resize-none" />
+            <label className={labelCls}>Short Description</label>
+            <textarea rows={2} value={form.description} onChange={e => set('description', e.target.value)} className={`${inputCls} resize-none`} />
           </div>
           <div>
-            <label className="label">Detailed About</label>
-            <textarea rows={3} value={form.about} onChange={e => set('about', e.target.value)} className="input resize-none" />
+            <label className={labelCls}>Detailed About</label>
+            <textarea rows={3} value={form.about} onChange={e => set('about', e.target.value)} className={`${inputCls} resize-none`} />
           </div>
           <div>
-            <label className="label">Benefits (up to 3)</label>
+            <label className={labelCls}>Benefits (up to 3)</label>
             {(form.benefits || ['', '', '']).map((b, i) => (
               <input key={i} value={b} onChange={e => setBenefit(i, e.target.value)}
-                className="input mb-2" placeholder={`Benefit ${i + 1}`} />
+                className={`${inputCls} mb-2`} placeholder={`Benefit ${i + 1}`} />
             ))}
           </div>
           <div>
-            <label className="label">Instructions / Other Notes</label>
-            <textarea rows={2} value={form.other} onChange={e => set('other', e.target.value)} className="input resize-none" />
+            <label className={labelCls}>Instructions / Other Notes</label>
+            <textarea rows={2} value={form.other} onChange={e => set('other', e.target.value)} className={`${inputCls} resize-none`} />
           </div>
 
           {/* Tamil Translations */}
@@ -129,24 +131,24 @@ function PoojaModal({ item, onClose, onSave, isNew }) {
             </summary>
             <div className="px-4 pb-4 pt-2 space-y-3">
               <div>
-                <label className="label">பெயர் (Name in Tamil)</label>
-                <input value={form.name_ta || ''} onChange={e => set('name_ta', e.target.value)} className="input" placeholder="e.g. சுப்ரபாத சேவை" />
+                <label className={labelCls}>பெயர் (Name in Tamil)</label>
+                <input value={form.name_ta || ''} onChange={e => set('name_ta', e.target.value)} className={inputCls} placeholder="e.g. சுப்ரபாத சேவை" />
               </div>
               <div>
-                <label className="label">நேரம் (Time in Tamil)</label>
-                <input value={form.time_ta || ''} onChange={e => set('time_ta', e.target.value)} className="input" placeholder="e.g. தினமும் 05:00 AM" />
+                <label className={labelCls}>நேரம் (Time in Tamil)</label>
+                <input value={form.time_ta || ''} onChange={e => set('time_ta', e.target.value)} className={inputCls} placeholder="e.g. தினமும் 05:00 AM" />
               </div>
               <div>
-                <label className="label">சுருக்கம் (Short Description in Tamil)</label>
-                <textarea rows={2} value={form.description_ta || ''} onChange={e => set('description_ta', e.target.value)} className="input resize-none" />
+                <label className={labelCls}>சுருக்கம் (Short Description in Tamil)</label>
+                <textarea rows={2} value={form.description_ta || ''} onChange={e => set('description_ta', e.target.value)} className={`${inputCls} resize-none`} />
               </div>
               <div>
-                <label className="label">விரிவான விளக்கம் (About in Tamil)</label>
-                <textarea rows={3} value={form.about_ta || ''} onChange={e => set('about_ta', e.target.value)} className="input resize-none" />
+                <label className={labelCls}>விரிவான விளக்கம் (About in Tamil)</label>
+                <textarea rows={3} value={form.about_ta || ''} onChange={e => set('about_ta', e.target.value)} className={`${inputCls} resize-none`} />
               </div>
               <div>
-                <label className="label">வழிமுறைகள் (Instructions in Tamil)</label>
-                <textarea rows={2} value={form.other_ta || ''} onChange={e => set('other_ta', e.target.value)} className="input resize-none" />
+                <label className={labelCls}>வழிமுறைகள் (Instructions in Tamil)</label>
+                <textarea rows={2} value={form.other_ta || ''} onChange={e => set('other_ta', e.target.value)} className={`${inputCls} resize-none`} />
               </div>
             </div>
           </details>
@@ -177,18 +179,17 @@ function PoojaModal({ item, onClose, onSave, isNew }) {
 }
 
 export default function PoojaManagePage() {
+  const confirm = useConfirm();
+  const toast = useToast();
   const { poojas, updatePooja, addPooja, deletePooja } = useAdminData();
   const [activeTab, setActiveTab] = useState('daily');
   const [editItem, setEditItem] = useState(null);
   const [showAdd, setShowAdd] = useState(false);
 
-  const filtered = poojas.filter(p => p.category === activeTab && !p._deleted);
+  const filtered = poojas.filter(p => p.category === activeTab);
 
   return (
     <AdminLayout>
-      {/* Tailwind utility shorthand via style tag trick — add input/label classes */}
-      <style>{`.input{width:100%;border:1px solid #d1d5db;border-radius:0.5rem;padding:0.5rem 0.75rem;font-size:0.875rem;outline:none}.input:focus{ring:2px;border-color:#f97316}.label{display:block;font-size:0.875rem;font-weight:500;color:#374151;margin-bottom:0.25rem}`}</style>
-
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Pooja & Seva Management</h2>
@@ -208,7 +209,7 @@ export default function PoojaManagePage() {
         <span className="text-gray-300">|</span>
         <span>
           <span className="font-semibold text-blue-600">💳 Pay Online</span> = Razorpay &nbsp;·&nbsp;
-          <span className="font-semibold text-amber-600">🏛️ Pay on Spot</span> = book slot, pay cash at temple &nbsp;·&nbsp;
+          <span className="font-semibold text-amber-600">🛕 Pay on Spot</span> = book slot, pay cash at temple &nbsp;·&nbsp;
           <span className="font-semibold text-green-600">🆓 Free</span> = no payment &nbsp;·&nbsp;
           <span className="font-semibold text-purple-600">🔀 Both</span> = user picks online or spot
         </span>
@@ -217,7 +218,7 @@ export default function PoojaManagePage() {
       {/* Category Tabs */}
       <div className="flex gap-1 mb-5 border-b">
         {CATEGORIES.map(cat => {
-          const count = poojas.filter(p => p.category === cat.key && !p._deleted).length;
+          const count = poojas.filter(p => p.category === cat.key).length;
           return (
             <button key={cat.key} onClick={() => setActiveTab(cat.key)}
               className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
@@ -237,12 +238,12 @@ export default function PoojaManagePage() {
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
-              <th className="th">Pooja / Seva</th>
-              <th className="th">Price</th>
-              <th className="th">Booking Type</th>
-              <th className="th text-center">Active</th>
-              <th className="th text-center">Show in Home</th>
-              <th className="th">Actions</th>
+              <th className={thCls}>Pooja / Seva</th>
+              <th className={thCls}>Price</th>
+              <th className={thCls}>Booking Type</th>
+              <th className={`${thCls} text-center`}>Active</th>
+              <th className={`${thCls} text-center`}>Show in Home</th>
+              <th className={thCls}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -255,7 +256,7 @@ export default function PoojaManagePage() {
                   <div className="flex items-center gap-3">
                     {item.image && (
                       <img src={item.image} alt={item.name} className="w-10 h-10 rounded-lg object-cover shrink-0"
-                        onError={e => e.target.style.display='none'} />
+                        onError={e => e.target.style.display = 'none'} />
                     )}
                     <div>
                       <p className="font-semibold text-gray-900 text-sm">{item.name}</p>
@@ -279,7 +280,7 @@ export default function PoojaManagePage() {
                   <div className="flex gap-2">
                     <button onClick={() => setEditItem(item)}
                       className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium hover:bg-blue-200">Edit</button>
-                    <button onClick={() => { if (window.confirm(`Remove "${item.name}"?`)) deletePooja(item.id); }}
+                    <button onClick={async () => { if (await confirm(`Remove "${item.name}"?`)) deletePooja(item.id); }}
                       className="px-3 py-1 bg-red-100 text-red-700 rounded text-xs font-medium hover:bg-red-200">Remove</button>
                   </div>
                 </td>
@@ -288,8 +289,6 @@ export default function PoojaManagePage() {
           </tbody>
         </table>
       </div>
-
-      <style>{`.th{text-align:left;padding:0.75rem 1rem;font-size:0.7rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em}`}</style>
 
       {editItem && <PoojaModal item={editItem} onClose={() => setEditItem(null)} onSave={d => updatePooja(editItem.id, d)} isNew={false} />}
       {showAdd   && <PoojaModal item={{ ...emptyForm, category: activeTab }} onClose={() => setShowAdd(false)} onSave={d => addPooja(d)} isNew />}

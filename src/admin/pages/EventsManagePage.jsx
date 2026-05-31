@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import AdminLayout from '../components/AdminLayout';
 import { useAdminData } from '../contexts/AdminDataContext';
+import { inputCls, labelCls } from '../utils/formStyles';
 import ImageUploader, { FALLBACKS } from '../components/ImageUploader';
+import { useToast } from '../components/Toast';
+import { useConfirm } from '../components/ConfirmDialog';
 
 function Toggle({ checked, onChange }) {
   return (
@@ -40,36 +43,36 @@ function EventModal({ item, onClose, onSave, isNew }) {
         <div className="p-5 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
-              <label className="label">Event Title *</label>
-              <input value={form.title} onChange={e => set('title', e.target.value)} className="input" placeholder="e.g. Vaikunta Ekadashi" />
+              <label className={labelCls}>Event Title *</label>
+              <input value={form.title} onChange={e => set('title', e.target.value)} className={inputCls} placeholder="e.g. Vaikunta Ekadashi" />
             </div>
             <div>
-              <label className="label">Category</label>
-              <select value={form.category} onChange={e => set('category', e.target.value)} className="input">
+              <label className={labelCls}>Category</label>
+              <select value={form.category} onChange={e => set('category', e.target.value)} className={inputCls}>
                 {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </div>
             <div>
-              <label className="label">Date</label>
-              <input value={form.date} onChange={e => set('date', e.target.value)} className="input" placeholder="May 22, 2026" />
+              <label className={labelCls}>Date</label>
+              <input value={form.date} onChange={e => set('date', e.target.value)} className={inputCls} placeholder="May 22, 2026" />
             </div>
             <div>
-              <label className="label">Time</label>
-              <input value={form.time} onChange={e => set('time', e.target.value)} className="input" placeholder="05:00 AM - 09:00 PM" />
+              <label className={labelCls}>Time</label>
+              <input value={form.time} onChange={e => set('time', e.target.value)} className={inputCls} placeholder="05:00 AM - 09:00 PM" />
             </div>
             <div>
-              <label className="label">Location</label>
-              <input value={form.location} onChange={e => set('location', e.target.value)} className="input" placeholder="Main Sanctum Hall" />
+              <label className={labelCls}>Location</label>
+              <input value={form.location} onChange={e => set('location', e.target.value)} className={inputCls} placeholder="Main Sanctum Hall" />
             </div>
             <div className="col-span-2">
-              <label className="label">Participants / Entry</label>
-              <input value={form.participants} onChange={e => set('participants', e.target.value)} className="input" placeholder="Open for all devotees" />
+              <label className={labelCls}>Participants / Entry</label>
+              <input value={form.participants} onChange={e => set('participants', e.target.value)} className={inputCls} placeholder="Open for all devotees" />
             </div>
           </div>
 
           <div>
-            <label className="label">Event Details / Description</label>
-            <textarea rows={4} value={form.details} onChange={e => set('details', e.target.value)} className="input resize-none" />
+            <label className={labelCls}>Event Details / Description</label>
+            <textarea rows={4} value={form.details} onChange={e => set('details', e.target.value)} className={`${inputCls} resize-none`} />
           </div>
 
           <ImageUploader
@@ -82,12 +85,12 @@ function EventModal({ item, onClose, onSave, isNew }) {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="label">CTA Button Text</label>
-              <input value={form.ctaText} onChange={e => set('ctaText', e.target.value)} className="input" placeholder="Sponsor Annadanam" />
+              <label className={labelCls}>CTA Button Text</label>
+              <input value={form.ctaText} onChange={e => set('ctaText', e.target.value)} className={inputCls} placeholder="Sponsor Annadanam" />
             </div>
             <div>
-              <label className="label">CTA Link</label>
-              <input value={form.ctaLink} onChange={e => set('ctaLink', e.target.value)} className="input" placeholder="/donate" />
+              <label className={labelCls}>CTA Link</label>
+              <input value={form.ctaLink} onChange={e => set('ctaLink', e.target.value)} className={inputCls} placeholder="/donate" />
             </div>
           </div>
 
@@ -98,16 +101,16 @@ function EventModal({ item, onClose, onSave, isNew }) {
             </summary>
             <div className="px-4 pb-4 pt-2 space-y-3">
               <div>
-                <label className="label">நிகழ்வு பெயர் (Title in Tamil)</label>
-                <input value={form.title_ta || ''} onChange={e => set('title_ta', e.target.value)} className="input" placeholder="e.g. வைகுண்ட ஏகாதசி" />
+                <label className={labelCls}>நிகழ்வு பெயர் (Title in Tamil)</label>
+                <input value={form.title_ta || ''} onChange={e => set('title_ta', e.target.value)} className={inputCls} placeholder="e.g. வைகுண்ட ஏகாதசி" />
               </div>
               <div>
-                <label className="label">இடம் (Location in Tamil)</label>
-                <input value={form.location_ta || ''} onChange={e => set('location_ta', e.target.value)} className="input" />
+                <label className={labelCls}>இடம் (Location in Tamil)</label>
+                <input value={form.location_ta || ''} onChange={e => set('location_ta', e.target.value)} className={inputCls} />
               </div>
               <div>
-                <label className="label">விவரங்கள் (Details in Tamil)</label>
-                <textarea rows={3} value={form.details_ta || ''} onChange={e => set('details_ta', e.target.value)} className="input resize-none" />
+                <label className={labelCls}>விவரங்கள் (Details in Tamil)</label>
+                <textarea rows={3} value={form.details_ta || ''} onChange={e => set('details_ta', e.target.value)} className={`${inputCls} resize-none`} />
               </div>
             </div>
           </details>
@@ -137,17 +140,14 @@ function EventModal({ item, onClose, onSave, isNew }) {
 }
 
 export default function EventsManagePage() {
+  const confirm = useConfirm();
+  const toast = useToast();
   const { events, updateEvent, addEvent, deleteEvent } = useAdminData();
   const [editItem, setEditItem] = useState(null);
   const [showAdd, setShowAdd] = useState(false);
 
-  const upcoming  = events.filter(e => e.category === 'upcoming');
-  const community = events.filter(e => e.category === 'community');
-
   return (
     <AdminLayout>
-      <style>{`.input{width:100%;border:1px solid #d1d5db;border-radius:0.5rem;padding:0.5rem 0.75rem;font-size:0.875rem;outline:none}.label{display:block;font-size:0.875rem;font-weight:500;color:#374151;margin-bottom:0.25rem}`}</style>
-
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Events Management</h2>
@@ -159,12 +159,12 @@ export default function EventsManagePage() {
         </button>
       </div>
 
-      {/* Stats bar */}
+      {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         {[
-          { label: 'Total Events',   value: events.length,                   color: 'text-gray-700' },
-          { label: 'Active',         value: events.filter(e=>e.active).length, color: 'text-green-600' },
-          { label: 'Shown on Home',  value: events.filter(e=>e.showInHome).length, color: 'text-amber-600' },
+          { label: 'Total Events',  value: events.length,                        color: 'text-gray-700' },
+          { label: 'Active',        value: events.filter(e => e.active).length,   color: 'text-green-600' },
+          { label: 'Shown on Home', value: events.filter(e => e.showInHome).length, color: 'text-amber-600' },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl border p-4 text-center shadow-sm">
             <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
@@ -186,16 +186,14 @@ export default function EventsManagePage() {
           <div key={ev.id}
             className={`bg-white rounded-xl border shadow-sm p-4 flex flex-col sm:flex-row gap-4 transition-opacity ${!ev.active ? 'opacity-60' : ''}`}>
 
-            {/* Image */}
-            <div className="w-32 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
+            <div className="w-32 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0 flex items-center justify-center">
               {ev.imageUrl ? (
-                <img src={ev.imageUrl} alt={ev.title} className="w-full h-full object-cover" onError={e => e.target.style.display='none'} />
+                <img src={ev.imageUrl} alt={ev.title} className="w-full h-full object-cover" onError={e => e.target.style.display = 'none'} />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-300 text-3xl">🎪</div>
+                <span className="text-3xl text-gray-300">🎪</span>
               )}
             </div>
 
-            {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-1">
                 <h3 className="font-bold text-gray-900">{ev.title}</h3>
@@ -205,7 +203,7 @@ export default function EventsManagePage() {
                   {ev.category === 'upcoming' ? '🔥 Festival' : '🤝 Seva'}
                 </span>
               </div>
-              <p className="text-sm text-gray-500">📅 {ev.date} {ev.time && `· ${ev.time}`}</p>
+              <p className="text-sm text-gray-500">📅 {ev.date}{ev.time && ` · ${ev.time}`}</p>
               {ev.location && <p className="text-xs text-gray-400 mt-0.5">📍 {ev.location}</p>}
 
               <div className="flex flex-wrap gap-5 mt-3">
@@ -220,11 +218,10 @@ export default function EventsManagePage() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex gap-2 shrink-0">
               <button onClick={() => setEditItem(ev)}
                 className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded text-sm font-medium hover:bg-blue-200">Edit</button>
-              <button onClick={() => { if (window.confirm(`Delete "${ev.title}"?`)) deleteEvent(ev.id); }}
+              <button onClick={async () => { if (await confirm(`Delete "${ev.title}"?`)) deleteEvent(ev.id); }}
                 className="px-3 py-1.5 bg-red-100 text-red-700 rounded text-sm font-medium hover:bg-red-200">Delete</button>
             </div>
           </div>

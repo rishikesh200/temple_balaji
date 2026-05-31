@@ -46,6 +46,7 @@ export default function BookingSection({ selectedType, onSelectType }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [bookingSuccess, setBookingSuccess] = useState(false)
   const [bookingRef, setBookingRef] = useState("")
+  const [paymentError, setPaymentError] = useState('')
 
   // Resolve current active Darshan type from admin data list
   const currentDarshan = darshanTypes.find(t => t.id === selectedType) || darshanTypes[0]
@@ -157,7 +158,7 @@ export default function BookingSection({ selectedType, onSelectType }) {
       })
 
       if (!order.success) {
-        window.alert(order.message || order.error || 'Unable to create darshan order.')
+        setPaymentError(order.message || order.error || 'Unable to create darshan order.')
         setIsSubmitting(false)
         return
       }
@@ -196,7 +197,7 @@ export default function BookingSection({ selectedType, onSelectType }) {
             setBookingSuccess(true)
             window.scrollTo({ top: 0, behavior: 'smooth' })
           } else {
-            window.alert(verify.message || 'Payment verification failed.')
+            setPaymentError(verify.message || 'Payment verification failed.')
           }
         },
       }
@@ -205,7 +206,7 @@ export default function BookingSection({ selectedType, onSelectType }) {
       razorpay.open()
     } catch (error) {
       console.error(error)
-      window.alert('Unable to complete darshan booking at this time.')
+      setPaymentError('Unable to complete darshan booking at this time.')
     } finally {
       setIsSubmitting(false)
     }

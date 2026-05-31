@@ -25,11 +25,14 @@ function DarshanTypeCard({ option, onSelectType, lang }) {
           </div>
         )}
         <div className="h-64 overflow-hidden relative">
-          <img
-            src={option.imageUrl || option.image}
-            alt={option.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-          />
+          {(option.imageUrl || option.image) ? (
+            <img
+              src={option.imageUrl || option.image}
+              alt={option.title}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              onError={e => { e.target.style.display = 'none' }}
+            />
+          ) : null}
           <div
             className={`absolute top-4 left-4 px-3 py-1 rounded text-sm font-bold ${
               option.bookingType === 'free' || option.badge === "FREE"

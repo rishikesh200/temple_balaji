@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { CheckCircle, Sparkles, X } from "lucide-react"
 import { useLanguage } from "../../../contexts/LanguageContext"
-import { donationCauses } from "../../../data/donationCauses"
+import { useAdminData } from "../../../admin/contexts/AdminDataContext"
 import { paymentAPI, loadRazorpayScript } from "../../../services/api"
 
 const DONATION_FORM_TRANSLATIONS = {
@@ -74,13 +74,15 @@ const DONATION_FORM_TRANSLATIONS = {
 }
 
 export default function DonateFormSection({ selectedCause, selectedAmount }) {
-  const [cause, setCause] = useState(selectedCause || donationCauses[0]?.id || "general")
+  const { activeDonations: donationCauses } = useAdminData()
+  const [cause, setCause] = useState(selectedCause || "")
   const [amount, setAmount] = useState(selectedAmount || "")
   const [donorName, setDonorName] = useState("")
   const [donorEmail, setDonorEmail] = useState("")
   const [donorPhone, setDonorPhone] = useState("")
   const [message, setMessage] = useState("")
   const [isProcessing, setIsProcessing] = useState(false)
+  const [formError, setFormError] = useState('')
   const [donationSuccess, setDonationSuccess] = useState(false)
   const [donationRef, setDonationRef] = useState("")
   const [amountPaid, setAmountPaid] = useState(0)
@@ -91,8 +93,10 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
   useEffect(() => {
     if (selectedCause) {
       setCause(selectedCause)
+    } else if (!cause && donationCauses.length > 0) {
+      setCause(donationCauses[0].id)
     }
-  }, [selectedCause])
+  }, [selectedCause, donationCauses])
 
   useEffect(() => {
     setAmount(selectedAmount || "")
@@ -117,22 +121,22 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
   const handleSubmit = async () => {
     const parsedAmount = Number(amount)
     if (!parsedAmount || parsedAmount < 1) {
-      window.alert(t.validAmountAlert)
+      setFormError(t.validAmountAlert)
       return
     }
 
     if (!donorName.trim()) {
-      window.alert(t.nameAlert)
+      setFormError(t.nameAlert)
       return
     }
 
     if (!donorEmail.trim()) {
-      window.alert(t.emailAlert)
+      setFormError(t.emailAlert)
       return
     }
 
     if (!donorPhone.trim() || donorPhone.trim().length < 10) {
-      window.alert(t.phoneAlert)
+      setFormError(t.phoneAlert)
       return
     }
 
@@ -141,7 +145,7 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
     try {
       const loaded = await loadRazorpayScript()
       if (!loaded) {
-        window.alert("Unable to load payment checkout. Please try again.")
+        setFormError("Unable to load payment checkout. Please try again.")
         return
       }
 
@@ -155,7 +159,7 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
       })
 
       if (!order.success) {
-        window.alert(order.message || order.error || "Unable to create donation order.")
+        setFormError(order.message || order.error || "Unable to create donation order.")
         return
       }
 
@@ -193,7 +197,7 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
             setDonationSuccess(true)
             window.scrollTo({ top: 0, behavior: "smooth" })
           } else {
-            window.alert(verify.message || "Donation verification failed.")
+            setFormError(verify.message || "Donation verification failed.")
           }
         },
       }
@@ -202,7 +206,7 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
       razorpay.open()
     } catch (error) {
       console.error(error)
-      window.alert("Unable to complete donation at this time.")
+      setFormError("Unable to complete donation at this time.")
     } finally {
       setIsProcessing(false)
     }
@@ -294,11 +298,19 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
             />
           </label>
 
+          {formError && (
+            <div className="mt-4 flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl px-4 py-3">
+              <span className="shrink-0 font-bold">⚠</span>
+              <span className="flex-1">{formError}</span>
+              <button onClick={() => setFormError('')} className="ml-auto text-red-400 hover:text-red-600 font-bold">✕</button>
+            </div>
+          )}
+
           <button
             type="button"
-            onClick={handleSubmit}
+            onClick={() => { setFormError(''); handleSubmit(); }}
             disabled={isProcessing}
-            className={`mt-8 w-full inline-flex items-center justify-center gap-3 rounded-3xl bg-[#8B1A1A] px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-[#6B1414] ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className={`mt-6 w-full inline-flex items-center justify-center gap-3 rounded-3xl bg-[#8B1A1A] px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-[#6B1414] ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
             {isProcessing ? t.processing : t.donateButton}
           </button>

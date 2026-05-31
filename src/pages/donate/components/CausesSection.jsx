@@ -58,11 +58,14 @@ function DonationCauseCard({ cause, onDonateSelect }) {
   return (
     <article className="bg-white border border-[#E5D5C5]/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group ring-1 ring-black/5">
       <div className="h-48 overflow-hidden relative border-b border-[#E5D5C5]/30">
-        <img
-          src={cause.imageUrl || cause.image}
-          alt={cause.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        {(cause.imageUrl || cause.image) ? (
+          <img
+            src={cause.imageUrl || cause.image}
+            alt={cause.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onError={e => { e.target.style.display = 'none' }}
+          />
+        ) : null}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
       </div>
       <div className="p-6 flex flex-col flex-grow">

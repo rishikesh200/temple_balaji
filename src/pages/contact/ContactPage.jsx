@@ -3,6 +3,8 @@ import { CheckCircle2, Clock, Mail, MapPin, Phone, Send } from "lucide-react"
 import { useLanguage } from "../../contexts/LanguageContext"
 import heroImg from "../../assets/images/hero-balaji.jpg"
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+
 const CONTACT_TRANSLATIONS = {
   en: {
     heading: "Get in Touch",
@@ -85,6 +87,7 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const { lang } = useLanguage()
   const t = CONTACT_TRANSLATIONS[lang] || CONTACT_TRANSLATIONS.en
 
@@ -93,16 +96,28 @@ export default function ContactPage() {
     setFormState((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Simulate premium API request submission
-    setTimeout(() => {
+    setSubmitError('')
+    try {
+      const res = await fetch(`${API_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formState),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setIsSubmitted(true)
+        setFormState({ name: '', email: '', phone: '', message: '' })
+      } else {
+        setSubmitError(data.message || 'Something went wrong. Please try again.')
+      }
+    } catch {
+      setSubmitError('Unable to send message. Please check your connection and try again.')
+    } finally {
       setIsSubmitting(false)
-      setIsSubmitted(true)
-      setFormState({ name: "", email: "", phone: "", message: "" })
-    }, 1500)
+    }
   }
 
   return (
@@ -211,6 +226,12 @@ export default function ContactPage() {
                       className="w-full bg-black/30 border border-white/15 focus:border-[#D4A853] focus:ring-1 focus:ring-[#D4A853] rounded-xl py-3 px-4 text-white text-sm placeholder:text-white/30 transition-all outline-none resize-none"
                     />
                   </div>
+
+                  {submitError && (
+                    <p className="text-red-400 text-sm text-center bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-2">
+                      {submitError}
+                    </p>
+                  )}
 
                   <button
                     type="submit"

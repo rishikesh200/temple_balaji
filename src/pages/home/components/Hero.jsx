@@ -16,9 +16,9 @@ import { useLanguage } from "../../../contexts/LanguageContext";
 
 import balaji1 from './../../../assets/images/hero/balaji1.png';
 import balaji2 from './../../../assets/images/hero/balaji2.png';
-import balaji3 from './../../../assets/images/hero/balaji3.png';
-import balaji4 from './../../../assets/images/hero/balaji4.jpeg';
-import balaji5 from './../../../assets/images/hero/balaji5.jpeg';
+import { useAdminData } from '../../../admin/contexts/AdminDataContext';
+
+const FALLBACK_IMAGES = [balaji1, balaji2];
 const HERO_TRANSLATIONS = {
   seekBlessings: {
     en: "Seek Blessings.",
@@ -96,7 +96,13 @@ const HERO_TRANSLATIONS = {
 
 const Hero = () => {
   const { lang } = useLanguage();
-  const bgImages = [balaji1, balaji2, balaji3, balaji4, balaji5];
+  const { heroImages } = useAdminData();
+
+  const activeDbImages = heroImages.filter(h => h.isActive);
+  // Use DB images if any exist; otherwise fall back to the 2 hardcoded images
+  const bgImages = activeDbImages.length > 0
+    ? activeDbImages.map(h => h.imageUrl)
+    : FALLBACK_IMAGES;
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(null);
   const [selectedAmount, setSelectedAmount] = useState('');

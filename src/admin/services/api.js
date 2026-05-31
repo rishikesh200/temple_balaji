@@ -1,5 +1,87 @@
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+// Temple Settings (SiteConfig — single doc)
+export const configAPI = {
+  getConfig: async () => {
+    const res = await fetch(`${API_URL}/api/config`);
+    return res.json();
+  },
+  updateConfig: async (token, data) => {
+    const res = await fetch(`${API_URL}/api/config`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+};
+
+function makeCollectionAPI(path) {
+  return {
+    getAll: async (token) => {
+      const url = `${API_URL}${path}${token ? '?all=true' : ''}`;
+      const res = await fetch(url, token ? { headers: { Authorization: `Bearer ${token}` } } : {});
+      return res.json();
+    },
+    create: async (token, data) => {
+      const res = await fetch(`${API_URL}${path}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(data),
+      });
+      return res.json();
+    },
+    update: async (token, id, data) => {
+      const res = await fetch(`${API_URL}${path}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(data),
+      });
+      return res.json();
+    },
+    remove: async (token, id) => {
+      const res = await fetch(`${API_URL}${path}/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.json();
+    },
+  };
+}
+
+export const poojasAPI        = makeCollectionAPI('/api/poojas');
+export const darshanTypesAPI  = makeCollectionAPI('/api/darshan-types');
+export const donationCausesAPI= makeCollectionAPI('/api/donation-causes');
+export const eventsAPI        = makeCollectionAPI('/api/events');
+export const galleryAPI       = makeCollectionAPI('/api/gallery');
+export const heroImagesAPI    = makeCollectionAPI('/api/hero-images');
+
+// Contact messages
+export const contactMessagesAPI = {
+  getAll: async (token, params = {}) => {
+    const q = new URLSearchParams(params).toString();
+    const res = await fetch(`${API_URL}/api/contact${q ? `?${q}` : ''}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.json();
+  },
+  update: async (token, id, data) => {
+    const res = await fetch(`${API_URL}/api/contact/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data),
+    });
+    return res.json();
+  },
+  remove: async (token, id) => {
+    const res = await fetch(`${API_URL}/api/contact/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.json();
+  },
+};
+
 // Image Upload — Vercel Blob via backend
 export const uploadImage = async (token, file, folder = 'temple') => {
   const form = new FormData();

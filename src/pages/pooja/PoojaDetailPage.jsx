@@ -118,6 +118,7 @@ export default function PoojaDetailPage() {
   const [bookingRef, setBookingRef] = useState("")
   const [isSaved, setIsSaved] = useState(false)
   const [isShared, setIsShared] = useState(false)
+  const [paymentError, setPaymentError] = useState('')
 
   // Scroll to top on load
   useEffect(() => {
@@ -252,7 +253,7 @@ export default function PoojaDetailPage() {
       })
 
       if (!order.success) {
-        window.alert(order.message || order.error || 'Unable to create booking order.')
+        setPaymentError(order.message || order.error || 'Unable to create booking order.')
         setIsSubmitting(false)
         return
       }
@@ -291,7 +292,7 @@ export default function PoojaDetailPage() {
             setBookingSuccess(true)
             window.scrollTo({ top: 0, behavior: 'smooth' })
           } else {
-            window.alert(verify.message || 'Payment verification failed.')
+            setPaymentError(verify.message || 'Payment verification failed.')
           }
         },
       }
@@ -300,7 +301,7 @@ export default function PoojaDetailPage() {
       razorpay.open()
     } catch (error) {
       console.error(error)
-      window.alert('Unable to complete booking at this time.')
+      setPaymentError('Unable to complete booking at this time.')
     } finally {
       setIsSubmitting(false)
     }
@@ -832,6 +833,15 @@ export default function PoojaDetailPage() {
                       </span>
                     </div>
                   </div>
+
+                  {/* Inline payment error */}
+                  {paymentError && (
+                    <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl px-4 py-3">
+                      <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                      <span>{paymentError}</span>
+                      <button onClick={() => setPaymentError('')} className="ml-auto text-red-400 hover:text-red-600">✕</button>
+                    </div>
+                  )}
 
                   {/* Booking mode picker — shown when admin set bookingType = 'both' */}
                   {bookingType === 'both' && (

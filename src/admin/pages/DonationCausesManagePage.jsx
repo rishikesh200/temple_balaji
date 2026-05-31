@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useToast } from '../components/Toast';
+import { useConfirm } from '../components/ConfirmDialog';
 import AdminLayout from '../components/AdminLayout';
 import { useAdminData } from '../contexts/AdminDataContext';
 import ImageUploader, { FALLBACKS } from '../components/ImageUploader';
@@ -118,7 +120,9 @@ function DonationModal({ item, onClose, onSave, isNew }) {
 }
 
 export default function DonationCausesManagePage() {
-  const { donationItems, updateDonation, addDonation, deleteDonation, resetDonation } = useAdminData();
+  const confirm = useConfirm();
+  const toast = useToast();
+  const { donationItems, updateDonation, addDonation, deleteDonation } = useAdminData();
   const [editItem, setEditItem] = useState(null);
   const [showAdd, setShowAdd] = useState(false);
 
@@ -177,7 +181,7 @@ export default function DonationCausesManagePage() {
                   className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium hover:bg-blue-200">
                   Edit
                 </button>
-                <button onClick={() => { if (window.confirm(`Remove "${item.title}"?`)) deleteDonation(item.id); }}
+                <button onClick={async () => { if (await confirm(`Remove "${item.title}"?`)) deleteDonation(item.id); }}
                   className="px-3 py-1 bg-red-100 text-red-700 rounded text-xs font-medium hover:bg-red-200">
                   Remove
                 </button>

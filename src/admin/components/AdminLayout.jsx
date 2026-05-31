@@ -16,6 +16,7 @@ const NAV_GROUPS = [
       { label: 'Donations',     path: '/admin/donations',        icon: '💛' },
       { label: 'Pooja Bookings',path: '/admin/pooja-bookings',   icon: '📋' },
       { label: 'Darshan Bookings',path:'/admin/darshan-bookings',icon: '🪷' },
+      { label: 'Contact Messages',path:'/admin/contacts',        icon: '💬' },
     ],
   },
   {
@@ -25,6 +26,8 @@ const NAV_GROUPS = [
       { label: 'Manage Darshan',   path: '/admin/manage-darshan',  icon: '🏛️' },
       { label: 'Donation Causes',  path: '/admin/manage-donations',icon: '🤝' },
       { label: 'Events',           path: '/admin/manage-events',   icon: '📅' },
+      { label: 'Gallery & Stream', path: '/admin/manage-gallery',  icon: '🖼️' },
+      { label: 'Hero Images',      path: '/admin/manage-hero',     icon: '🏔️' },
     ],
   },
   {

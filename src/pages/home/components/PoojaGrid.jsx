@@ -1,20 +1,8 @@
 import poojaThumb from "../../../assets/images/pooja.png"
-import poojaIcon from "../../../assets/images/ganesh_pooja.jpeg"
-import abhishekamIcon from "../../../assets/images/abishekam_pooja.jpeg"
-import alankaramIcon from "../../../assets/images/alankaram_pooja.jpeg"
-import navagrahaIcon from "../../../assets/images/navagraha_pooja.jpeg"
 import { useLanguage } from "../../../contexts/LanguageContext"
 import { useAdminData } from "../../../admin/contexts/AdminDataContext"
 import { Link } from "react-router-dom"
 import { slugify } from "../../../data/poojaData"
-
-// Fallback static list if no admin poojas are configured
-const FALLBACK_POOJAS = [
-  { id: 'ganapathy', name: "Ganapathy Pooja", price: 151, image: poojaIcon, requiresPayment: true },
-  { id: 'abhishekam', name: "Abhishekam",     price: 251, image: abhishekamIcon, requiresPayment: true },
-  { id: 'alankaram', name: "Alankaram",       price: 501, image: alankaramIcon, requiresPayment: true },
-  { id: 'navagraha', name: "Navagraha Pooja", price: 351, image: navagrahaIcon, requiresPayment: true },
-]
 
 const POOJA_TRANSLATIONS = {
   bookPooja:    { en: "Book Pooja & Sevas",                          ta: "பூஜை & சேவைகளை முன்பதிவு செய்யுங்கள்" },
@@ -30,10 +18,7 @@ const cardClass =
 
 export default function PoojaGrid() {
   const { lang } = useLanguage()
-  const { homePoojas } = useAdminData()
-
-  // Show poojas marked showInHome=true; fall back to static list if none configured
-  const displayPoojas = homePoojas.length > 0 ? homePoojas : FALLBACK_POOJAS
+  const { homePoojas: displayPoojas } = useAdminData()
 
   return (
     <section className="py-10 bg-[#F5E6D3]">

@@ -73,11 +73,13 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded text-sm text-blue-900">
-          <p className="font-bold mb-2">Demo Credentials:</p>
-          <p>Username: admin</p>
-          <p>Password: admin123</p>
-        </div>
+        {import.meta.env.DEV && (
+          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded text-sm text-blue-900">
+            <p className="font-bold mb-2">🛠 Dev Credentials (not shown in production):</p>
+            <p>Username: <code className="font-mono bg-blue-100 px-1 rounded">admin</code></p>
+            <p>Password: <code className="font-mono bg-blue-100 px-1 rounded">admin123</code></p>
+          </div>
+        )}
       </div>
     </div>
   );

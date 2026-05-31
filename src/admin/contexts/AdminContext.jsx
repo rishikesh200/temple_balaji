@@ -2,27 +2,31 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 
 const AdminContext = createContext();
 
+const IS_DEV = import.meta.env.DEV; // true in `npm run dev`, false in production build
+const DEMO_TOKEN = 'demo-local-token';
+
 export const useAdmin = () => {
-  const context = useContext(AdminContext);
-  if (!context) {
-    throw new Error('useAdmin must be used within AdminProvider');
-  }
-  return context;
+  const ctx = useContext(AdminContext);
+  if (!ctx) throw new Error('useAdmin must be used within AdminProvider');
+  return ctx;
 };
 
 export const AdminProvider = ({ children }) => {
-  const [admin, setAdmin] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('adminToken'));
+  const [admin,   setAdmin]   = useState(() => {
+    // Restore admin from localStorage on page reload (demo mode only)
+    if (localStorage.getItem('adminToken') === DEMO_TOKEN) {
+      try { return JSON.parse(localStorage.getItem('adminUser') || 'null'); } catch { return null; }
+    }
+    return null;
+  });
+  const [token,   setToken]   = useState(localStorage.getItem('adminToken'));
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error,   setError]   = useState(null);
 
-  const DEMO_USER = 'admin';
-  const DEMO_PASS = 'admin123';
-  const DEMO_TOKEN = 'demo-local-token';
-
+  // ── Demo login (dev-only) ──────────────────────────────────────
   const loginDemo = (username, password) => {
-    if (username === DEMO_USER && password === DEMO_PASS) {
-      const adminData = { username: DEMO_USER, role: 'superadmin' };
+    if (username === 'admin' && password === 'admin123') {
+      const adminData = { username: 'admin', role: 'superadmin' };
       setToken(DEMO_TOKEN);
       setAdmin(adminData);
       localStorage.setItem('adminToken', DEMO_TOKEN);
@@ -32,14 +36,15 @@ export const AdminProvider = ({ children }) => {
     return { success: false, error: 'Invalid username or password' };
   };
 
+  // ── Real login ─────────────────────────────────────────────────
   const login = useCallback(async (username, password) => {
     setLoading(true);
     setError(null);
 
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    // Use demo login if no API URL is configured or if it is a placeholder
-    if (!apiUrl || apiUrl === 'undefined') {
+    // Fallback to demo mode only in dev when API is not configured
+    if (IS_DEV && (!apiUrl || apiUrl === 'undefined')) {
       const result = loginDemo(username, password);
       setLoading(false);
       if (!result.success) setError(result.error);
@@ -53,11 +58,13 @@ export const AdminProvider = ({ children }) => {
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.json();
+      // Network succeeded but body might be empty
+      const text = await response.text();
+      if (!text) throw new Error('Empty response from server. Is the backend running?');
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
+      const data = JSON.parse(text);
+
+      if (!response.ok) throw new Error(data.message || 'Login failed');
 
       setToken(data.data.token);
       setAdmin(data.data);
@@ -65,13 +72,14 @@ export const AdminProvider = ({ children }) => {
 
       return { success: true };
     } catch (err) {
-      // If network error (backend down), fall back to demo credentials
-      if (err instanceof TypeError && err.message.includes('fetch')) {
+      // Network error — fallback to demo in dev only
+      if (IS_DEV && err instanceof TypeError && err.message.toLowerCase().includes('fetch')) {
         const result = loginDemo(username, password);
         if (result.success) return result;
       }
-      setError(err.message);
-      return { success: false, error: err.message };
+      const msg = err.message || 'Login failed';
+      setError(msg);
+      return { success: false, error: msg };
     } finally {
       setLoading(false);
     }
@@ -81,12 +89,11 @@ export const AdminProvider = ({ children }) => {
     setAdmin(null);
     setToken(null);
     localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
   }, []);
 
   const getMe = useCallback(async () => {
     if (!token) return;
-
-    // Demo token — restore admin from localStorage without API call
     if (token === DEMO_TOKEN) {
       try {
         const stored = localStorage.getItem('adminUser');
@@ -94,34 +101,26 @@ export const AdminProvider = ({ children }) => {
       } catch {}
       return;
     }
-
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
+      const res  = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setAdmin(data.data);
-      } else {
-        logout();
-      }
-    } catch (err) {
-      console.error('Failed to fetch admin data:', err);
+      const data = await res.json();
+      if (res.ok) setAdmin(data.data);
+      else logout();
+    } catch {
+      // Network down — keep current session, don't force logout
     }
   }, [token, logout]);
 
-  const value = {
-    admin,
-    token,
-    loading,
-    error,
-    login,
-    logout,
-    getMe,
-    isAuthenticated: !!token,
-  };
-
-  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
+  return (
+    <AdminContext.Provider value={{
+      admin, token, loading, error,
+      isAuthenticated: !!token,
+      isDemoMode: token === DEMO_TOKEN,
+      login, logout, getMe,
+    }}>
+      {children}
+    </AdminContext.Provider>
+  );
 };

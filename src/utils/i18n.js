@@ -6,7 +6,7 @@
  *
  * Usage:
  *   getT(pooja, 'name', lang)        // pooja.name_ta || pooja.name
- *   getT(event, 'details', lang)     // event.details_ta || event.details
+ *   getT(event, 'details', lang)     // event.details_ta || event.detailsscss
  */
 export const getT = (item, field, lang) => {
   if (!item) return '';
