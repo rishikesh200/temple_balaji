@@ -17,6 +17,7 @@ export function AdminDataProvider({ children }) {
   const [heroImages, setHeroImages] = useState([]);
   const [templeSettings, setTempleSettings] = useState({});
   const [liveStream, setLiveStream] = useState({ enabled: false, url: '', title: 'Live Darshan' });
+  const [theme, setTheme] = useState({});
 
   // ── Load all collections on mount ──────────────────────────────
   useEffect(() => {
@@ -40,6 +41,7 @@ export function AdminDataProvider({ children }) {
         if (cfg.success) {
           setTempleSettings(cfg.templeSettings ?? {});
           setLiveStream(cfg.liveStream ?? { enabled: false, url: '', title: 'Live Darshan' });
+          setTheme(cfg.theme ?? {});
         }
       })
       .catch(err => console.error('Data load failed:', err.message))
@@ -162,6 +164,12 @@ export function AdminDataProvider({ children }) {
     await configAPI.updateConfig(getToken(), { templeSettings: updated });
   }, [templeSettings]);
 
+  // ── THEME ─────────────────────────────────────────────────────────
+  const updateTheme = useCallback(async (newTheme) => {
+    setTheme(newTheme);
+    await configAPI.updateConfig(getToken(), { theme: newTheme });
+  }, []);
+
   // ── Derived lists ─────────────────────────────────────────────────
   const activePoojas       = poojas.filter(p => p.active);
   const homePoojas         = activePoojas.filter(p => p.showInHome);
@@ -201,6 +209,8 @@ export function AdminDataProvider({ children }) {
       liveStream, updateLiveStream,
 
       templeSettings, updateTempleSettings,
+
+      theme, updateTheme,
     }}>
       {children}
     </AdminDataContext.Provider>

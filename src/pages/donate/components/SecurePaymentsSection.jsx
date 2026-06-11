@@ -40,18 +40,18 @@ export default function SecurePaymentsSection() {
   ]
 
   return (
-    <section className="py-12 md:py-16 bg-[#FDF8F3] border-b border-[#E5D5C5]/40 relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-parchment border-b border-border-warm/40 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
         
         {/* Section titles */}
         <div className="mb-8">
-          <span className="text-[#8B1A1A] text-xs font-bold tracking-[0.2em] uppercase block mb-2">
+          <span className="text-maroon text-xs font-bold tracking-[0.2em] uppercase block mb-2">
             {t.sectionLabel}
           </span>
-          <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#2D1810]">
+          <h3 className="font-serif text-xl sm:text-2xl font-bold text-earth-dark">
             {t.title}
           </h3>
-          <p className="text-[#6B4423]/80 text-xs font-medium mt-1">
+          <p className="text-earth-medium/80 text-xs font-medium mt-1">
             {t.description}
           </p>
         </div>
@@ -61,7 +61,7 @@ export default function SecurePaymentsSection() {
           {paymentIcons.map((gateway, idx) => (
             <div 
               key={idx} 
-              className="bg-white px-6 py-3 rounded-2xl border border-[#E5D5C5] shadow-xs flex items-center justify-center hover:shadow-md hover:border-[#D4A853] hover:-translate-y-0.5 transition-all duration-300 h-16 w-40 cursor-pointer ring-1 ring-black/5"
+              className="bg-white px-6 py-3 rounded-2xl border border-border-warm shadow-xs flex items-center justify-center hover:shadow-md hover:border-gold hover:-translate-y-0.5 transition-all duration-300 h-16 w-40 cursor-pointer ring-1 ring-black/5"
             >
               <img 
                 src={gateway.icon} 

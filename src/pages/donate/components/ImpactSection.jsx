@@ -30,15 +30,15 @@ export default function ImpactSection() {
   const t = IMPACT_SECTION_TRANSLATIONS[lang] || IMPACT_SECTION_TRANSLATIONS.en
 
   return (
-    <section className="py-16 md:py-24 bg-[#F6F3F2] parchment-bg relative overflow-hidden animate-fade-in" id="impact">
+    <section className="py-16 md:py-24 bg-gray-warm-light parchment-bg relative overflow-hidden animate-fade-in" id="impact">
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         
         {/* Section Header */}
         <div className="text-center mb-14">
-          <span className="text-[#8B1A1A] text-xs font-semibold uppercase tracking-widest block mb-2">
+          <span className="text-maroon text-xs font-semibold uppercase tracking-widest block mb-2">
             {t.sectionLabel}
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#2D1810]">
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-earth-dark">
             {t.title}
           </h2>
         </div>
@@ -47,34 +47,34 @@ export default function ImpactSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
           
           {/* Card 1: Community Support */}
-          <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#E5D5C5] text-center relative group hover:border-[#D4A853]/60 hover:shadow-md transition-all duration-300">
-            <div className="w-16 h-16 bg-[#FDF8F3] border border-[#E5D5C5] rounded-full flex items-center justify-center mx-auto mb-6 text-[#8B1A1A] shadow-xs group-hover:scale-105 transition-transform">
-              <Users className="w-8 h-8 text-[#8B1A1A]" aria-hidden />
+          <div className="bg-white rounded-3xl p-8 shadow-xs border border-border-warm text-center relative group hover:border-gold/60 hover:shadow-md transition-all duration-300">
+            <div className="w-16 h-16 bg-parchment border border-border-warm rounded-full flex items-center justify-center mx-auto mb-6 text-maroon shadow-xs group-hover:scale-105 transition-transform">
+              <Users className="w-8 h-8 text-maroon" aria-hidden />
             </div>
-            <h3 className="font-serif text-xl font-bold text-[#2D1810] mb-4">{t.card1Title}</h3>
-            <p className="text-[#6B4423] text-xs md:text-sm leading-relaxed font-medium">
+            <h3 className="font-serif text-xl font-bold text-earth-dark mb-4">{t.card1Title}</h3>
+            <p className="text-earth-medium text-xs md:text-sm leading-relaxed font-medium">
               {t.card1Body}
             </p>
           </div>
 
           {/* Card 2: Spiritual Preservation */}
-          <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#E5D5C5] text-center relative group hover:border-[#D4A853]/60 hover:shadow-md transition-all duration-300">
-            <div className="w-16 h-16 bg-[#FDF8F3] border border-[#E5D5C5] rounded-full flex items-center justify-center mx-auto mb-6 text-[#8B1A1A] shadow-xs group-hover:scale-105 transition-transform">
-              <Sparkles className="w-8 h-8 text-[#8B1A1A]" aria-hidden />
+          <div className="bg-white rounded-3xl p-8 shadow-xs border border-border-warm text-center relative group hover:border-gold/60 hover:shadow-md transition-all duration-300">
+            <div className="w-16 h-16 bg-parchment border border-border-warm rounded-full flex items-center justify-center mx-auto mb-6 text-maroon shadow-xs group-hover:scale-105 transition-transform">
+              <Sparkles className="w-8 h-8 text-maroon" aria-hidden />
             </div>
-            <h3 className="font-serif text-xl font-bold text-[#2D1810] mb-4">{t.card2Title}</h3>
-            <p className="text-[#6B4423] text-xs md:text-sm leading-relaxed font-medium">
+            <h3 className="font-serif text-xl font-bold text-earth-dark mb-4">{t.card2Title}</h3>
+            <p className="text-earth-medium text-xs md:text-sm leading-relaxed font-medium">
               {t.card2Body}
             </p>
           </div>
 
           {/* Card 3: Vedic Education */}
-          <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#E5D5C5] text-center relative group hover:border-[#D4A853]/60 hover:shadow-md transition-all duration-300">
-            <div className="w-16 h-16 bg-[#FDF8F3] border border-[#E5D5C5] rounded-full flex items-center justify-center mx-auto mb-6 text-[#8B1A1A] shadow-xs group-hover:scale-105 transition-transform">
-              <GraduationCap className="w-8 h-8 text-[#8B1A1A]" aria-hidden />
+          <div className="bg-white rounded-3xl p-8 shadow-xs border border-border-warm text-center relative group hover:border-gold/60 hover:shadow-md transition-all duration-300">
+            <div className="w-16 h-16 bg-parchment border border-border-warm rounded-full flex items-center justify-center mx-auto mb-6 text-maroon shadow-xs group-hover:scale-105 transition-transform">
+              <GraduationCap className="w-8 h-8 text-maroon" aria-hidden />
             </div>
-            <h3 className="font-serif text-xl font-bold text-[#2D1810] mb-4">{t.card3Title}</h3>
-            <p className="text-[#6B4423] text-xs md:text-sm leading-relaxed font-medium">
+            <h3 className="font-serif text-xl font-bold text-earth-dark mb-4">{t.card3Title}</h3>
+            <p className="text-earth-medium text-xs md:text-sm leading-relaxed font-medium">
               {t.card3Body}
             </p>
           </div>

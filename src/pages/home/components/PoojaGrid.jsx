@@ -1,4 +1,4 @@
-import poojaThumb from "../../../assets/images/pooja.png"
+﻿import poojaThumb from "../../../assets/images/pooja.png"
 import { useLanguage } from "../../../contexts/LanguageContext"
 import { useAdminData } from "../../../admin/contexts/AdminDataContext"
 import { Link } from "react-router-dom"
@@ -13,19 +13,19 @@ const POOJA_TRANSLATIONS = {
 
 const cardClass =
   "flex w-full max-w-[280px] mx-auto flex-col items-center rounded-2xl bg-white px-6 pt-7 pb-8 " +
-  "border border-[#E8E4DF] shadow-[0_2px_12px_rgba(45,24,16,0.06)] " +
-  "transition-all duration-200 hover:shadow-[0_6px_20px_rgba(45,24,16,0.1)] hover:-translate-y-0.5 hover:border-[#D4C9BC]"
+  "border border-gray-warm-light shadow-[0_2px_12px_rgba(45,24,16,0.06)] " +
+  "transition-all duration-200 hover:shadow-[0_6px_20px_rgba(45,24,16,0.1)] hover:-translate-y-0.5 hover:border-border-warm"
 
 export default function PoojaGrid() {
   const { lang } = useLanguage()
   const { homePoojas: displayPoojas } = useAdminData()
 
   return (
-    <section className="py-10 bg-[#F5E6D3]">
+    <section className="py-10 bg-parchment-soft">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="font-serif text-2xl font-bold text-[#2D1810]">{POOJA_TRANSLATIONS.bookPooja[lang]}</h2>
-          <p className="text-sm text-[#6B4423] mt-1">
+          <h2 className="font-serif text-2xl font-bold text-earth-dark">{POOJA_TRANSLATIONS.bookPooja[lang]}</h2>
+          <p className="text-sm text-earth-medium mt-1">
             — {POOJA_TRANSLATIONS.offerPrayers[lang]} —
           </p>
         </div>
@@ -44,10 +44,10 @@ export default function PoojaGrid() {
                 className="mb-3 w-full aspect-[4/3] object-cover rounded-xl"
                 onError={e => { e.target.src = poojaThumb }}
               />
-              <h3 className="w-full text-center font-sans text-base font-bold leading-snug tracking-tight text-[#2D1810]">
+              <h3 className="w-full text-center font-sans text-base font-bold leading-snug tracking-tight text-earth-dark">
                 {pooja.name}
               </h3>
-              <p className="mt-2 w-full text-center font-sans text-sm font-bold text-[#8B1A1A]">
+              <p className="mt-2 w-full text-center font-sans text-sm font-bold text-maroon">
                 {pooja.bookingType === 'free' || pooja.price === 0
                   ? POOJA_TRANSLATIONS.free[lang]
                   : `₹ ${pooja.price}`}
@@ -62,7 +62,7 @@ export default function PoojaGrid() {
         <div className="text-center mt-8">
           <Link
             to="/pooja"
-            className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors inline-block"
+            className="bg-btn-bg text-btn-text px-6 py-2.5 rounded-md text-sm font-medium hover:bg-btn-bg-hover transition-colors inline-block"
           >
             {POOJA_TRANSLATIONS.viewAllPoojas[lang]}
           </Link>
@@ -71,3 +71,4 @@ export default function PoojaGrid() {
     </section>
   )
 }
+

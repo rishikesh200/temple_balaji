@@ -1,4 +1,4 @@
-import heroImg from "../../../assets/images/hero-balaji.jpg"
+﻿import heroImg from "../../../assets/images/hero-balaji.jpg"
 import { useLanguage } from "../../../contexts/LanguageContext"
 import { t } from "../../../utils/i18n"
 
@@ -22,7 +22,7 @@ export default function HeroSection() {
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="relative z-20 text-center px-4">
-        <span className="text-[#D4A853] tracking-[0.2em] text-xs sm:text-sm font-semibold uppercase mb-4 block">
+        <span className="text-gold tracking-[0.2em] text-xs sm:text-sm font-semibold uppercase mb-4 block">
           {t(TR.eyebrow, lang)}
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 max-w-3xl mx-auto leading-tight">
@@ -34,7 +34,7 @@ export default function HeroSection() {
         <div className="flex flex-wrap justify-center gap-4">
           <a
             href="#types"
-            className="bg-[#8B1A1A] text-white px-8 py-3 rounded-lg text-sm font-semibold hover:bg-[#6B1414] transition-all shadow-lg"
+            className="bg-btn-bg text-btn-text px-8 py-3 rounded-lg text-sm font-semibold hover:bg-btn-bg-hover transition-all shadow-lg"
           >
             {t(TR.viewTypes, lang)}
           </a>
@@ -49,3 +49,4 @@ export default function HeroSection() {
     </section>
   )
 }
+

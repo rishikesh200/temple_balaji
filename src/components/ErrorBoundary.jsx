@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -18,18 +18,18 @@ export default class ErrorBoundary extends React.Component {
     if (!this.state.hasError) return this.props.children;
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FDF8F3] px-4">
+      <div className="min-h-screen flex items-center justify-center bg-parchment px-4">
         <div className="text-center max-w-md">
           <div className="text-6xl mb-4">🛕</div>
-          <h1 className="font-serif text-2xl font-bold text-[#2D1810] mb-3">
+          <h1 className="font-serif text-2xl font-bold text-earth-dark mb-3">
             Something went wrong
           </h1>
-          <p className="text-[#6B4423] text-sm mb-6">
+          <p className="text-earth-medium text-sm mb-6">
             An unexpected error occurred. Please refresh the page.
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#6B1414] transition-colors"
+            className="bg-btn-bg text-btn-text px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-btn-bg-hover transition-colors"
           >
             Refresh Page
           </button>
@@ -44,3 +44,4 @@ export default class ErrorBoundary extends React.Component {
     );
   }
 }
+

@@ -29,11 +29,11 @@ const TRUST_TRANSLATIONS = {
   }
 }
 
-const maroon = "#800000"
-const goldRing = "#c5a059"
-const cream = "#fdfaf5"
-const bodyGrey = "#5a5a5a"
-const heading = "#2d1810"
+const maroon = "var(--color-maroon)"
+const goldRing = "var(--color-gold)"
+const cream = "var(--color-parchment)"
+const bodyGrey = "var(--color-gray-warm-medium)"
+const heading = "var(--color-earth-dark)"
 
 function IconRing({ children, className = "" }) {
   return (
@@ -51,7 +51,7 @@ function SocialLink({ href, label, children }) {
     <a
       href={href}
       aria-label={label}
-      className="text-[#800000] transition-opacity hover:opacity-70"
+      className="text-maroon transition-opacity hover:opacity-70"
       style={{ color: maroon }}
     >
       {children}
@@ -65,7 +65,7 @@ export default function TrustBadges() {
   return (
     <section className="py-12 md:py-14" style={{ backgroundColor: cream }}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 divide-y divide-[#e5d9c8] md:grid-cols-3 md:divide-x md:divide-y-0 md:divide-[#e5d9c8]">
+        <div className="grid grid-cols-1 divide-y divide-border-warm md:grid-cols-3 md:divide-x md:divide-y-0 md:divide-border-warm">
           {/* Column 1 */}
           <div className="flex items-start gap-4 py-8 md:py-2 md:pr-8 md:pl-2 lg:pr-10">
             <IconRing>
@@ -100,7 +100,7 @@ export default function TrustBadges() {
           {/* Column 2 */}
           <div className="flex items-start gap-4 py-8 md:py-2 md:px-6 lg:px-10">
             <div
-              className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-full border-2 bg-[#f5efe6]"
+              className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-full border-2 bg-parchment-soft"
               style={{ borderColor: goldRing }}
             >
               <img
@@ -122,7 +122,7 @@ export default function TrustBadges() {
                 &ldquo;{TRUST_TRANSLATIONS.testimonialQuote[lang]}&rdquo;
               </p>
               <p className="mt-2 text-sm" style={{ color: bodyGrey }}>
-                – <span className="font-bold text-[#2d1810]">{TRUST_TRANSLATIONS.testimonialAuthor[lang]}</span>, {TRUST_TRANSLATIONS.testimonialLocation[lang]}
+                – <span className="font-bold text-earth-dark">{TRUST_TRANSLATIONS.testimonialAuthor[lang]}</span>, {TRUST_TRANSLATIONS.testimonialLocation[lang]}
               </p>
             </div>
           </div>

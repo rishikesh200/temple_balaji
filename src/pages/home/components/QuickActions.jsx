@@ -88,14 +88,14 @@ export default function QuickActions() {
         <Concave
           borderRadius="18px"
           concave="15px"
-          className="bg-[#FFF9F0] border border-[#E8D9C8] overflow-hidden px-4"
+          className="bg-parchment-soft border border-border-warm overflow-hidden px-4"
         >
           <div className="grid grid-cols-2 md:grid-cols-5  px-4">
             {actions.map((action, index) => {
               const insetRule =
                 index > 0
                   ? [
-                      "before:pointer-events-none before:absolute before:left-0 before:top-[22%] before:bottom-[22%] before:w-px before:bg-[#C8C4BC] before:content-['']",
+                      "before:pointer-events-none before:absolute before:left-0 before:top-[22%] before:bottom-[22%] before:w-px before:bg-gray-warm-light before:content-['']",
                       index % 2 === 0 ? "max-md:before:hidden" : "",
                     ].join(" ")
                   : ""
@@ -103,15 +103,15 @@ export default function QuickActions() {
               <button
                 key={action.title}
                 type="button"
-                className={`relative flex flex-row items-center justify-center gap-3 py-5 px-4 md:px-3 text-left hover:bg-[#FFF3E6]/80 transition-colors group ${insetRule}`}
+                className={`relative flex flex-row items-center justify-center gap-3 py-5 px-4 md:px-3 text-left hover:bg-peach-light/80 transition-colors group ${insetRule}`}
               >
-                <img src={action.icon} alt={action.title} className="h-10 w-10 shrink-0 text-[#6B1414] md:h-7 md:w-7" />
+                <img src={action.icon} alt={action.title} className="h-10 w-10 shrink-0 text-maroon-hover md:h-7 md:w-7" />
                  
                 <div className="min-w-0 flex flex-col gap-0.5">
-                  <span className="font-serif text-sm font-bold leading-tight text-[#2D1810] md:text-[0.95rem]">
+                  <span className="font-serif text-sm font-bold leading-tight text-earth-dark md:text-[0.95rem]">
                     {action.title}
                   </span>
-                  <span className="text-xs leading-tight text-[#7A756D]">{action.subtitle}</span>
+                  <span className="text-xs leading-tight text-gray-warm-medium">{action.subtitle}</span>
                 </div>
               </button>
               )

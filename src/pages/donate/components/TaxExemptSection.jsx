@@ -44,47 +44,47 @@ export default function TaxExemptSection() {
   const t = TAX_EXEMPT_TRANSLATIONS[lang] || TAX_EXEMPT_TRANSLATIONS.en
 
   return (
-    <section className="py-16 md:py-20 bg-[#F6F3F2] border-y border-[#E5D5C5]/80 relative overflow-hidden">
+    <section className="py-16 md:py-20 bg-gray-warm-light border-y border-border-warm/80 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           
           {/* LEFT SIDE: Exemption legal details */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 text-[#8B1A1A]">
-              <ShieldCheck className="w-6 h-6 text-[#8B1A1A]" aria-hidden />
+            <div className="flex items-center gap-2 text-maroon">
+              <ShieldCheck className="w-6 h-6 text-maroon" aria-hidden />
               <span className="text-xs font-bold uppercase tracking-widest">{t.sectionLabel}</span>
             </div>
             
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#2D1810] leading-tight">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-earth-dark leading-tight">
               {t.title}
             </h2>
             
-            <p className="text-[#6B4423] text-sm md:text-base leading-relaxed font-medium">
+            <p className="text-earth-medium text-sm md:text-base leading-relaxed font-medium">
               {t.description}
             </p>
 
             <div className="flex flex-col gap-4">
               {/* Point 1: 80G Certified */}
-              <div className="flex gap-4 p-5 bg-white rounded-2xl border border-[#E5D5C5]/60 shadow-xs hover:shadow-sm hover:border-[#D4A853]/40 transition-all duration-300">
-                <div className="w-10 h-10 rounded-full bg-[#FDF8F3] border border-[#E5D5C5] flex items-center justify-center text-[#8B1A1A] shrink-0">
-                  <ShieldCheck className="w-5 h-5 text-[#8B1A1A]" aria-hidden />
+              <div className="flex gap-4 p-5 bg-white rounded-2xl border border-border-warm/60 shadow-xs hover:shadow-sm hover:border-gold/40 transition-all duration-300">
+                <div className="w-10 h-10 rounded-full bg-parchment border border-border-warm flex items-center justify-center text-maroon shrink-0">
+                  <ShieldCheck className="w-5 h-5 text-maroon" aria-hidden />
                 </div>
                 <div>
-                  <h4 className="font-serif text-sm font-bold text-[#2D1810]">{t.point1Title}</h4>
-                  <p className="text-xs text-[#6B4423] mt-1 font-semibold leading-relaxed">
+                  <h4 className="font-serif text-sm font-bold text-earth-dark">{t.point1Title}</h4>
+                  <p className="text-xs text-earth-medium mt-1 font-semibold leading-relaxed">
                     {t.point1Body}
                   </p>
                 </div>
               </div>
 
               {/* Point 2: Transparent Accounting */}
-              <div className="flex gap-4 p-5 bg-white rounded-2xl border border-[#E5D5C5]/60 shadow-xs hover:shadow-sm hover:border-[#D4A853]/40 transition-all duration-300">
-                <div className="w-10 h-10 rounded-full bg-[#FDF8F3] border border-[#E5D5C5] flex items-center justify-center text-[#8B1A1A] shrink-0">
-                  <Receipt className="w-5 h-5 text-[#8B1A1A]" aria-hidden />
+              <div className="flex gap-4 p-5 bg-white rounded-2xl border border-border-warm/60 shadow-xs hover:shadow-sm hover:border-gold/40 transition-all duration-300">
+                <div className="w-10 h-10 rounded-full bg-parchment border border-border-warm flex items-center justify-center text-maroon shrink-0">
+                  <Receipt className="w-5 h-5 text-maroon" aria-hidden />
                 </div>
                 <div>
-                  <h4 className="font-serif text-sm font-bold text-[#2D1810]">{t.point2Title}</h4>
-                  <p className="text-xs text-[#6B4423] mt-1 font-semibold leading-relaxed">
+                  <h4 className="font-serif text-sm font-bold text-earth-dark">{t.point2Title}</h4>
+                  <p className="text-xs text-earth-medium mt-1 font-semibold leading-relaxed">
                     {t.point2Body}
                   </p>
                 </div>
@@ -93,37 +93,37 @@ export default function TaxExemptSection() {
           </div>
 
           {/* RIGHT SIDE: Interactive Receipt download helper card */}
-          <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-[#E5D5C5] relative ring-1 ring-black/5">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#D4A853]/5 rounded-full blur-xl pointer-events-none" />
-            <h3 className="font-serif text-xl font-bold text-[#2D1810] mb-6 flex items-center gap-2 pb-3 border-b border-[#F5E6D3]">
-              <Sparkles className="w-5 h-5 text-[#D4A853]" /> {t.helperTitle}
+          <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-border-warm relative ring-1 ring-black/5">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gold/5 rounded-full blur-xl pointer-events-none" />
+            <h3 className="font-serif text-xl font-bold text-earth-dark mb-6 flex items-center gap-2 pb-3 border-b border-parchment-soft">
+              <Sparkles className="w-5 h-5 text-gold" /> {t.helperTitle}
             </h3>
             
-            <ol className="space-y-6 text-xs md:text-sm text-[#6B4423] font-medium">
+            <ol className="space-y-6 text-xs md:text-sm text-earth-medium font-medium">
               <li className="flex gap-4 items-start">
-                <span className="flex-none w-8 h-8 rounded-full bg-[#8B1A1A] border border-[#D4A853] text-white flex items-center justify-center font-mono font-bold text-sm shadow-xs">
+                <span className="flex-none w-8 h-8 rounded-full bg-maroon border border-gold text-white flex items-center justify-center font-mono font-bold text-sm shadow-xs">
                   1
                 </span>
                 <div>
-                  <strong className="text-[#2D1810] block mb-0.5">{t.helperStep1}</strong>
+                  <strong className="text-earth-dark block mb-0.5">{t.helperStep1}</strong>
                   <p className="text-xs leading-relaxed">{t.helperStep1Body}</p>
                 </div>
               </li>
               <li className="flex gap-4 items-start">
-                <span className="flex-none w-8 h-8 rounded-full bg-[#8B1A1A] border border-[#D4A853] text-white flex items-center justify-center font-mono font-bold text-sm shadow-xs">
+                <span className="flex-none w-8 h-8 rounded-full bg-maroon border border-gold text-white flex items-center justify-center font-mono font-bold text-sm shadow-xs">
                   2
                 </span>
                 <div>
-                  <strong className="text-[#2D1810] block mb-0.5">{t.helperStep2}</strong>
+                  <strong className="text-earth-dark block mb-0.5">{t.helperStep2}</strong>
                   <p className="text-xs leading-relaxed">{t.helperStep2Body}</p>
                 </div>
               </li>
               <li className="flex gap-4 items-start">
-                <span className="flex-none w-8 h-8 rounded-full bg-[#8B1A1A] border border-[#D4A853] text-white flex items-center justify-center font-mono font-bold text-sm shadow-xs">
+                <span className="flex-none w-8 h-8 rounded-full bg-maroon border border-gold text-white flex items-center justify-center font-mono font-bold text-sm shadow-xs">
                   3
                 </span>
                 <div>
-                  <strong className="text-[#2D1810] block mb-0.5">{t.helperStep3}</strong>
+                  <strong className="text-earth-dark block mb-0.5">{t.helperStep3}</strong>
                   <p className="text-xs leading-relaxed">{t.helperStep3Body}</p>
                 </div>
               </li>
@@ -131,7 +131,7 @@ export default function TaxExemptSection() {
 
             <button
               type="button"
-              className="w-full mt-8 py-3.5 border-2 border-[#8B1A1A] text-[#8B1A1A] rounded-xl text-xs font-bold hover:bg-[#8B1A1A] hover:text-white shadow-2xs hover:shadow-sm transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full mt-8 py-3.5 border-2 border-maroon text-maroon rounded-xl text-xs font-bold hover:bg-maroon hover:text-white shadow-2xs hover:shadow-sm transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
             >
               <Download className="w-4 h-4" aria-hidden />
               {t.downloadButton}

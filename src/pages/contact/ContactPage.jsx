@@ -1,4 +1,4 @@
-import { useState } from "react"
+﻿import { useState } from "react"
 import { CheckCircle2, Clock, Mail, MapPin, Phone, Send } from "lucide-react"
 import { useLanguage } from "../../contexts/LanguageContext"
 import heroImg from "../../assets/images/hero-balaji.jpg"
@@ -121,7 +121,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#120502] relative overflow-hidden flex flex-col justify-between">
+    <div className="min-h-screen bg-maroon-shadow relative overflow-hidden flex flex-col justify-between">
       {/* Dynamic Background Image & Warm Vignette Overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -129,12 +129,12 @@ export default function ContactPage() {
           alt="Paruthipattu Balaji Temple"
           className="w-full h-full object-cover scale-105 filter brightness-75 contrast-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#1E0803]/70 via-[#3D0C02]/35 to-[#1F0C07]/70" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,#120502_100%)] opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-maroon-dark/70 via-maroon-dark/35 to-maroon-dark/70" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,var(--color-maroon-shadow)_100%)] opacity-50" />
       </div>
 
       {/* Decorative Traditional Border Accents */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#D4A853] via-[#8B1A1A] to-[#D4A853] z-10" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold via-maroon to-gold z-10" />
 
       {/* Main Content Container */}
       <main className="relative z-10 max-w-7xl mx-auto px-4 py-16 sm:py-24 flex-grow flex items-center w-full">
@@ -145,10 +145,10 @@ export default function ContactPage() {
             <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.5)] rounded-3xl p-8 sm:p-10 transition-all duration-500 hover:border-white/20">
               
               {/* Gold Filigree Corner Ornaments for Premium Temple Feel */}
-              <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-[#D4A853]/40 rounded-tl" />
-              <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-[#D4A853]/40 rounded-tr" />
-              <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-[#D4A853]/40 rounded-bl" />
-              <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-[#D4A853]/40 rounded-br" />
+              <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-gold/40 rounded-tl" />
+              <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-gold/40 rounded-tr" />
+              <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-gold/40 rounded-bl" />
+              <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-gold/40 rounded-br" />
 
               {!isSubmitted ? (
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -159,11 +159,11 @@ export default function ContactPage() {
                     <p className="text-white/60 text-xs sm:text-sm mt-2">
                       {t.subtitle}
                     </p>
-                    <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#D4A853] to-transparent mx-auto mt-4" />
+                    <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-4" />
                   </div>
 
                   <div className="space-y-1">
-                    <label htmlFor="name" className="text-xs uppercase tracking-widest text-[#D4A853] font-semibold block mb-1.5">
+                    <label htmlFor="name" className="text-xs uppercase tracking-widest text-gold font-semibold block mb-1.5">
                       {t.formLabels.name}
                     </label>
                     <input
@@ -174,13 +174,13 @@ export default function ContactPage() {
                       value={formState.name}
                       onChange={handleChange}
                       placeholder="Enter full name"
-                      className="w-full bg-black/30 border border-white/15 focus:border-[#D4A853] focus:ring-1 focus:ring-[#D4A853] rounded-xl py-3 px-4 text-white text-sm placeholder:text-white/30 transition-all outline-none"
+                      className="w-full bg-black/30 border border-white/15 focus:border-gold focus:ring-1 focus:ring-gold rounded-xl py-3 px-4 text-white text-sm placeholder:text-white/30 transition-all outline-none"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label htmlFor="email" className="text-xs uppercase tracking-widest text-[#D4A853] font-semibold block mb-1.5">
+                      <label htmlFor="email" className="text-xs uppercase tracking-widest text-gold font-semibold block mb-1.5">
                         {t.formLabels.email}
                       </label>
                       <input
@@ -191,11 +191,11 @@ export default function ContactPage() {
                         value={formState.email}
                         onChange={handleChange}
                         placeholder={t.placeholders.email}
-                        className="w-full bg-black/30 border border-white/15 focus:border-[#D4A853] focus:ring-1 focus:ring-[#D4A853] rounded-xl py-3 px-4 text-white text-sm placeholder:text-white/30 transition-all outline-none"
+                        className="w-full bg-black/30 border border-white/15 focus:border-gold focus:ring-1 focus:ring-gold rounded-xl py-3 px-4 text-white text-sm placeholder:text-white/30 transition-all outline-none"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label htmlFor="phone" className="text-xs uppercase tracking-widest text-[#D4A853] font-semibold block mb-1.5">
+                      <label htmlFor="phone" className="text-xs uppercase tracking-widest text-gold font-semibold block mb-1.5">
                         {t.formLabels.phone}
                       </label>
                       <input
@@ -206,13 +206,13 @@ export default function ContactPage() {
                         value={formState.phone}
                         onChange={handleChange}
                         placeholder={t.placeholders.phone}
-                        className="w-full bg-black/30 border border-white/15 focus:border-[#D4A853] focus:ring-1 focus:ring-[#D4A853] rounded-xl py-3 px-4 text-white text-sm placeholder:text-white/30 transition-all outline-none"
+                        className="w-full bg-black/30 border border-white/15 focus:border-gold focus:ring-1 focus:ring-gold rounded-xl py-3 px-4 text-white text-sm placeholder:text-white/30 transition-all outline-none"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <label htmlFor="message" className="text-xs uppercase tracking-widest text-[#D4A853] font-semibold block mb-1.5">
+                    <label htmlFor="message" className="text-xs uppercase tracking-widest text-gold font-semibold block mb-1.5">
                       {t.formLabels.message}
                     </label>
                     <textarea
@@ -223,7 +223,7 @@ export default function ContactPage() {
                       value={formState.message}
                       onChange={handleChange}
                       placeholder={t.placeholders.message}
-                      className="w-full bg-black/30 border border-white/15 focus:border-[#D4A853] focus:ring-1 focus:ring-[#D4A853] rounded-xl py-3 px-4 text-white text-sm placeholder:text-white/30 transition-all outline-none resize-none"
+                      className="w-full bg-black/30 border border-white/15 focus:border-gold focus:ring-1 focus:ring-gold rounded-xl py-3 px-4 text-white text-sm placeholder:text-white/30 transition-all outline-none resize-none"
                     />
                   </div>
 
@@ -236,7 +236,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full relative bg-[#8B1A1A] hover:bg-[#6B1414] border border-[#D4A853]/45 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 tracking-widest text-sm uppercase duration-300 disabled:opacity-75 disabled:hover:translate-y-0"
+                    className="w-full relative bg-maroon hover:bg-btn-bg-hover border border-gold/45 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 tracking-widest text-sm uppercase duration-300 disabled:opacity-75 disabled:hover:translate-y-0"
                   >
                     {isSubmitting ? (
                       <>
@@ -245,7 +245,7 @@ export default function ContactPage() {
                       </>
                     ) : (
                       <>
-                        <Send className="w-4 h-4 text-[#D4A853]" />
+                        <Send className="w-4 h-4 text-gold" />
                         {t.submit}
                       </>
                     )}
@@ -264,7 +264,7 @@ export default function ContactPage() {
                     {t.successCopy}
                   </p>
                   <div className="w-full p-4 bg-white/5 border border-white/10 rounded-xl mb-8">
-                    <span className="text-[#D4A853] text-xs font-semibold block uppercase tracking-wider mb-1">
+                    <span className="text-gold text-xs font-semibold block uppercase tracking-wider mb-1">
                       {t.quoteLabel}
                     </span>
                     <span className="text-white/60 text-xs italic">
@@ -285,7 +285,7 @@ export default function ContactPage() {
 
           {/* Right Column: Editorial Text & Details */}
           <div className="col-span-1 lg:col-span-6 xl:col-span-7 order-1 lg:order-2 text-white">
-            <span className="text-[#D4A853] tracking-[0.25em] text-xs sm:text-sm font-semibold uppercase mb-4 block animate-pulse">
+            <span className="text-gold tracking-[0.25em] text-xs sm:text-sm font-semibold uppercase mb-4 block animate-pulse">
               {t.hero.eyebrow}
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight drop-shadow-md">
@@ -299,11 +299,11 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
               
               <div className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl flex items-start gap-4 transition-all hover:bg-white/10 group">
-                <div className="w-10 h-10 bg-[#8B1A1A]/55 border border-[#D4A853]/30 flex items-center justify-center rounded-xl shrink-0 group-hover:scale-110 transition-transform">
-                  <MapPin className="w-5 h-5 text-[#D4A853]" />
+                <div className="w-10 h-10 bg-maroon/55 border border-gold/30 flex items-center justify-center rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+                  <MapPin className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-wider text-[#D4A853] font-bold mb-1">
+                  <h4 className="text-xs uppercase tracking-wider text-gold font-bold mb-1">
                     {t.contactCards.location}
                   </h4>
                   <p className="text-white/80 text-sm leading-relaxed">
@@ -315,11 +315,11 @@ export default function ContactPage() {
               </div>
 
               <div className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl flex items-start gap-4 transition-all hover:bg-white/10 group">
-                <div className="w-10 h-10 bg-[#8B1A1A]/55 border border-[#D4A853]/30 flex items-center justify-center rounded-xl shrink-0 group-hover:scale-110 transition-transform">
-                  <Phone className="w-5 h-5 text-[#D4A853]" />
+                <div className="w-10 h-10 bg-maroon/55 border border-gold/30 flex items-center justify-center rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+                  <Phone className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-wider text-[#D4A853] font-bold mb-1">
+                  <h4 className="text-xs uppercase tracking-wider text-gold font-bold mb-1">
                     {t.contactCards.helpline}
                   </h4>
                   <p className="text-white/80 text-sm">
@@ -331,11 +331,11 @@ export default function ContactPage() {
               </div>
 
               <div className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl flex items-start gap-4 transition-all hover:bg-white/10 group">
-                <div className="w-10 h-10 bg-[#8B1A1A]/55 border border-[#D4A853]/30 flex items-center justify-center rounded-xl shrink-0 group-hover:scale-110 transition-transform">
-                  <Mail className="w-5 h-5 text-[#D4A853]" />
+                <div className="w-10 h-10 bg-maroon/55 border border-gold/30 flex items-center justify-center rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+                  <Mail className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-wider text-[#D4A853] font-bold mb-1">
+                  <h4 className="text-xs uppercase tracking-wider text-gold font-bold mb-1">
                     {t.contactCards.officialEmail}
                   </h4>
                   <p className="text-white/80 text-sm truncate max-w-[200px] sm:max-w-none">
@@ -347,11 +347,11 @@ export default function ContactPage() {
               </div>
 
               <div className="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-2xl flex items-start gap-4 transition-all hover:bg-white/10 group">
-                <div className="w-10 h-10 bg-[#8B1A1A]/55 border border-[#D4A853]/30 flex items-center justify-center rounded-xl shrink-0 group-hover:scale-110 transition-transform">
-                  <Clock className="w-5 h-5 text-[#D4A853]" />
+                <div className="w-10 h-10 bg-maroon/55 border border-gold/30 flex items-center justify-center rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+                  <Clock className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-wider text-[#D4A853] font-bold mb-1">
+                  <h4 className="text-xs uppercase tracking-wider text-gold font-bold mb-1">
                     {t.contactCards.timings}
                   </h4>
                   <p className="text-white/80 text-sm">
@@ -369,9 +369,9 @@ export default function ContactPage() {
                 href="https://maps.google.com/?q=Paruthipattu+Avadi+Chennai"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-[#D4A853]/45 bg-[#8B1A1A]/30 hover:bg-[#8B1A1A]/50 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all shadow-md"
+                className="inline-flex items-center gap-2 border border-gold/45 bg-maroon/30 hover:bg-maroon/50 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all shadow-md"
               >
-                <MapPin className="w-4 h-4 text-[#D4A853]" />
+                <MapPin className="w-4 h-4 text-gold" />
                 Get Directions on Map
               </a>
               <a
@@ -388,3 +388,4 @@ export default function ContactPage() {
     </div>
   )
 }
+

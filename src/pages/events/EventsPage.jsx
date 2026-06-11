@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+﻿import React, { useState } from "react"
 import EventTimeline from "./components/EventTimeline"
 import DonateCTA from "../../components/DonateCTA"
 import eventImg1 from "../../assets/images/festival.jpg"
@@ -38,16 +38,16 @@ export default function EventsPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#FDF8F3]">
+    <div className="min-h-screen bg-parchment">
       {/* 1. Gorgeous Divine Gradient Header */}
-      <header className="relative py-16 bg-gradient-to-r from-[#3A0A0A] to-[#6E1A1A] text-white border-b-4 border-[#D4A853] text-center overflow-hidden">
+      <header className="relative py-16 bg-gradient-to-r from-maroon-dark to-maroon text-white border-b-4 border-gold text-center overflow-hidden">
         {/* Divine Background Shapes */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4A853]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-20 left-10 w-96 h-96 bg-black/30 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative z-10 max-w-4xl mx-auto px-4">
-          <span className="text-[#D4A853] tracking-[0.25em] text-xs sm:text-sm font-semibold uppercase mb-4 block flex items-center justify-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-[#D4A853]" /> Temple Calendar & Happenings
+          <span className="text-gold tracking-[0.25em] text-xs sm:text-sm font-semibold uppercase mb-4 block flex items-center justify-center gap-1.5">
+            <Sparkles className="w-4 h-4 text-gold" /> Temple Calendar & Happenings
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
             {t(TR.heading, lang)}
@@ -68,8 +68,8 @@ export default function EventsPage() {
             onClick={() => setActiveFilter("all")}
             className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all border cursor-pointer ${
               activeFilter === "all"
-                ? "bg-[#8B1A1A] text-white border-[#8B1A1A] ring-2 ring-[#D4A853] shadow-md"
-                : "bg-white text-[#6B4423] border-[#E5D5C5] hover:border-[#8B1A1A]"
+                ? "bg-btn-bg text-btn-text border-maroon ring-2 ring-gold shadow-md"
+                : "bg-white text-earth-medium border-border-warm hover:border-maroon"
             }`}
           >
             {t(TR.all, lang)} ({eventsData.length})
@@ -78,8 +78,8 @@ export default function EventsPage() {
           <button type="button" onClick={() => setActiveFilter("upcoming")}
             className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all border cursor-pointer flex items-center gap-1.5 ${
               activeFilter === "upcoming"
-                ? "bg-[#8B1A1A] text-white border-[#8B1A1A] ring-2 ring-[#D4A853] shadow-md"
-                : "bg-white text-[#6B4423] border-[#E5D5C5] hover:border-[#8B1A1A]"
+                ? "bg-btn-bg text-btn-text border-maroon ring-2 ring-gold shadow-md"
+                : "bg-white text-earth-medium border-border-warm hover:border-maroon"
             }`}>
             <Flame className="w-3.5 h-3.5" />
             {t(TR.festivals, lang)} ({eventsData.filter(e => e.category === "upcoming").length})
@@ -88,8 +88,8 @@ export default function EventsPage() {
           <button type="button" onClick={() => setActiveFilter("community")}
             className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all border cursor-pointer flex items-center gap-1.5 ${
               activeFilter === "community"
-                ? "bg-[#8B1A1A] text-white border-[#8B1A1A] ring-2 ring-[#D4A853] shadow-md"
-                : "bg-white text-[#6B4423] border-[#E5D5C5] hover:border-[#8B1A1A]"
+                ? "bg-btn-bg text-btn-text border-maroon ring-2 ring-gold shadow-md"
+                : "bg-white text-earth-medium border-border-warm hover:border-maroon"
             }`}>
             <Heart className="w-3.5 h-3.5" />
             {t(TR.community, lang)} ({eventsData.filter(e => e.category === "community").length})
@@ -107,3 +107,4 @@ export default function EventsPage() {
     </div>
   )
 }
+

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+﻿import { Link } from "react-router-dom"
 import { Clock, Music } from "lucide-react"
 import { slugify } from "../../../data/poojaData"
 import { useAdminData } from "../../../admin/contexts/AdminDataContext"
@@ -23,17 +23,17 @@ export default function SpecialSevasSection() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <span className="font-sans text-xs md:text-sm text-[#8B1A1A] uppercase tracking-widest font-semibold">
+            <span className="font-sans text-xs md:text-sm text-maroon uppercase tracking-widest font-semibold">
               {t(TR.label, lang)}
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#2D1810] mt-2">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-earth-dark mt-2">
               {t(TR.heading, lang)}
             </h2>
-            <p className="text-[#6B4423] text-sm md:text-base mt-4 max-w-2xl">
+            <p className="text-earth-medium text-sm md:text-base mt-4 max-w-2xl">
               {t(TR.sub, lang)}
             </p>
           </div>
-          <div className="flex items-center gap-2 text-[#8B1A1A] font-bold cursor-pointer group whitespace-nowrap">
+          <div className="flex items-center gap-2 text-maroon font-bold cursor-pointer group whitespace-nowrap">
             <span className="text-xs md:text-sm font-medium">{t(TR.schedule, lang)}</span>
             <span className="group-hover:translate-x-1 transition-transform">→</span>
           </div>
@@ -44,7 +44,7 @@ export default function SpecialSevasSection() {
           {specialSevas.map((seva) => (
             <div
               key={seva.id}
-              className="flex flex-col sm:flex-row bg-[#FDF8F3] rounded-2xl overflow-hidden border border-[#E5D5C5] hover:shadow-lg transition-all group"
+              className="flex flex-col sm:flex-row bg-parchment rounded-2xl overflow-hidden border border-border-warm hover:shadow-lg transition-all group"
             >
               {/* Image */}
               <Link to={`/pooja/${slugify(seva.name)}`} className="w-full sm:w-2/5 h-56 sm:h-auto overflow-hidden block">
@@ -58,17 +58,17 @@ export default function SpecialSevasSection() {
               {/* Content */}
               <div className="w-full sm:w-3/5 p-6 md:p-8 flex flex-col justify-between">
                 <div>
-                  <Link to={`/pooja/${slugify(seva.name)}`} className="block group-hover:text-[#8B1A1A] transition-colors">
-                    <h3 className="font-serif text-xl md:text-2xl font-bold text-[#2D1810] mb-3 group-hover:text-[#8B1A1A] transition-colors">
+                  <Link to={`/pooja/${slugify(seva.name)}`} className="block group-hover:text-maroon transition-colors">
+                    <h3 className="font-serif text-xl md:text-2xl font-bold text-earth-dark mb-3 group-hover:text-maroon transition-colors">
                       {getT(seva, 'name', lang)}
                     </h3>
                   </Link>
-                  <p className="text-[#6B4423] text-sm md:text-base mb-6 line-clamp-3">
+                  <p className="text-earth-medium text-sm md:text-base mb-6 line-clamp-3">
                     {getT(seva, 'description', lang)}
                   </p>
 
                   {/* Meta Info */}
-                  <div className="flex flex-wrap items-center gap-4 text-[#8B1A1A] mb-6">
+                  <div className="flex flex-wrap items-center gap-4 text-maroon mb-6">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
                       <span className="text-xs md:text-sm font-medium">{seva.time}</span>
@@ -81,13 +81,13 @@ export default function SpecialSevasSection() {
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between border-t border-[#E5D5C5] pt-4">
-                  <span className="font-serif text-lg md:text-2xl font-bold text-[#8B1A1A]">
+                <div className="flex items-center justify-between border-t border-border-warm pt-4">
+                  <span className="font-serif text-lg md:text-2xl font-bold text-maroon">
                     ₹ {seva.price.toLocaleString()}
                   </span>
                   <Link
                     to={`/pooja/${slugify(seva.name)}`}
-                    className="bg-[#8B1A1A] text-white px-4 md:px-6 py-2 rounded-lg font-bold text-xs md:text-sm hover:bg-[#6B1414] transition-colors inline-block text-center shadow-xs"
+                    className="bg-btn-bg text-btn-text px-4 md:px-6 py-2 rounded-lg font-bold text-xs md:text-sm hover:bg-btn-bg-hover transition-colors inline-block text-center shadow-xs"
                   >
                     Book Slot
                   </Link>
@@ -100,3 +100,4 @@ export default function SpecialSevasSection() {
     </section>
   )
 }
+

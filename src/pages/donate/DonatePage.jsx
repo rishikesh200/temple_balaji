@@ -40,7 +40,7 @@ export default function DonatePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDF8F3]">
+    <div className="min-h-screen bg-parchment">
       <main>
         <HeroSection />
         

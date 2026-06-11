@@ -21,7 +21,7 @@ export default function HeroSection() {
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="relative z-20 max-w-7xl mx-auto px-4 w-full text-center">
-        <span className="text-[#D4A853] tracking-widest text-xs sm:text-sm font-semibold uppercase mb-4 block">
+        <span className="text-gold tracking-widest text-xs sm:text-sm font-semibold uppercase mb-4 block">
           {t(TR.eyebrow, lang)}
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 max-w-3xl mx-auto leading-tight">
@@ -33,7 +33,7 @@ export default function HeroSection() {
         <div className="flex flex-wrap justify-center gap-4">
           <a
             href="#daily-poojas"
-            className="bg-[#D4A853] text-[#2D1810] px-8 py-3 rounded-lg font-bold hover:bg-[#C49640] transition-all flex items-center gap-2 text-sm md:text-base"
+            className="bg-gold text-earth-dark px-8 py-3 rounded-lg font-bold hover:bg-gold-deep transition-all flex items-center gap-2 text-sm md:text-base"
           >
             {t(TR.viewPoojas, lang)}
             <ArrowDown className="w-4 h-4" />

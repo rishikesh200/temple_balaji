@@ -33,11 +33,11 @@ export default function HeroSection() {
           alt="Lord Balaji Temple Sanctum"
           className="w-full h-full object-cover opacity-95 scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#3A0A0A]/65 via-[#3A0A0A]/35 to-[#FDF8F3]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-maroon-dark/65 via-maroon-dark/35 to-parchment" />
       </div>
       <div className="relative z-10 text-center max-w-3xl px-4 pt-8 pb-12">
-        <span className="text-[#D4A853] text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase mb-4 block flex items-center justify-center gap-1.5 justify-center">
-          <Sparkles className="w-4 h-4 text-[#D4A853]" /> {t.eyebrow}
+        <span className="text-gold text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase mb-4 block flex items-center justify-center gap-1.5 justify-center">
+          <Sparkles className="w-4 h-4 text-gold" /> {t.eyebrow}
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
           {t.titleLine1}
@@ -50,7 +50,7 @@ export default function HeroSection() {
         <div className="flex flex-wrap justify-center gap-4">
           <a
             href="#causes"
-            className="inline-flex items-center gap-2 bg-[#D4A853] text-[#2D1810] px-8 py-3.5 rounded-xl text-xs font-bold hover:bg-[#c49b2e] hover:-translate-y-0.5 transition-all shadow-lg border border-[#D4A853]"
+            className="inline-flex items-center gap-2 bg-gold text-earth-dark px-8 py-3.5 rounded-xl text-xs font-bold hover:bg-gold-deep hover:-translate-y-0.5 transition-all shadow-lg border border-gold"
           >
             <span>{t.chooseCause}</span>
             <span aria-hidden className="text-sm">

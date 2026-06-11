@@ -1,4 +1,4 @@
-import { useLanguage } from "../contexts/LanguageContext"
+﻿import { useLanguage } from "../contexts/LanguageContext"
 
 const DONATE_CTA_TRANSLATIONS = {
   en: {
@@ -20,21 +20,21 @@ export default function DonateCTA() {
   const t = DONATE_CTA_TRANSLATIONS[lang] || DONATE_CTA_TRANSLATIONS.en
 
   return (
-    <section className=" bg-[#FDF8F3] px-6 py-12 text-center border-y border-[#E5D5C5] sm:px-12 lg:px-16">
+    <section className=" bg-parchment px-6 py-12 text-center border-y border-border-warm sm:px-12 lg:px-16">
       <div className="mx-auto max-w-3xl">
-        <p className="mx-auto mb-3 text-xs md:text-sm font-semibold uppercase tracking-[0.35em] text-[#8B1A1A]">
+        <p className="mx-auto mb-3 text-xs md:text-sm font-semibold uppercase tracking-[0.35em] text-maroon">
           Support the Sacred Traditions
         </p>
-        <h2 className="font-serif text-3xl font-bold leading-tight text-[#2D1810] sm:text-4xl">
+        <h2 className="font-serif text-3xl font-bold leading-tight text-earth-dark sm:text-4xl">
           Support the Sacred Traditions
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-[#6B4423]">
+        <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-earth-medium">
           Your contributions help us maintain the temple's daily rituals, community services, and architectural heritage for future generations.
         </p>
         <div className="mt-8 flex justify-center">
           <a
             href="/donate"
-            className="inline-flex items-center justify-center bg-[#8B1A1A] px-8 py-3 text-sm md:text-base font-bold text-white rounded-lg shadow-md transition hover:bg-[#6B1414]"
+            className="inline-flex items-center justify-center bg-maroon px-8 py-3 text-sm md:text-base font-bold text-white rounded-lg shadow-md transition hover:bg-btn-bg-hover"
           >
             Donate Now
           </a>
@@ -43,3 +43,4 @@ export default function DonateCTA() {
     </section>
   )
 }
+

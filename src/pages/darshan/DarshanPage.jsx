@@ -10,7 +10,7 @@ export default function DarshanPage() {
   const [selectedType, setSelectedType] = useState("special") // default to Special Darshan (₹250)
 
   return (
-    <div className="min-h-screen bg-[#FDF8F3]">
+    <div className="min-h-screen bg-parchment">
       <main className="parchment-bg">
         <HeroSection />
         <TypesSection onSelectType={setSelectedType} />

@@ -1,4 +1,4 @@
-import { useState } from "react"
+﻿import { useState } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { useLanguage } from "../../contexts/LanguageContext"
 import { useAdminData } from "../../admin/contexts/AdminDataContext"
@@ -39,7 +39,7 @@ export default function GalleryPage() {
   const heroImage = activeImages[0]?.imageUrl || ''
 
   return (
-    <div className="min-h-screen bg-[#FDF8F3]">
+    <div className="min-h-screen bg-parchment">
 
       {/* ── Hero ── */}
       <section className="relative h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden">
@@ -49,9 +49,9 @@ export default function GalleryPage() {
             className="absolute inset-0 w-full h-full object-cover"
             onError={e => e.target.style.display = 'none'} />
         )}
-        <div className="absolute inset-0 bg-[#2D1810]/60" />
+        <div className="absolute inset-0 bg-earth-dark/60" />
         <div className="relative z-20 text-center px-4">
-          <span className="text-[#D4A853] tracking-[0.2em] text-xs sm:text-sm font-semibold uppercase mb-4 block">
+          <span className="text-gold tracking-[0.2em] text-xs sm:text-sm font-semibold uppercase mb-4 block">
             {t(TR.eyebrow, lang)}
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6">
@@ -74,8 +74,8 @@ export default function GalleryPage() {
                 <button key={cat} onClick={() => setFilter(cat)}
                   className={`px-6 py-2.5 rounded-full font-medium capitalize transition-all ${
                     filter === cat
-                      ? "bg-[#8B1A1A] text-white shadow-lg"
-                      : "bg-white border-2 border-[#D4A853] text-[#2D1810] hover:border-[#8B1A1A]"
+                      ? "bg-btn-bg text-btn-text shadow-lg"
+                      : "bg-white border-2 border-gold text-earth-dark hover:border-maroon"
                   }`}>
                   {cat === 'all' ? t(TR.all, lang) : cat}
                 </button>
@@ -89,7 +89,7 @@ export default function GalleryPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map((image, index) => (
                 <div key={image.id} onClick={() => openModal(index)}
-                  className="group relative overflow-hidden rounded-lg border-2 border-[#D4A853] cursor-pointer transition-all duration-300 hover:shadow-xl">
+                  className="group relative overflow-hidden rounded-lg border-2 border-gold cursor-pointer transition-all duration-300 hover:shadow-xl">
                   <div className="aspect-square overflow-hidden bg-gray-100">
                     {image.imageUrl ? (
                       <img src={image.imageUrl} alt={image.caption || 'Temple gallery'}
@@ -103,8 +103,8 @@ export default function GalleryPage() {
                         {image.caption}
                       </h3>
                     )}
-                    <p className="text-[#D4A853] text-sm font-medium capitalize">{image.category}</p>
-                    <div className="mt-4 px-6 py-2 bg-[#8B1A1A] text-white rounded-md text-sm font-medium">
+                    <p className="text-gold text-sm font-medium capitalize">{image.category}</p>
+                    <div className="mt-4 px-6 py-2 bg-btn-bg text-btn-text rounded-md text-sm font-medium">
                       {t(TR.view, lang)}
                     </div>
                   </div>
@@ -118,7 +118,7 @@ export default function GalleryPage() {
       {/* ── Lightbox ── */}
       {selectedIndex !== null && filtered[selectedIndex] && (
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-          <button onClick={closeModal} className="absolute top-4 right-4 text-white hover:text-[#D4A853] transition-colors">
+          <button onClick={closeModal} className="absolute top-4 right-4 text-white hover:text-gold transition-colors">
             <X size={32} />
           </button>
           <div className="relative max-w-4xl w-full">
@@ -131,20 +131,20 @@ export default function GalleryPage() {
                 <h3 className="text-white text-2xl font-serif font-bold mb-1">
                   {filtered[selectedIndex].caption}
                 </h3>
-                <p className="text-[#D4A853] text-sm capitalize">
+                <p className="text-gold text-sm capitalize">
                   {t(TR.category, lang)} {filtered[selectedIndex].category}
                 </p>
               </div>
             )}
             <button onClick={prevImage}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-[#8B1A1A] hover:bg-[#6B1414] text-white p-3 rounded-full transition-colors">
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-maroon hover:bg-btn-bg-hover text-white p-3 rounded-full transition-colors">
               <ChevronLeft size={24} />
             </button>
             <button onClick={nextImage}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#8B1A1A] hover:bg-[#6B1414] text-white p-3 rounded-full transition-colors">
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-maroon hover:bg-btn-bg-hover text-white p-3 rounded-full transition-colors">
               <ChevronRight size={24} />
             </button>
-            <div className="absolute bottom-6 right-6 bg-[#8B1A1A] text-white px-4 py-2 rounded-full text-sm font-medium">
+            <div className="absolute bottom-6 right-6 bg-btn-bg text-btn-text px-4 py-2 rounded-full text-sm font-medium">
               {selectedIndex + 1} / {filtered.length}
             </div>
           </div>
@@ -155,3 +155,4 @@ export default function GalleryPage() {
     </div>
   )
 }
+

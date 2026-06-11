@@ -1,4 +1,4 @@
-import { RefreshCw } from "lucide-react"
+﻿import { RefreshCw } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const TEMPLE = "Paruthipattu Balaji Temple"
@@ -8,17 +8,17 @@ const DATE   = "1 June 2025"
 function Section({ title, children }) {
   return (
     <section className="mb-8">
-      <h2 className="font-serif text-xl font-bold text-[#2D1810] mb-3 pb-2 border-b border-[#E5D5C5]">{title}</h2>
-      <div className="text-[#4A3728] text-sm leading-relaxed space-y-3">{children}</div>
+      <h2 className="font-serif text-xl font-bold text-earth-dark mb-3 pb-2 border-b border-border-warm">{title}</h2>
+      <div className="text-earth-dark text-sm leading-relaxed space-y-3">{children}</div>
     </section>
   )
 }
 
 function PolicyTable({ rows }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#E5D5C5]">
+    <div className="overflow-x-auto rounded-xl border border-border-warm">
       <table className="w-full text-sm">
-        <thead className="bg-[#8B1A1A] text-white">
+        <thead className="bg-btn-bg text-btn-text">
           <tr>
             {rows[0].map((h, i) => (
               <th key={i} className="px-4 py-3 text-left font-semibold">{h}</th>
@@ -27,7 +27,7 @@ function PolicyTable({ rows }) {
         </thead>
         <tbody>
           {rows.slice(1).map((row, ri) => (
-            <tr key={ri} className={ri % 2 === 0 ? 'bg-white' : 'bg-[#FDF8F3]'}>
+            <tr key={ri} className={ri % 2 === 0 ? 'bg-white' : 'bg-parchment'}>
               {row.map((cell, ci) => (
                 <td key={ci} className="px-4 py-3 align-top">{cell}</td>
               ))}
@@ -41,11 +41,11 @@ function PolicyTable({ rows }) {
 
 export default function RefundPolicyPage() {
   return (
-    <div className="min-h-screen bg-[#FDF8F3]">
+    <div className="min-h-screen bg-parchment">
       {/* Hero */}
-      <div className="bg-[#8B1A1A] text-white py-14 px-4 text-center">
+      <div className="bg-btn-bg text-btn-text py-14 px-4 text-center">
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/10 mb-4">
-          <RefreshCw className="w-7 h-7 text-[#D4A853]" />
+          <RefreshCw className="w-7 h-7 text-gold" />
         </div>
         <h1 className="font-serif text-3xl md:text-4xl font-bold mb-2">Refund &amp; Cancellation Policy</h1>
         <p className="text-white/70 text-sm">Effective Date: {DATE}</p>
@@ -122,7 +122,7 @@ export default function RefundPolicyPage() {
           <ol className="list-decimal ml-5 space-y-2">
             <li>
               Email us at{" "}
-              <a href={`mailto:${EMAIL}`} className="text-[#8B1A1A] underline">{EMAIL}</a>{" "}
+              <a href={`mailto:${EMAIL}`} className="text-maroon underline">{EMAIL}</a>{" "}
               with subject: <strong>"Cancellation / Refund Request"</strong>
             </li>
             <li>Include your <strong>booking reference number</strong>, registered mobile number or email, and reason for cancellation</li>
@@ -164,15 +164,15 @@ export default function RefundPolicyPage() {
         </Section>
 
         <Section title="10. Contact for Refund Queries">
-          <div className="bg-white border border-[#E5D5C5] rounded-xl p-4">
-            <p className="font-semibold text-[#2D1810]">{TEMPLE}</p>
+          <div className="bg-white border border-border-warm rounded-xl p-4">
+            <p className="font-semibold text-earth-dark">{TEMPLE}</p>
             <p>Paruthipattu, Avadi, Chennai, Tamil Nadu – 602105</p>
-            <p>Email: <a href={`mailto:${EMAIL}`} className="text-[#8B1A1A] underline">{EMAIL}</a></p>
+            <p>Email: <a href={`mailto:${EMAIL}`} className="text-maroon underline">{EMAIL}</a></p>
             <p className="text-xs text-gray-500 mt-1">Response time: within 1 business day</p>
           </div>
         </Section>
 
-        <div className="flex flex-wrap gap-4 text-sm text-[#8B1A1A] pt-4 border-t border-[#E5D5C5]">
+        <div className="flex flex-wrap gap-4 text-sm text-maroon pt-4 border-t border-border-warm">
           <Link to="/privacy-policy" className="hover:underline">Privacy Policy</Link>
           <Link to="/terms" className="hover:underline">Terms &amp; Conditions</Link>
           <Link to="/contact" className="hover:underline">Contact Us</Link>
@@ -181,3 +181,4 @@ export default function RefundPolicyPage() {
     </div>
   )
 }
+

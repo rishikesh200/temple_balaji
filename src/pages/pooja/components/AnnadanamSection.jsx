@@ -8,7 +8,7 @@ export default function AnnadanamSection() {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-[#2D1810] text-[#D4A853] relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-earth-dark text-gold relative overflow-hidden">
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="grid grid-cols-12 h-full w-full">
@@ -22,7 +22,7 @@ export default function AnnadanamSection() {
         <div className="flex flex-col lg:flex-row items-start gap-12">
           {/* Left Content */}
           <div className="w-full lg:w-1/2">
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#D4A853] mb-6">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-gold mb-6">
               Annadanam: The Highest Offering
             </h2>
             <p className="font-sans text-base md:text-lg mb-8 opacity-90 text-white/90">
@@ -35,8 +35,8 @@ export default function AnnadanamSection() {
                 const IconComponent = iconMap[option.icon] || Utensils
                 return (
                   <div key={option.id} className="flex items-start gap-4">
-                    <div className="bg-[#D4A853] p-3 rounded-lg flex-shrink-0">
-                      <IconComponent className="w-5 h-5 text-[#2D1810]" />
+                    <div className="bg-gold p-3 rounded-lg flex-shrink-0">
+                      <IconComponent className="w-5 h-5 text-earth-dark" />
                     </div>
                     <div className="flex-1">
                       <h4 className="font-bold text-base md:text-lg mb-1 text-white">
@@ -46,7 +46,7 @@ export default function AnnadanamSection() {
                         {option.description}
                       </p>
                     </div>
-                    <div className="font-bold text-lg text-[#D4A853] flex-shrink-0 whitespace-nowrap">
+                    <div className="font-bold text-lg text-gold flex-shrink-0 whitespace-nowrap">
                       ₹ {option.price.toLocaleString()}
                     </div>
                   </div>
@@ -57,7 +57,7 @@ export default function AnnadanamSection() {
             {/* CTA Button */}
             <button
               type="button"
-              className="bg-[#D4A853] text-[#2D1810] px-8 md:px-10 py-3 md:py-4 rounded-lg font-bold text-sm md:text-base hover:bg-[#C49640] transition-all shadow-lg"
+              className="bg-gold text-earth-dark px-8 md:px-10 py-3 md:py-4 rounded-lg font-bold text-sm md:text-base hover:bg-gold-deep transition-all shadow-lg"
             >
               Donate for Annadanam
             </button>

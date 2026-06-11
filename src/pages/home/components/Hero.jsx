@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+﻿import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { Shield, Lock, Heart } from "lucide-react"
 import Concave from "../../../components/Concave"
@@ -155,13 +155,13 @@ const Hero = () => {
 
           {/* Left Content */}
           <div className="text-white pt-4">
-            <p className="text-[#D4A853] text-sm mb-2">{HERO_TRANSLATIONS.seekBlessings[lang]}</p>
-            <p className="text-[#D4A853] text-sm mb-4">{HERO_TRANSLATIONS.findPeace[lang]}</p>
+            <p className="text-gold text-sm mb-2">{HERO_TRANSLATIONS.seekBlessings[lang]}</p>
+            <p className="text-gold text-sm mb-4">{HERO_TRANSLATIONS.findPeace[lang]}</p>
 
             <h1 className="font-serif text-4xl lg:text-5xl font-bold leading-tight mb-4">
               {HERO_TRANSLATIONS.experience[lang]}<br />
               {HERO_TRANSLATIONS.divineGrace[lang]}<br />
-              <span className="text-[#D4A853]">{HERO_TRANSLATIONS.ofBalaji[lang]}</span>
+              <span className="text-gold">{HERO_TRANSLATIONS.ofBalaji[lang]}</span>
             </h1>
 
             <p className="text-white/90 text-sm mb-8 max-w-md">
@@ -172,30 +172,30 @@ const Hero = () => {
             <div className="flex flex-wrap gap-6 mt-8">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-[#D4A853]" />
+                  <Shield className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-[#D4A853]">{HERO_TRANSLATIONS.trustedOfficial[lang]}</p>
+                  <p className="text-xs font-medium text-gold">{HERO_TRANSLATIONS.trustedOfficial[lang]}</p>
                   <p className="text-[10px] text-white/70">{HERO_TRANSLATIONS.templeWebsite[lang]}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                  <Lock className="w-5 h-5 text-[#D4A853]" />
+                  <Lock className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-[#D4A853]">{HERO_TRANSLATIONS.secureDonations[lang]}</p>
+                  <p className="text-xs font-medium text-gold">{HERO_TRANSLATIONS.secureDonations[lang]}</p>
                   <p className="text-[10px] text-white/70">{HERO_TRANSLATIONS.transparent100[lang]}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                  <Heart className="w-5 h-5 text-[#D4A853]" />
+                  <Heart className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-[#D4A853]">{HERO_TRANSLATIONS.servingDevotees[lang]}</p>
+                  <p className="text-xs font-medium text-gold">{HERO_TRANSLATIONS.servingDevotees[lang]}</p>
                   <p className="text-[10px] text-white/70">{HERO_TRANSLATIONS.withDevotion[lang]}</p>
                 </div>
               </div>
@@ -207,12 +207,12 @@ const Hero = () => {
             <Concave
               borderRadius="18px"
               concave="15px"
-              className="bg-[#FDF8F3] shadow-2xl p-8 max-w-lg"
+              className="bg-parchment shadow-2xl p-8 max-w-lg"
             >
               <div className="text-center mb-4">
-                <h3 className="text-[#8B1A1A] font-serif text-2xl font-bold">{HERO_TRANSLATIONS.supportTemple[lang]}</h3>
-                <p className="text-[#8B1A1A] text-sm font-medium mt-1">{HERO_TRANSLATIONS.donationBlessing[lang]}</p>
-                <p className="text-[#6B4423] text-xs mt-1">
+                <h3 className="text-maroon font-serif text-2xl font-bold">{HERO_TRANSLATIONS.supportTemple[lang]}</h3>
+                <p className="text-maroon text-sm font-medium mt-1">{HERO_TRANSLATIONS.donationBlessing[lang]}</p>
+                <p className="text-earth-medium text-xs mt-1">
                   {HERO_TRANSLATIONS.contributionHelp[lang]}
                 </p>
               </div>
@@ -223,7 +223,7 @@ const Hero = () => {
                   <button
                     key={amount}
                     onClick={() => setSelectedAmount(amount)}
-                    className={`border-1 border-[#8B1A1A] text-[#8B1A1A] rounded-md py-2 text-sm font-medium transition-colors ${selectedAmount === amount ? 'bg-[#8B1A1A] text-white' : 'hover:bg-[#8B1A1A] hover:text-white'}`}
+                    className={`border-1 border-maroon text-maroon rounded-md py-2 text-sm font-medium transition-colors ${selectedAmount === amount ? 'bg-btn-bg text-btn-text' : 'hover:bg-maroon hover:text-white'}`}
                   >
                     {amount}
                   </button>
@@ -234,7 +234,7 @@ const Hero = () => {
                   <button
                     key={amount}
                     onClick={() => setSelectedAmount(amount)}
-                    className={`border-1 border-[#8B1A1A] text-[#8B1A1A] rounded-md py-1 text-sm font-medium transition-colors ${selectedAmount === amount ? 'bg-[#8B1A1A] text-white' : 'hover:bg-[#8B1A1A] hover:text-white'}`}
+                    className={`border-1 border-maroon text-maroon rounded-md py-1 text-sm font-medium transition-colors ${selectedAmount === amount ? 'bg-btn-bg text-btn-text' : 'hover:bg-maroon hover:text-white'}`}
                   >
                     {amount}
                   </button>
@@ -244,7 +244,7 @@ const Hero = () => {
               {/* Donate Now Button */}
               <Link
                   to={selectedAmount ? `/donate?amount=${selectedAmount}` : "/donate"}
-                  className="w-[90%] mx-auto bg-[#8B1A1A] text-white py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-[#6B1414] transition-colors"
+                  className="w-[90%] mx-auto bg-btn-bg text-btn-text py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-btn-bg-hover transition-colors"
                 >
                 {/* {HERO_TRANSLATIONS.donateNow[lang]} */}
                 Donate Now
@@ -264,7 +264,7 @@ const Hero = () => {
                   <img src={visaIcon} alt="Visa" className="h-10 w-auto  object-contain" loading="lazy" />
                   <img src={mastercardIcon} alt="Mastercard" className="h-10 w-auto    object-contain" loading="lazy" />
                 </div>
-                <p className="text-[10px] text-[#8B1A1A] text-center mt-2">
+                <p className="text-[10px] text-maroon text-center mt-2">
                   {HERO_TRANSLATIONS.taxExemption[lang]}
                 </p>
               </div>

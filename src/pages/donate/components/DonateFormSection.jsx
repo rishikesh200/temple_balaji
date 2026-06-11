@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+﻿import React, { useEffect, useRef, useState } from "react"
 import { CheckCircle, Sparkles, X } from "lucide-react"
 import { useLanguage } from "../../../contexts/LanguageContext"
 import { useAdminData } from "../../../admin/contexts/AdminDataContext"
@@ -181,7 +181,7 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
           cause,
         },
         theme: {
-          color: "#8B1A1A",
+          color: "var(--color-maroon)",
         },
         handler: async (response) => {
           const verify = await paymentAPI.verifyPayment({
@@ -213,24 +213,24 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
   }
 
   return (
-    <section id="donation-form" ref={formRef} className="py-16 md:py-20 bg-white border-t border-b border-[#E5D5C5]/60">
+    <section id="donation-form" ref={formRef} className="py-16 md:py-20 bg-white border-t border-b border-border-warm/60">
       <div className="max-w-4xl mx-auto px-4">
-        <div className="bg-[#FDF8F3] border border-[#E5D5C5] rounded-3xl p-8 shadow-sm">
+        <div className="bg-parchment border border-border-warm rounded-3xl p-8 shadow-sm">
           <div className="mb-8 text-center">
-            <p className="text-sm uppercase tracking-widest text-[#8B1A1A] mb-3">{t.sectionLabel}</p>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#2D1810]">{t.title}</h2>
-            <p className="text-[#6B4423] max-w-2xl mx-auto mt-4 text-sm font-medium">
+            <p className="text-sm uppercase tracking-widest text-maroon mb-3">{t.sectionLabel}</p>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-earth-dark">{t.title}</h2>
+            <p className="text-earth-medium max-w-2xl mx-auto mt-4 text-sm font-medium">
               {t.description}
             </p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <label className="block">
-              <span className="text-xs font-semibold text-[#6B4423]">{t.selectCause}</span>
+              <span className="text-xs font-semibold text-earth-medium">{t.selectCause}</span>
               <select
                 value={cause}
                 onChange={(e) => setCause(e.target.value)}
-                className="mt-2 w-full bg-white border border-[#E5D5C5] rounded-3xl py-3 px-4 text-sm text-[#2D1810] focus:outline-none focus:border-[#8B1A1A]"
+                className="mt-2 w-full bg-white border border-border-warm rounded-3xl py-3 px-4 text-sm text-earth-dark focus:outline-none focus:border-maroon"
               >
                 {donationCauses.map((item) => (
                   <option key={item.id} value={item.id}>{item.title}</option>
@@ -239,7 +239,7 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
             </label>
 
             <label className="block">
-              <span className="text-xs font-semibold text-[#6B4423]">{t.amountLabel}</span>
+              <span className="text-xs font-semibold text-earth-medium">{t.amountLabel}</span>
               <input
                 type="number"
                 min={1}
@@ -247,54 +247,54 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder={t.placeholderAmount}
-                className="mt-2 w-full bg-white border border-[#E5D5C5] rounded-3xl py-3 px-4 text-sm text-[#2D1810] focus:outline-none focus:border-[#8B1A1A]"
+                className="mt-2 w-full bg-white border border-border-warm rounded-3xl py-3 px-4 text-sm text-earth-dark focus:outline-none focus:border-maroon"
               />
             </label>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3 mt-6">
             <label className="block">
-              <span className="text-xs font-semibold text-[#6B4423]">{t.fullName}</span>
+              <span className="text-xs font-semibold text-earth-medium">{t.fullName}</span>
               <input
                 type="text"
                 value={donorName}
                 onChange={(e) => setDonorName(e.target.value)}
                 placeholder={t.placeholderName}
-                className="mt-2 w-full bg-white border border-[#E5D5C5] rounded-3xl py-3 px-4 text-sm text-[#2D1810] focus:outline-none focus:border-[#8B1A1A]"
+                className="mt-2 w-full bg-white border border-border-warm rounded-3xl py-3 px-4 text-sm text-earth-dark focus:outline-none focus:border-maroon"
               />
             </label>
 
             <label className="block">
-              <span className="text-xs font-semibold text-[#6B4423]">{t.email}</span>
+              <span className="text-xs font-semibold text-earth-medium">{t.email}</span>
               <input
                 type="email"
                 value={donorEmail}
                 onChange={(e) => setDonorEmail(e.target.value)}
                 placeholder={t.placeholderEmail}
-                className="mt-2 w-full bg-white border border-[#E5D5C5] rounded-3xl py-3 px-4 text-sm text-[#2D1810] focus:outline-none focus:border-[#8B1A1A]"
+                className="mt-2 w-full bg-white border border-border-warm rounded-3xl py-3 px-4 text-sm text-earth-dark focus:outline-none focus:border-maroon"
               />
             </label>
 
             <label className="block">
-              <span className="text-xs font-semibold text-[#6B4423]">{t.mobile}</span>
+              <span className="text-xs font-semibold text-earth-medium">{t.mobile}</span>
               <input
                 type="tel"
                 value={donorPhone}
                 onChange={(e) => setDonorPhone(e.target.value)}
                 placeholder={t.placeholderPhone}
-                className="mt-2 w-full bg-white border border-[#E5D5C5] rounded-3xl py-3 px-4 text-sm text-[#2D1810] focus:outline-none focus:border-[#8B1A1A]"
+                className="mt-2 w-full bg-white border border-border-warm rounded-3xl py-3 px-4 text-sm text-earth-dark focus:outline-none focus:border-maroon"
               />
             </label>
           </div>
 
           <label className="block mt-6">
-            <span className="text-xs font-semibold text-[#6B4423]">{t.messageLabel}</span>
+            <span className="text-xs font-semibold text-earth-medium">{t.messageLabel}</span>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={4}
               placeholder={t.placeholderMessage}
-              className="mt-2 w-full bg-white border border-[#E5D5C5] rounded-3xl py-3 px-4 text-sm text-[#2D1810] focus:outline-none focus:border-[#8B1A1A]"
+              className="mt-2 w-full bg-white border border-border-warm rounded-3xl py-3 px-4 text-sm text-earth-dark focus:outline-none focus:border-maroon"
             />
           </label>
 
@@ -310,7 +310,7 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
             type="button"
             onClick={() => { setFormError(''); handleSubmit(); }}
             disabled={isProcessing}
-            className={`mt-6 w-full inline-flex items-center justify-center gap-3 rounded-3xl bg-[#8B1A1A] px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-[#6B1414] ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className={`mt-6 w-full inline-flex items-center justify-center gap-3 rounded-3xl bg-maroon px-6 py-4 text-sm font-bold text-white transition-colors hover:bg-btn-bg-hover ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
             {isProcessing ? t.processing : t.donateButton}
           </button>
@@ -319,8 +319,8 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
 
       {donationSuccess && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-xl w-full overflow-hidden border-2 border-[#D4A853] shadow-2xl relative animate-scale-up max-h-[90vh] flex flex-col">
-            <div className="bg-[#8B1A1A] text-white p-6 text-center border-b-2 border-dashed border-[#D4A853] relative">
+          <div className="bg-white rounded-3xl max-w-xl w-full overflow-hidden border-2 border-gold shadow-2xl relative animate-scale-up max-h-[90vh] flex flex-col">
+            <div className="bg-btn-bg text-btn-text p-6 text-center border-b-2 border-dashed border-gold relative">
               <button
                 type="button"
                 onClick={() => setDonationSuccess(false)}
@@ -328,48 +328,48 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
               >
                 <X className="w-5 h-5" />
               </button>
-              <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center mx-auto mb-3 shadow-md border border-[#D4A853]">
+              <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center mx-auto mb-3 shadow-md border border-gold">
                 <CheckCircle className="w-9 h-9 text-green-600" />
               </div>
               <h3 className="font-serif text-2xl font-bold tracking-wide">{t.donationConfirmed}</h3>
-              <p className="text-[#E8C86A] text-xs font-semibold uppercase tracking-widest mt-1">{t.donationThanks}</p>
+              <p className="text-gold-light text-xs font-semibold uppercase tracking-widest mt-1">{t.donationThanks}</p>
             </div>
 
-            <div className="p-6 overflow-y-auto space-y-6 flex-grow bg-[#FDF8F3]/50">
-              <div className="bg-white border border-[#E5D5C5] rounded-3xl p-5 shadow-sm">
+            <div className="p-6 overflow-y-auto space-y-6 flex-grow bg-parchment/50">
+              <div className="bg-white border border-border-warm rounded-3xl p-5 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#6B4423]">{t.donationReference}</p>
-                    <p className="font-mono text-sm font-bold text-[#8B1A1A]">{donationRef}</p>
+                    <p className="text-[10px] uppercase tracking-widest text-earth-medium">{t.donationReference}</p>
+                    <p className="font-mono text-sm font-bold text-maroon">{donationRef}</p>
                   </div>
                   <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold border border-green-200">{t.successStatus}</span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 text-sm text-[#6B4423]">
+                <div className="grid grid-cols-1 gap-3 text-sm text-earth-medium">
                   <div className="space-y-1">
-                    <span className="block text-xs uppercase tracking-widest text-[#8B1A1A]">{t.causeLabel}</span>
-                    <p className="font-semibold text-[#2D1810]">{selectedCauseLabel}</p>
+                    <span className="block text-xs uppercase tracking-widest text-maroon">{t.causeLabel}</span>
+                    <p className="font-semibold text-earth-dark">{selectedCauseLabel}</p>
                   </div>
                   <div className="space-y-1">
-                    <span className="block text-xs uppercase tracking-widest text-[#8B1A1A]">{t.amountPaidLabel}</span>
-                    <p className="font-semibold text-[#2D1810]">₹ {amountPaid.toLocaleString('en-IN')}</p>
+                    <span className="block text-xs uppercase tracking-widest text-maroon">{t.amountPaidLabel}</span>
+                    <p className="font-semibold text-earth-dark">₹ {amountPaid.toLocaleString('en-IN')}</p>
                   </div>
                   <div className="space-y-1">
-                    <span className="block text-xs uppercase tracking-widest text-[#8B1A1A]">{t.donorLabel}</span>
-                    <p className="font-semibold text-[#2D1810]">{donorName}</p>
+                    <span className="block text-xs uppercase tracking-widest text-maroon">{t.donorLabel}</span>
+                    <p className="font-semibold text-earth-dark">{donorName}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-3xl border border-[#E5D5C5] bg-white p-5 text-[#6B4423] text-sm leading-relaxed shadow-sm">
-                <div className="flex items-center gap-2 text-[#8B1A1A] font-semibold mb-3">
+              <div className="rounded-3xl border border-border-warm bg-white p-5 text-earth-medium text-sm leading-relaxed shadow-sm">
+                <div className="flex items-center gap-2 text-maroon font-semibold mb-3">
                   <Sparkles className="w-4 h-4" /> {t.confirmationTitle}
                 </div>
                 <p>{t.confirmationBody}</p>
               </div>
             </div>
 
-            <div className="bg-[#8B1A1A]/5 border-t-2 border-dashed border-[#D4A853] p-5 flex gap-3">
+            <div className="bg-maroon/5 border-t-2 border-dashed border-gold p-5 flex gap-3">
               <button
                 type="button"
                 onClick={() => {
@@ -381,7 +381,7 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
                   setDonorPhone("")
                   setMessage("")
                 }}
-                className="flex-1 bg-[#8B1A1A] text-white py-3.5 rounded-xl font-bold text-xs md:text-sm border border-[#D4A853] hover:bg-[#6B1414] transition-colors"
+                className="flex-1 bg-btn-bg text-btn-text py-3.5 rounded-xl font-bold text-xs md:text-sm border border-gold hover:bg-btn-bg-hover transition-colors"
               >
                 {t.close}
               </button>
@@ -392,3 +392,4 @@ export default function DonateFormSection({ selectedCause, selectedAmount }) {
     </section>
   )
 }
+

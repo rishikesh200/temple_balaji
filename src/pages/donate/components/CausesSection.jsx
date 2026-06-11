@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+﻿import React, { useState } from "react"
 import {
   BookOpen,
   Building2,
@@ -56,8 +56,8 @@ function DonationCauseCard({ cause, onDonateSelect }) {
 
 
   return (
-    <article className="bg-white border border-[#E5D5C5]/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group ring-1 ring-black/5">
-      <div className="h-48 overflow-hidden relative border-b border-[#E5D5C5]/30">
+    <article className="bg-white border border-border-warm/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group ring-1 ring-black/5">
+      <div className="h-48 overflow-hidden relative border-b border-border-warm/30">
         {(cause.imageUrl || cause.image) ? (
           <img
             src={cause.imageUrl || cause.image}
@@ -69,11 +69,11 @@ function DonationCauseCard({ cause, onDonateSelect }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
       </div>
       <div className="p-6 flex flex-col flex-grow">
-        <h3 className="font-serif text-lg font-bold text-[#2D1810] mb-2 group-hover:text-[#8B1A1A] transition-colors">{getT(cause, 'title', lang)}</h3>
-        <p className="text-xs text-[#6B4423] mb-6 flex-grow leading-relaxed font-medium">{getT(cause, 'description', lang)}</p>
+        <h3 className="font-serif text-lg font-bold text-earth-dark mb-2 group-hover:text-maroon transition-colors">{getT(cause, 'title', lang)}</h3>
+        <p className="text-xs text-earth-medium mb-6 flex-grow leading-relaxed font-medium">{getT(cause, 'description', lang)}</p>
         <div className="space-y-4 mt-auto">
           {cause.inputMode === "presets" ? (
-            <div className="flex justify-between gap-2 bg-[#FDF8F3] p-1.5 rounded-xl border border-[#E5D5C5]">
+            <div className="flex justify-between gap-2 bg-parchment p-1.5 rounded-xl border border-border-warm">
               {cause.presetAmounts.map((amt, i) => (
                 <button
                   key={amt}
@@ -81,8 +81,8 @@ function DonationCauseCard({ cause, onDonateSelect }) {
                   onClick={() => setSelectedPreset(i)}
                   className={`flex-1 py-2 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
                     selectedPreset === i
-                      ? "bg-[#8B1A1A] text-white shadow-xs"
-                      : "text-[#8B4513] hover:text-[#8B1A1A] hover:bg-white"
+                      ? "bg-btn-bg text-btn-text shadow-xs"
+                      : "text-earth-medium hover:text-maroon hover:bg-white"
                   }`}
                 >
                   ₹ {amt.toLocaleString("en-IN")}
@@ -98,7 +98,7 @@ function DonationCauseCard({ cause, onDonateSelect }) {
                 value={customAmount}
                 onChange={(e) => setCustomAmount(e.target.value)}
                 placeholder={t.customAmountPlaceholder}
-                className="w-full bg-[#FDF8F3]/50 border border-[#E5D5C5] rounded-xl py-2 px-4 text-xs font-bold text-[#2D1810] placeholder:text-[#6B4423]/70 focus:outline-none focus:border-[#8B1A1A] transition-colors"
+                className="w-full bg-parchment/50 border border-border-warm rounded-xl py-2 px-4 text-xs font-bold text-earth-dark placeholder:text-earth-medium/70 focus:outline-none focus:border-maroon transition-colors"
               />
             </div>
           )}
@@ -106,9 +106,9 @@ function DonationCauseCard({ cause, onDonateSelect }) {
           <button
             type="button"
             onClick={() => onDonateSelect(cause.id, displayAmount ? Number(displayAmount) : '')}
-            className="w-full bg-[#8B1A1A] text-white py-3 rounded-xl text-xs font-bold hover:bg-[#6B1414] border border-[#D4A853] shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            className="w-full bg-btn-bg text-btn-text py-3 rounded-xl text-xs font-bold hover:bg-btn-bg-hover border border-gold shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <CtaIcon className="w-4 h-4 text-[#D4A853]" aria-hidden />
+            <CtaIcon className="w-4 h-4 text-gold" aria-hidden />
             <span>{t.donateNow}</span>
             {displayAmount ? (
               <span className="opacity-95 font-mono">· ₹ {Number(displayAmount).toLocaleString("en-IN")}</span>
@@ -126,17 +126,17 @@ export default function CausesSection({ onDonateSelect }) {
   const t = CAUSES_TRANSLATIONS[lang] || CAUSES_TRANSLATIONS.en
 
   return (
-    <section className="py-16 md:py-20 bg-[#FDF8F3]" id="causes">
+    <section className="py-16 md:py-20 bg-parchment" id="causes">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-14">
-          <div className="divine-divider text-xs sm:text-sm font-semibold uppercase tracking-widest text-[#8B1A1A] mb-4">
+          <div className="divine-divider text-xs sm:text-sm font-semibold uppercase tracking-widest text-maroon mb-4">
             {t.sectionLabel}
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#2D1810] mb-4">{t.title}</h2>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-earth-dark mb-4">{t.title}</h2>
           <div className="divine-divider mb-6">
-            <Sparkles className="w-6 h-6 text-[#D4A853] shrink-0 mx-auto" aria-hidden />
+            <Sparkles className="w-6 h-6 text-gold shrink-0 mx-auto" aria-hidden />
           </div>
-          <p className="text-[#6B4423] max-w-2xl mx-auto text-sm font-medium">
+          <p className="text-earth-medium max-w-2xl mx-auto text-sm font-medium">
             {t.description}
           </p>
         </div>
@@ -150,3 +150,4 @@ export default function CausesSection({ onDonateSelect }) {
     </section>
   )
 }
+

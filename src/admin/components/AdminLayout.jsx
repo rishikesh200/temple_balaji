@@ -34,6 +34,7 @@ const NAV_GROUPS = [
     label: 'Site Settings',
     items: [
       { label: 'Temple Settings', path: '/admin/temple-settings', icon: '⚙️' },
+      { label: 'Theme Controls',  path: '/admin/theme-controls',  icon: '🎨' },
     ],
   },
 ];

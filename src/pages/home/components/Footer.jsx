@@ -1,4 +1,4 @@
-import { Clock, Mail, MapPin, Phone } from "lucide-react"
+﻿import { Clock, Mail, MapPin, Phone } from "lucide-react"
 import { Link as RouterLink } from "react-router-dom"
 import { useLanguage } from "../../../contexts/LanguageContext"
 
@@ -128,14 +128,14 @@ export default function Footer() {
   )
 
   return (
-    <footer className="bg-[#4A0000] text-white">
+    <footer className="bg-maroon-dark text-white">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <h3 className="font-serif text-lg font-bold mb-4">{t.templeName}</h3>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#D4A853]" />
+                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-gold" />
                 <span className="text-white/80">
                   Paruthipattu , Avadi,
                   <br />
@@ -143,19 +143,19 @@ export default function Footer() {
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[#D4A853]" />
+                <Phone className="w-4 h-4 text-gold" />
                 <span className="text-white/80">+91 123456789</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#D4A853]" />
+                <Mail className="w-4 h-4 text-gold" />
                 <span className="text-white/80">info@paruthipattubalajitemple.org</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#D4A853]" />
+                <Clock className="w-4 h-4 text-gold" />
                 <span className="text-white/80">05:00 AM – 09:00 PM (Daily)</span>
               </div>
             </div>
-            <button className="mt-4 border border-[#D4A853] text-[#D4A853] px-4 py-2 rounded-full text-sm hover:bg-[#D4A853] hover:text-[#2D1810] transition-colors">
+            <button className="mt-4 border border-gold text-gold px-4 py-2 rounded-full text-sm hover:bg-gold hover:text-earth-dark transition-colors">
               {t.getDirections}
             </button>
           </div>
@@ -164,37 +164,37 @@ export default function Footer() {
             <h3 className="font-serif text-lg font-bold mb-4">{t.quickLinks}</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/" className="text-white/80 hover:text-gold">
                   {t.home}
                 </Link>
               </li>
               <li>
-                <Link href="/darshan" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/darshan" className="text-white/80 hover:text-gold">
                   {t.darshan}
                 </Link>
               </li>
               <li>
-                <Link href="/pooja" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/pooja" className="text-white/80 hover:text-gold">
                   {t.pooja}
                 </Link>
               </li>
               <li>
-                <Link href="/events" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/events" className="text-white/80 hover:text-gold">
                   {t.events}
                 </Link>
               </li>
               <li>
-                <Link href="/gallery" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/gallery" className="text-white/80 hover:text-gold">
                   {t.gallery}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/contact" className="text-white/80 hover:text-gold">
                   {t.contact}
                 </Link>
               </li>
               <li>
-                <Link href="/donate" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/donate" className="text-white/80 hover:text-gold">
                   {t.donate}
                 </Link>
               </li>
@@ -205,17 +205,17 @@ export default function Footer() {
             <h3 className="font-serif text-lg font-bold mb-4">{t.importantLinks}</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/privacy-policy" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/privacy-policy" className="text-white/80 hover:text-gold">
                   {t.privacy}
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/terms" className="text-white/80 hover:text-gold">
                   {t.terms}
                 </Link>
               </li>
               <li>
-                <Link href="/refund-policy" className="text-white/80 hover:text-[#D4A853]">
+                <Link href="/refund-policy" className="text-white/80 hover:text-gold">
                   {t.refundPolicy}
                 </Link>
               </li>
@@ -224,8 +224,8 @@ export default function Footer() {
 
           <div>
             <h3 className="font-serif text-lg font-bold mb-4">{t.findUs}</h3>
-            <div className="rounded-lg overflow-hidden border border-[#D4A853]/30">
-              <div className="h-36 bg-[#F5E6D3] relative">
+            <div className="rounded-lg overflow-hidden border border-gold/30">
+              <div className="h-36 bg-parchment-soft relative">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7088.694756533519!2d80.10780180454753!3d13.094263049551655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52630024c3c203%3A0x4edbbe8a2cea12fd!2sAVADI%20TIRUPATHI%20SRIVARI%20TEMPLE!5e1!3m2!1sen!2sus!4v1779014462236!5m2!1sen!2sus"
                   width="100%"
@@ -236,12 +236,12 @@ export default function Footer() {
                   referrerPolicy="no-referrer-when-downgrade"
                   
                 />
-                <div className="absolute bottom-2 left-2 bg-white px-2 py-1 rounded text-xs text-[#2D1810] flex items-center gap-1">
-                  <MapPin className="w-3 h-3 text-[#8B1A1A]" />
+                <div className="absolute bottom-2 left-2 bg-white px-2 py-1 rounded text-xs text-earth-dark flex items-center gap-1">
+                  <MapPin className="w-3 h-3 text-maroon" />
                   Paruthipattu Balaji Temple
                 </div>
               </div>
-              <button className="w-full bg-[#8B1A1A] text-white py-2 text-sm hover:bg-[#6B1414] transition-colors">
+              <button className="w-full bg-btn-bg text-btn-text py-2 text-sm hover:bg-btn-bg-hover transition-colors">
                 View on Google Maps
               </button>
             </div>
@@ -252,13 +252,13 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-4 space-y-2">
           <div className="flex flex-wrap justify-center gap-x-5 gap-y-1 text-xs text-white/50">
-            <Link href="/privacy-policy" className="hover:text-[#D4A853] transition-colors">{t.privacy}</Link>
+            <Link href="/privacy-policy" className="hover:text-gold transition-colors">{t.privacy}</Link>
             <span>·</span>
-            <Link href="/terms" className="hover:text-[#D4A853] transition-colors">{t.terms}</Link>
+            <Link href="/terms" className="hover:text-gold transition-colors">{t.terms}</Link>
             <span>·</span>
-            <Link href="/refund-policy" className="hover:text-[#D4A853] transition-colors">{t.refundPolicy}</Link>
+            <Link href="/refund-policy" className="hover:text-gold transition-colors">{t.refundPolicy}</Link>
             <span>·</span>
-            <Link href="/contact" className="hover:text-[#D4A853] transition-colors">{t.contact}</Link>
+            <Link href="/contact" className="hover:text-gold transition-colors">{t.contact}</Link>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center text-xs text-white/60">
             <p>{t.copyright}</p>
@@ -269,4 +269,5 @@ export default function Footer() {
     </footer>
   )
 }
+
 

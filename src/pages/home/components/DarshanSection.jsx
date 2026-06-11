@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react"
+﻿import { ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useAdminData } from "../../../admin/contexts/AdminDataContext"
 import { getT } from "../../../utils/i18n"
@@ -28,11 +28,11 @@ export default function DarshanSection() {
   const { lang } = useLanguage()
   const { homeDarshan: darshanTypes } = useAdminData()
   return (
-    <section className="py-10 bg-[#FDF8F3]">
+    <section className="py-10 bg-parchment">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="font-serif text-2xl font-bold text-[#2D1810]">{DARSHAN_TRANSLATIONS.darshanBooking[lang]}</h2>
-          <p className="text-sm text-[#6B4423] mt-1">
+          <h2 className="font-serif text-2xl font-bold text-earth-dark">{DARSHAN_TRANSLATIONS.darshanBooking[lang]}</h2>
+          <p className="text-sm text-earth-medium mt-1">
             — {DARSHAN_TRANSLATIONS.chooseExperience[lang]} —
           </p>
         </div>
@@ -47,16 +47,16 @@ export default function DarshanSection() {
 
               <div className="relative p-6 pt-32">
                 <img src={icon} alt="" className="w-10 h-8 object-cover mb-2" />
-                <h3 className="text-[#D4A853] font-serif text-xl font-bold mb-2">{getT(option, 'title', lang)}</h3>
+                <h3 className="text-gold font-serif text-xl font-bold mb-2">{getT(option, 'title', lang)}</h3>
                 <p className="text-white/80 text-sm mb-4">{getT(option, 'summary', lang)}</p>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-[#D4A853] font-bold text-lg">
+                  <span className="text-gold font-bold text-lg">
                     {option.bookingType === 'free' ? 'Free' : option.priceLabel}
                   </span>
                   <button
                     type="button"
-                    className="flex items-center gap-1 text-white text-sm font-medium hover:text-[#D4A853] transition-colors"
+                    className="flex items-center gap-1 text-white text-sm font-medium hover:text-gold transition-colors"
                   >
                     {DARSHAN_TRANSLATIONS.bookNow[lang]} <ArrowRight className="w-4 h-4" />
                   </button>
@@ -69,7 +69,7 @@ export default function DarshanSection() {
         <div className="text-center mt-8">
           <Link
             to="/darshan"
-            className="inline-flex bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors"
+            className="inline-flex bg-btn-bg text-btn-text px-6 py-2.5 rounded-md text-sm font-medium hover:bg-btn-bg-hover transition-colors"
           >
             {DARSHAN_TRANSLATIONS.viewAll[lang]}
           </Link>
@@ -78,3 +78,4 @@ export default function DarshanSection() {
     </section>
   )
 }
+

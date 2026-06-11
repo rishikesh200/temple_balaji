@@ -1,4 +1,4 @@
-import { Heart, Landmark, Sparkles, Utensils } from "lucide-react"
+﻿import { Heart, Landmark, Sparkles, Utensils } from "lucide-react"
 import abtImg from "../../../assets/images/hero-balaji.jpg"
 import { useLanguage } from "../../../contexts/LanguageContext"
 
@@ -40,38 +40,38 @@ const ABOUT_TRANSLATIONS = {
 export default function AboutSection() {
   const { lang } = useLanguage()
   return (
-    <section className="py-12 bg-[#FDF8F3]">
+    <section className="py-12 bg-parchment">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div>
-            <p className="text-[#8B1A1A] text-sm font-medium mb-2">{ABOUT_TRANSLATIONS.aboutOurTemple[lang]}</p>
-            <h2 className="font-serif text-3xl font-bold text-[#2D1810] mb-4">
+            <p className="text-maroon text-sm font-medium mb-2">{ABOUT_TRANSLATIONS.aboutOurTemple[lang]}</p>
+            <h2 className="font-serif text-3xl font-bold text-earth-dark mb-4">
               {ABOUT_TRANSLATIONS.timelessAbode[lang]}
             </h2>
-            <p className="text-[#6B4423] text-sm mb-6 leading-relaxed">
+            <p className="text-earth-medium text-sm mb-6 leading-relaxed">
               {ABOUT_TRANSLATIONS.description[lang]}
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="flex items-center gap-2">
-                <Landmark className="w-5 h-5 text-[#8B1A1A]" />
-                <span className="text-sm text-[#2D1810]">{ABOUT_TRANSLATIONS.ancientHeritage[lang]}</span>
+                <Landmark className="w-5 h-5 text-maroon" />
+                <span className="text-sm text-earth-dark">{ABOUT_TRANSLATIONS.ancientHeritage[lang]}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Utensils className="w-5 h-5 text-[#8B1A1A]" />
-                <span className="text-sm text-[#2D1810]">{ABOUT_TRANSLATIONS.annadhanam[lang]}</span>
+                <Utensils className="w-5 h-5 text-maroon" />
+                <span className="text-sm text-earth-dark">{ABOUT_TRANSLATIONS.annadhanam[lang]}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#8B1A1A]" />
-                <span className="text-sm text-[#2D1810]">{ABOUT_TRANSLATIONS.dailyPoojas[lang]}</span>
+                <Sparkles className="w-5 h-5 text-maroon" />
+                <span className="text-sm text-earth-dark">{ABOUT_TRANSLATIONS.dailyPoojas[lang]}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Heart className="w-5 h-5 text-[#8B1A1A]" />
-                <span className="text-sm text-[#2D1810]">{ABOUT_TRANSLATIONS.spiritualPrograms[lang]}</span>
+                <Heart className="w-5 h-5 text-maroon" />
+                <span className="text-sm text-earth-dark">{ABOUT_TRANSLATIONS.spiritualPrograms[lang]}</span>
               </div>
             </div>
 
-            <button className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors">
+            <button className="bg-btn-bg text-btn-text px-6 py-2.5 rounded-md text-sm font-medium hover:bg-btn-bg-hover transition-colors">
               {ABOUT_TRANSLATIONS.knowMore[lang]}
             </button>
           </div>
@@ -88,4 +88,5 @@ export default function AboutSection() {
     </section>
   )
 }
+
 

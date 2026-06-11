@@ -32,9 +32,9 @@ export default function Stream() {
     <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
-          <p className="text-[#8B1A1A] text-sm font-medium mb-2">{STREAM_TRANSLATIONS.divineConnect[lang]}</p>
-          <h2 className="font-serif text-3xl font-bold text-[#2D1810]">{STREAM_TRANSLATIONS.liveDarshan[lang]}</h2>
-          <p className="text-sm text-[#6B4423] mt-2 max-w-xl mx-auto">
+          <p className="text-maroon text-sm font-medium mb-2">{STREAM_TRANSLATIONS.divineConnect[lang]}</p>
+          <h2 className="font-serif text-3xl font-bold text-earth-dark">{STREAM_TRANSLATIONS.liveDarshan[lang]}</h2>
+          <p className="text-sm text-earth-medium mt-2 max-w-xl mx-auto">
             — {STREAM_TRANSLATIONS.joinDevotees[lang]} —
           </p>
         </div>
@@ -47,7 +47,7 @@ export default function Stream() {
                 type="button"
                 className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors"
               >
-                <Play className="w-8 h-8 text-[#8B1A1A] ml-1" />
+                <Play className="w-8 h-8 text-maroon ml-1" />
               </button>
             </div>
             <div className="absolute top-4 right-4 bg-red-600 text-white text-xs px-2 py-1 rounded font-medium">

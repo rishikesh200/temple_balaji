@@ -1,4 +1,4 @@
-import { ScrollText } from "lucide-react"
+﻿import { ScrollText } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const TEMPLE = "Paruthipattu Balaji Temple"
@@ -8,19 +8,19 @@ const DATE   = "1 June 2025"
 function Section({ title, children }) {
   return (
     <section className="mb-8">
-      <h2 className="font-serif text-xl font-bold text-[#2D1810] mb-3 pb-2 border-b border-[#E5D5C5]">{title}</h2>
-      <div className="text-[#4A3728] text-sm leading-relaxed space-y-3">{children}</div>
+      <h2 className="font-serif text-xl font-bold text-earth-dark mb-3 pb-2 border-b border-border-warm">{title}</h2>
+      <div className="text-earth-dark text-sm leading-relaxed space-y-3">{children}</div>
     </section>
   )
 }
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-[#FDF8F3]">
+    <div className="min-h-screen bg-parchment">
       {/* Hero */}
-      <div className="bg-[#8B1A1A] text-white py-14 px-4 text-center">
+      <div className="bg-btn-bg text-btn-text py-14 px-4 text-center">
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/10 mb-4">
-          <ScrollText className="w-7 h-7 text-[#D4A853]" />
+          <ScrollText className="w-7 h-7 text-gold" />
         </div>
         <h1 className="font-serif text-3xl md:text-4xl font-bold mb-2">Terms &amp; Conditions</h1>
         <p className="text-white/70 text-sm">Effective Date: {DATE}</p>
@@ -93,7 +93,7 @@ export default function TermsPage() {
         <Section title="6. Cancellation &amp; Refund">
           <p>
             Please refer to our dedicated{" "}
-            <Link to="/refund-policy" className="text-[#8B1A1A] underline">Refund &amp; Cancellation Policy</Link>{" "}
+            <Link to="/refund-policy" className="text-maroon underline">Refund &amp; Cancellation Policy</Link>{" "}
             for complete details regarding cancellations, modifications, and refunds for all services.
           </p>
         </Section>
@@ -166,14 +166,14 @@ export default function TermsPage() {
         </Section>
 
         <Section title="14. Contact">
-          <div className="bg-white border border-[#E5D5C5] rounded-xl p-4">
-            <p className="font-semibold text-[#2D1810]">{TEMPLE}</p>
+          <div className="bg-white border border-border-warm rounded-xl p-4">
+            <p className="font-semibold text-earth-dark">{TEMPLE}</p>
             <p>Paruthipattu, Avadi, Chennai, Tamil Nadu – 602105</p>
-            <p>Email: <a href={`mailto:${EMAIL}`} className="text-[#8B1A1A] underline">{EMAIL}</a></p>
+            <p>Email: <a href={`mailto:${EMAIL}`} className="text-maroon underline">{EMAIL}</a></p>
           </div>
         </Section>
 
-        <div className="flex flex-wrap gap-4 text-sm text-[#8B1A1A] pt-4 border-t border-[#E5D5C5]">
+        <div className="flex flex-wrap gap-4 text-sm text-maroon pt-4 border-t border-border-warm">
           <Link to="/privacy-policy" className="hover:underline">Privacy Policy</Link>
           <Link to="/refund-policy" className="hover:underline">Refund &amp; Cancellation Policy</Link>
           <Link to="/contact" className="hover:underline">Contact Us</Link>
@@ -182,3 +182,4 @@ export default function TermsPage() {
     </div>
   )
 }
+

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+﻿import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import "./App.css"
 import Layout from "./components/Layout"
@@ -14,7 +14,9 @@ import ContactPage from "./pages/contact/ContactPage"
 import PrivacyPolicyPage from "./pages/legal/PrivacyPolicyPage"
 import TermsPage from "./pages/legal/TermsPage"
 import RefundPolicyPage from "./pages/legal/RefundPolicyPage"
+import { ThemeProvider } from "./contexts/ThemeContext"
 import { AdminProvider } from "./admin/contexts/AdminContext"
+import ThemeControlsPage from "./admin/pages/ThemeControlsPage"
 import { AdminDataProvider } from "./admin/contexts/AdminDataContext"
 import { useAdminData } from "./admin/contexts/AdminDataContext"
 import { ProtectedAdminRoute } from "./admin/ProtectedAdminRoute"
@@ -38,9 +40,9 @@ function ConfigLoader({ children }) {
   const { loading } = useAdminData();
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDF8F3] gap-4">
-        <div className="w-12 h-12 border-4 border-[#D4A853]/30 border-t-[#8B1A1A] rounded-full animate-spin" />
-        <p className="text-[#6B4423] text-sm font-medium">Loading temple data…</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-parchment gap-4">
+        <div className="w-12 h-12 border-4 border-gold/30 border-t-maroon rounded-full animate-spin" />
+        <p className="text-earth-medium text-sm font-medium">Loading temple data…</p>
       </div>
     );
   }
@@ -51,6 +53,7 @@ function App() {
   return (
     <ErrorBoundary>
       <AdminDataProvider>
+        <ThemeProvider>
         <AdminProvider>
           <LanguageProvider>
             <BrowserRouter>
@@ -89,15 +92,16 @@ function App() {
 
                   {/* Site Settings */}
                   <Route path="/admin/temple-settings"  element={<ProtectedAdminRoute><TempleSettingsPage /></ProtectedAdminRoute>} />
+                  <Route path="/admin/theme-controls"   element={<ProtectedAdminRoute><ThemeControlsPage /></ProtectedAdminRoute>} />
                   <Route path="/admin/contacts"          element={<ProtectedAdminRoute><ContactsPage /></ProtectedAdminRoute>} />
 
                   {/* 404 */}
                   <Route path="*" element={
-                    <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDF8F3] text-center px-4">
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-parchment text-center px-4">
                       <div className="text-7xl mb-4">🛕</div>
-                      <h1 className="font-serif text-3xl font-bold text-[#2D1810] mb-3">Page Not Found</h1>
-                      <p className="text-[#6B4423] mb-6">The page you are looking for does not exist.</p>
-                      <a href="/" className="bg-[#8B1A1A] text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#6B1414] transition-colors">
+                      <h1 className="font-serif text-3xl font-bold text-earth-dark mb-3">Page Not Found</h1>
+                      <p className="text-earth-medium mb-6">The page you are looking for does not exist.</p>
+                      <a href="/" className="bg-btn-bg text-btn-text px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-btn-bg-hover transition-colors">
                         Return to Home
                       </a>
                     </div>
@@ -107,9 +111,11 @@ function App() {
             </BrowserRouter>
           </LanguageProvider>
         </AdminProvider>
+        </ThemeProvider>
       </AdminDataProvider>
     </ErrorBoundary>
   );
 }
 
 export default App;
+

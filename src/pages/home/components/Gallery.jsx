@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+﻿import { Link } from "react-router-dom"
 import { useLanguage } from "../../../contexts/LanguageContext"
 import { useAdminData } from "../../../admin/contexts/AdminDataContext"
 
@@ -9,7 +9,7 @@ const TR = {
 }
 
 const cellClass =
-  "relative min-h-0 rounded-lg overflow-hidden border-2 border-[#D4A853] cursor-pointer transition-transform hover:scale-[1.02] hover:shadow-lg"
+  "relative min-h-0 rounded-lg overflow-hidden border-2 border-gold cursor-pointer transition-transform hover:scale-[1.02] hover:shadow-lg"
 
 export default function Gallery() {
   const { lang } = useLanguage()
@@ -24,17 +24,17 @@ export default function Gallery() {
   const slots = Array.from({ length: 4 }, (_, i) => homeImages[i % homeImages.length])
 
   return (
-    <section className="py-10 bg-[#FDF8F3]">
+    <section className="py-10 bg-parchment">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-[#8B1A1A] text-sm font-medium mb-2">{TR.aboutOurTemple[lang]}</p>
-            <h2 className="font-serif text-3xl font-bold text-[#2D1810] mb-4">
+            <p className="text-maroon text-sm font-medium mb-2">{TR.aboutOurTemple[lang]}</p>
+            <h2 className="font-serif text-3xl font-bold text-earth-dark mb-4">
               {TR.timelessAbode[lang]}
             </h2>
           </div>
           <Link to="/gallery"
-            className="inline-block bg-[#8B1A1A] text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-[#6B1414] transition-colors">
+            className="inline-block bg-btn-bg text-btn-text px-6 py-2.5 rounded-md text-sm font-medium hover:bg-btn-bg-hover transition-colors">
             {TR.viewFullGallery[lang]}
           </Link>
         </div>
@@ -67,3 +67,4 @@ export default function Gallery() {
     </section>
   )
 }
+

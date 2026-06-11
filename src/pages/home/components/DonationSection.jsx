@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import vilakuImg from "../../../assets/images/vilaku.jpeg"
 import { useLanguage } from "../../../contexts/LanguageContext"
 
-const gold = "#D4AF37"
+const gold = "var(--color-gold)"
 
 const DONATION_TRANSLATIONS = {
   yourContribution: {
@@ -107,7 +107,7 @@ export default function DonationSection() {
   const { lang } = useLanguage()
   
   return (
-    <section className="bg-[#4A0000] py-0 text-white">
+    <section className="bg-maroon-dark py-0 text-white">
       <div className="mx-auto flex max-w-[1400px] flex-col lg:flex-row lg:items-stretch lg:min-h-[320px]">
         {/* Left — lamp with glow */}
         <div className="relative flex min-h-[220px] w-full shrink-0 items-center justify-center overflow-hidden px-6 py-10 lg:w-[min(32%,320px)] lg:min-h-0 lg:py-0">
@@ -132,7 +132,7 @@ export default function DonationSection() {
 
         {/* Middle — heading + tiers */}
         <div className="flex flex-1 flex-col justify-center border-t border-white/[0.06] px-5 py-8 lg:border-l lg:border-t-0 lg:border-white/[0.08] lg:px-8 lg:py-10">
-          <h2 className="mb-8 flex items-center justify-center gap-3 text-center font-serif text-section-title font-bold text-[#D4AF37]">
+          <h2 className="mb-8 flex items-center justify-center gap-3 text-center font-serif text-section-title font-bold text-gold">
             <Flourish className="h-8 w-5 shrink-0 rotate-180 opacity-90" />
             <span className="leading-tight">{DONATION_TRANSLATIONS.yourContribution[lang]}</span>
             <Flourish className="h-8 w-5 shrink-0 opacity-90" />
@@ -147,7 +147,7 @@ export default function DonationSection() {
                 } ${i < tiers(lang).length - 1 ? "lg:border-r lg:border-white/[0.12]" : ""}`}
               >
                 <Icon />
-                <p className="mt-4 font-serif text-amount-sm font-bold text-[#D4AF37] sm:text-amount">
+                <p className="mt-4 font-serif text-amount-sm font-bold text-gold sm:text-amount">
                   {amount}
                 </p>
                 <p className="mt-2 max-w-[11rem] font-sans text-caption text-white/90">
@@ -159,21 +159,21 @@ export default function DonationSection() {
         </div>
 
         {/* Right — fund + progress + CTA */}
-        <div className="flex w-full shrink-0 flex-col justify-center gap-5 border-t border-[#D4AF37]/25 px-6 py-8 sm:px-10 lg:w-[min(28%,300px)] lg:border-l lg:border-t-0 lg:px-8 lg:py-10">
+        <div className="flex w-full shrink-0 flex-col justify-center gap-5 border-t border-gold/25 px-6 py-8 sm:px-10 lg:w-[min(28%,300px)] lg:border-l lg:border-t-0 lg:px-8 lg:py-10">
           <div>
-            <h3 className="font-serif text-fund-title font-semibold text-[#D4AF37]">
+            <h3 className="font-serif text-fund-title font-semibold text-gold">
               {DONATION_TRANSLATIONS.templeRenovation[lang]}
             </h3>
             <p className="mt-2 font-sans text-progress text-white/85">{DONATION_TRANSLATIONS.percentCompleted[lang]}</p>
           </div>
 
           <div className="h-2.5 w-full overflow-hidden rounded-full bg-black/35 ring-1 ring-white/[0.06]">
-            <div className="h-full w-[65%] rounded-full bg-gradient-to-r from-[#D4AF37] via-[#E8B84D] to-[#E8943A] shadow-[0_0_12px_rgba(212,175,55,0.35)]" />
+            <div className="h-full w-[65%] rounded-full bg-gradient-to-r from-gold via-gold-light to-gold-deep shadow-[0_0_12px_rgba(212,175,55,0.35)]" />
           </div>
 
           <Link
             to="/donate"
-            className="block w-full rounded-md bg-gradient-to-b from-[#E8C86A] via-[#D4AF37] to-[#B8922A] py-3 text-center font-sans text-btn font-semibold tracking-wide text-[#3a0a0a] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:brightness-105 active:brightness-95"
+            className="block w-full rounded-md bg-gradient-to-b from-gold-light via-gold to-gold-deep py-3 text-center font-sans text-btn font-semibold tracking-wide text-maroon-dark shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:brightness-105 active:brightness-95"
           >
             {DONATION_TRANSLATIONS.contributeNow[lang]}
           </Link>

@@ -40,7 +40,7 @@ function MessageDrawer({ msg, onClose, onUpdate }) {
           {/* Sender info */}
           <div className="bg-gray-50 rounded-xl p-4 space-y-2">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-[#8B1A1A] text-white flex items-center justify-center font-bold text-sm shrink-0">
+              <div className="w-10 h-10 rounded-full bg-maroon text-white flex items-center justify-center font-bold text-sm shrink-0">
                 {msg.name?.[0]?.toUpperCase()}
               </div>
               <div>
