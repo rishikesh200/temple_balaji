@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  /* Font families (overrides Tailwind defaults) */
+  --font-serif: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* --- BRAND MAROONS & DEVOTIONAL REDS --- */
+  --color-maroon: #8B1A1A;           /* Merged: #8B1A1A, #800000, #660000 */
+  --color-maroon-dark: #3A0A0A;      /* Merged: #3A0A0A, #4A0000, #1E0803 */
+  --color-maroon-hover: #6B1414;     /* Dedicated hover red */
+  --color-maroon-light: #ffdad4;     /* Soft peach/pink accent */
+  --color-maroon-shadow: #120502;    /* Deepest warm shadow */
+
+  /* --- BRAND GOLDS (DIVINE ACCENTS) --- */
+  --color-gold: #D4AF37;             /* Merged: #D4AF37, #D4A853, #c5a059 */
+  --color-gold-light: #E8C86A;       /* Soft gold accents/gradients */
+  --color-gold-deep: #B8922A;        /* Deep gold highlights */
+
+  /* --- WARM EARTH TONES --- */
+  --color-earth-dark: #2D1810;       /* Merged: #2D1810, #4A3728 */
+  --color-earth-medium: #6B4423;     /* Merged: #6B4423, #8B4513 */
+
+  /* --- PARCHMENT & CREAM BACKGROUNDS --- */
+  --color-parchment: #FDF8F3;        /* Merged: #FDF8F3, #fdfaf5, #FFFDFB */
+  --color-parchment-soft: #F5E6D3;   /* Merged: #f5efe6, #F5E6D3, #FFF9F0 */
+  --color-peach-light: #FFF3E6;      /* Dedicated light warm background */
+
+  /* --- WARM GRAYS & BORDERS --- */
+  --color-border-warm: #E5D5C5;      /* Merged: #E5D5C5, #D4C9BC, #e5d9c8, #E5CFC0 */
+  --color-gray-warm-light: #E8E4DF;  /* Merged: #C8C4BC, #F6F3F2, #E8E4DF */
+  --color-gray-warm-medium: #7A756D; /* Merged: #7A756D, #5a5a5a */
+
+  /* --- BUTTON TOKENS --- */
+  --color-btn-bg:       #8B1A1A;
+  --color-btn-bg-hover: #6B1414;
+  --color-btn-text:     #ffffff;
+
+  /* Semantic typography scale */
+  --text-section-title: 1.5rem;
+  --text-section-title--line-height: 1.2;
+  --text-section-title--letter-spacing: 0.01em;
+  --text-amount: 1.75rem;
+  --text-amount--line-height: 1;
+  --text-amount--letter-spacing: -0.01em;
+  --text-amount-sm: 1.375rem;
+  --text-amount-sm--line-height: 1;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.35;
+  --text-fund-title: 1.125rem;
+  --text-fund-title--line-height: 1.25;
+  --text-progress: 0.75rem;
+  --text-btn: 0.875rem;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+}
+
+@layer components {
+  .parchment-bg {
+    background-color: var(--color-parchment);
+    background-image: radial-gradient(circle at 2px 2px, rgba(0, 0, 0, 0.02) 1px, transparent 0);
+    background-size: 40px 40px;
+  }
+
+  .divine-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--color-earth-medium);
+  }
+
+  .divine-divider::before,
+  .divine-divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid var(--color-border-warm);
+  }
+
+  .divine-divider:not(:empty)::before {
+    margin-right: 1.5rem;
+  }
+
+  .divine-divider:not(:empty)::after {
+    margin-left: 1.5rem;
+  }
+}

@@ -1,0 +1,303 @@
+﻿import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import { Shield, Lock, Heart } from "lucide-react"
+import { motion } from "framer-motion"
+import Concave from "../../../components/Concave"
+import heroImg from "../../../assets/images/hero-balaji.jpg"
+import darshanImg from "../../../assets/images/darshan.jpg"
+import festivalImg from "../../../assets/images/festival.jpg"
+import templeGopuramImg from "../../../assets/images/temple-gopuram.jpg"
+import googlePayIcon from "../../../assets/icons/Google_Pay.svg"
+import phonepeIcon from "../../../assets/icons/PhonePe.svg"
+import paytmIcon from "../../../assets/icons/Paytm.svg"
+import visaIcon from "../../../assets/icons/Visa.svg";
+import mastercardIcon from "../../../assets/icons/Mastercard.svg";
+import upiIcon from "../../../assets/icons/upi.svg";
+import { useLanguage } from "../../../contexts/LanguageContext";
+
+import balaji1 from './../../../assets/images/hero/balaji1.png';
+import balaji2 from './../../../assets/images/hero/balaji2.png';
+import { useAdminData } from '../../../admin/contexts/AdminDataContext';
+
+const FALLBACK_IMAGES = [balaji1, balaji2];
+const HERO_TRANSLATIONS = {
+  seekBlessings: {
+    en: "Seek Blessings.",
+    ta: "அருள் பெறுங்கள்."
+  },
+  findPeace: {
+    en: "Find Peace.",
+    ta: "அமைதி பெறுங்கள்."
+  },
+  experience: {
+    en: "Experience",
+    ta: "அனுபவியுங்கள்"
+  },
+  divineGrace: {
+    en: "the Divine Grace",
+    ta: "தெய்வீக அருள்"
+  },
+  ofBalaji: {
+    en: "of Balaji",
+    ta: "பாலாஜியின்"
+  },
+  description: {
+    en: "Surrender to Lord Venkateswara and receive His endless blessings, prosperity and protection.",
+    ta: "பகவான் வெங்கடேஸ்வரரிடம் சரணடைந்து அவரது எல்லையற்ற அருளையும், செழிப்பையும், பாதுகாப்பையும் பெறுங்கள்."
+  },
+  trustedOfficial: {
+    en: "Trusted Official",
+    ta: "நம்பகமான அதிகாரப்பூர்வ"
+  },
+  templeWebsite: {
+    en: "Temple Website",
+    ta: "கோவில் வலைத்தளம்"
+  },
+  secureDonations: {
+    en: "Secure Donations",
+    ta: "பாதுகாப்பான நன்கொடைகள்"
+  },
+  transparent100: {
+    en: "100% Transparent",
+    ta: "100% வெளிப்படையானது"
+  },
+  servingDevotees: {
+    en: "Serving Devotees",
+    ta: "பக்தர்களுக்கு சேவை"
+  },
+  withDevotion: {
+    en: "with Devotion",
+    ta: "பக்தியுடன்"
+  },
+  supportTemple: {
+    en: "Support the Temple",
+    ta: "கோவிலுக்கு ஆதரவளிக்கவும்"
+  },
+  donationBlessing: {
+    en: "Your Donation, Their Blessing",
+    ta: "உங்கள் நன்கொடை, அவர்களின் ஆசி"
+  },
+  contributionHelp: {
+    en: "Every contribution helps in temple maintenance, annadhanam and seva.",
+    ta: "ஒவ்வொரு பங்களிப்பும் கோவில் பராமரிப்பு, அன்னதானம் மற்றும் சேவைகளுக்கு உதவுகிறது."
+  },
+  donateNow: {
+    en: "DONATE NOW",
+    ta: "இப்போது நன்கொடை அளிக்கவும்"
+  },
+  acceptedPayments: {
+    en: "Accepted Payment Methods",
+    ta: "ஏற்கொள்ளப்பட்ட கட்டண முறைகள்"
+  },
+  taxExemption: {
+    en: "All donations are eligible for 80G Tax Exemption",
+    ta: "அனைத்து நன்கொடைகளும் 80G வரி விலக்கிற்கு தகுதியானவை"
+  }
+};
+
+const Hero = () => {
+  const { lang } = useLanguage();
+  const { heroImages } = useAdminData();
+
+  const activeDbImages = heroImages.filter(h => h.isActive);
+  // Use DB images if any exist; otherwise fall back to the 2 hardcoded images
+  const bgImages = activeDbImages.length > 0
+    ? activeDbImages.map(h => h.imageUrl)
+    : FALLBACK_IMAGES;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(null);
+  const [selectedAmount, setSelectedAmount] = useState('');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((currentIndex) => {
+        setPrevIndex(currentIndex)
+        return (currentIndex + 1) % bgImages.length
+      })
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [bgImages.length])
+
+  return (
+    <section className="relative min-h-screen">
+      {/* Background Image */}
+      <div className="absolute inset-0 overflow-hidden">
+        {bgImages.map((image, index) => {
+          const isActive = index === activeIndex
+          const isPrev = index === prevIndex
+          const xTarget = isActive ? "0%" : isPrev ? "-100%" : "100%"
+
+          return (
+            <motion.img
+              key={image}
+              src={image}
+              alt={`Temple background ${index + 1}`}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: "center" }}
+              fetchPriority={index === 0 ? "high" : "low"}
+              loading={index === 0 ? "eager" : "lazy"}
+              animate={{
+                x: xTarget,
+                scale: isActive ? 1 : 1.06,
+                opacity: isActive ? 1 : 0,
+              }}
+              transition={{
+                x: { duration: 0.75, ease: [0.4, 0, 0.2, 1] },
+                scale: { duration: 6, ease: "easeOut" },
+                opacity: { duration: 0.4, ease: "easeInOut" },
+              }}
+            />
+          )
+        })}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="h-full w-full max-w-[62%] bg-gradient-to-r from-[rgba(0,0,0,0.90)] via-[rgba(45,24,16,0.82)] to-transparent" />
+        </div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 py-12 lg:py-16">
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+
+          {/* Left Content */}
+          <motion.div className="text-white pt-4"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}>
+            <motion.p className="text-gold text-sm mb-2"
+              initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}>
+              {HERO_TRANSLATIONS.seekBlessings[lang]}
+            </motion.p>
+            <motion.p className="text-gold text-sm mb-4"
+              initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}>
+              {HERO_TRANSLATIONS.findPeace[lang]}
+            </motion.p>
+
+            <motion.h1 className="font-serif text-4xl lg:text-5xl font-bold leading-tight mb-4"
+              initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}>
+              {HERO_TRANSLATIONS.experience[lang]}<br />
+              {HERO_TRANSLATIONS.divineGrace[lang]}<br />
+              <span className="text-gold">{HERO_TRANSLATIONS.ofBalaji[lang]}</span>
+            </motion.h1>
+
+            <motion.p className="text-white/90 text-sm mb-8 max-w-md"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}>
+              {HERO_TRANSLATIONS.description[lang]}
+            </motion.p>
+
+            {/* Trust Badges */}
+            <motion.div className="flex flex-wrap gap-6 mt-8"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}>
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-gold" />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gold">{HERO_TRANSLATIONS.trustedOfficial[lang]}</p>
+                  <p className="text-[10px] text-white/70">{HERO_TRANSLATIONS.templeWebsite[lang]}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <Lock className="w-5 h-5 text-gold" />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gold">{HERO_TRANSLATIONS.secureDonations[lang]}</p>
+                  <p className="text-[10px] text-white/70">{HERO_TRANSLATIONS.transparent100[lang]}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-gold" />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gold">{HERO_TRANSLATIONS.servingDevotees[lang]}</p>
+                  <p className="text-[10px] text-white/70">{HERO_TRANSLATIONS.withDevotion[lang]}</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Donation Card */}
+          <motion.div className="lg:justify-self-end w-full md:max-w-sm"
+            initial={{ opacity: 0, x: 50, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}>
+            <Concave
+              borderRadius="18px"
+              concave="15px"
+              className="bg-parchment shadow-2xl p-8 max-w-lg"
+            >
+              <div className="text-center mb-4">
+                <h3 className="text-maroon font-serif text-2xl font-bold">{HERO_TRANSLATIONS.supportTemple[lang]}</h3>
+                <p className="text-maroon text-sm font-medium mt-1">{HERO_TRANSLATIONS.donationBlessing[lang]}</p>
+                <p className="text-earth-medium text-xs mt-1">
+                  {HERO_TRANSLATIONS.contributionHelp[lang]}
+                </p>
+              </div>
+
+              {/* Donation Amount Buttons */}
+              <div className="grid grid-cols-3 gap-2 mb-3 ">
+                                {["₹100", "₹500", "₹1000"].map((amount) => (
+                  <button
+                    key={amount}
+                    onClick={() => setSelectedAmount(amount)}
+                    className={`border border-maroon rounded-md py-2 text-sm font-semibold transition-colors ${selectedAmount === amount ? 'bg-maroon text-white' : 'text-maroon hover:bg-maroon hover:text-white'}`}
+                  >
+                    {amount}
+                  </button>
+                ))}
+              </div>
+              <div className="grid grid-cols-3 gap-4 mb-4 ">
+                                {["₹2500", "₹5000", "Other"].map((amount) => (
+                  <button
+                    key={amount}
+                    onClick={() => setSelectedAmount(amount)}
+                    className={`border border-maroon rounded-md py-1 text-sm font-semibold transition-colors ${selectedAmount === amount ? 'bg-maroon text-white' : 'text-maroon hover:bg-maroon hover:text-white'}`}
+                  >
+                    {amount}
+                  </button>
+                ))}
+              </div>
+
+              {/* Donate Now Button */}
+              <Link
+                  to={selectedAmount ? `/donate?amount=${selectedAmount}` : "/donate"}
+                  className="w-[90%] mx-auto bg-btn-bg text-btn-text py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-btn-bg-hover transition-colors"
+                >
+                {/* {HERO_TRANSLATIONS.donateNow[lang]} */}
+                Donate Now
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+              </Link>
+
+              {/* Payment Methods */}
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <p className="text-[10px] text-gray-500 text-center mb-1">{HERO_TRANSLATIONS.acceptedPayments[lang]}</p>
+                <div className="flex items-center flex-wrap justify-center gap-x-1 gap-y-1 flex-wrap px-1">
+                  <img src={upiIcon} alt="UPI" className="h-8 w-auto  object-contain opacity-90" loading="lazy" />
+                  <img src={googlePayIcon} alt="Google Pay" className="h-10 w-auto object-contain opacity-90" loading="lazy" />
+                  <img src={phonepeIcon} alt="PhonePe" className="h-16 w-auto  object-contain opacity-90" loading="lazy" />
+                  <img src={paytmIcon} alt="Paytm" className="h-10 w-auto  object-contain" loading="lazy" />
+                  <img src={visaIcon} alt="Visa" className="h-10 w-auto  object-contain" loading="lazy" />
+                  <img src={mastercardIcon} alt="Mastercard" className="h-10 w-auto    object-contain" loading="lazy" />
+                </div>
+                <p className="text-[10px] text-maroon text-center mt-2">
+                  {HERO_TRANSLATIONS.taxExemption[lang]}
+                </p>
+              </div>
+            </Concave>
+          </motion.div>
+
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Hero
